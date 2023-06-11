@@ -1,0 +1,14 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#159F9F9F" /> <!-- Farbe des Schattens -->
+            <corners android:radius="10dp" /> <!-- Radius für die abgerundeten Ecken -->
+        </shape>
+    </item>
+    <item android:top="5dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#4FFFFFFF" /> <!-- Hintergrundfarbe des Buttons mit Alpha-Wert von 0.5 -->
+            <corners android:radius="10dp" /> <!-- Radius für die abgerundeten Ecken -->
+        </shape>
+    </item>
+</layer-list>

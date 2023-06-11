@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:context=".CommandsActivity"
+    tools:deviceIds="wear">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center">
+
+        <TextView
+            style="@style/time"
+            />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
+
+    <TextView
+        style="@style/headline"
+        android:text="Befehle"
+        />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:id="@+id/commands_recyclerview"/>
+
+
+
+    </FrameLayout>
+
+</androidx.wear.widget.BoxInsetLayout>

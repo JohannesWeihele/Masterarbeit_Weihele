@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:context=".FunctionsActivity"
+    tools:deviceIds="wear">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center">
+
+        <TextView
+            style="@style/time"
+            />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            style="@style/headline"
+            android:text="Funktionen"
+            />
+
+        <ScrollView
+            android:id="@+id/createAccout_Scroll"
+            android:layout_marginTop="35dp"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:scrollbars="none"
+            android:paddingBottom="20dp"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_marginRight="30dp"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/function_btn_vitals"
+                    style="@style/function_Button"
+                    android:tag="function_btn_vitals"
+                    android:onClick="functionClick"
+                    android:text="Vitalparameter"/>
+
+                <ImageView
+                    style="@style/function_Button_Icon"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/vitalparameter_icon" />
+
+                <Button
+                    android:id="@+id/function_btn_communication"
+                    style="@style/function_Button"
+                    android:layout_marginTop="50dp"
+                    android:tag="function_btn_communication"
+                    android:onClick="functionClick"
+                    android:text="Kommunikation"/>
+
+                <ImageView
+                    style="@style/function_Button_Icon"
+                    android:layout_marginTop="60dp"
+                    android:src="@drawable/kommunikation_icon" />
+
+                <Button
+                    android:id="@+id/function_btn_emergency"
+                    style="@style/function_Button"
+                    android:layout_marginTop="100dp"
+                    android:tag="function_btn_emergency"
+                    android:onClick="functionClick"
+                    android:text="Notfall"/>
+
+                <ImageView
+                    style="@style/function_Button_Icon"
+                    android:layout_marginTop="110dp"
+                    android:src="@drawable/notfall_icon" />
+
+                <Button
+                    android:id="@+id/function_btn_commands"
+                    style="@style/function_Button"
+                    android:layout_marginTop="150dp"
+                    android:tag="function_btn_commands"
+                    android:onClick="functionClick"
+                    android:text="Befehle"/>
+
+                <ImageView
+                    style="@style/function_Button_Icon"
+                    android:layout_marginTop="160dp"
+                    android:src="@drawable/commands_icon" />
+
+                <Button
+                    android:id="@+id/function_btn_navigation"
+                    style="@style/function_Button"
+                    android:layout_marginTop="200dp"
+                    android:tag="function_btn_navigation"
+                    android:onClick="functionClick"
+                    android:text="Navigation"/>
+
+                <ImageView
+                    style="@style/function_Button_Icon"
+                    android:layout_marginTop="210dp"
+                    android:src="@drawable/navigation_icon" />
+
+                <Button
+                    android:id="@+id/function_btn_more_vitals"
+                    style="@style/function_Button"
+                    android:layout_marginTop="250dp"
+                    android:tag="function_btn_more_vitals"
+                    android:onClick="functionClick"
+                    android:text="Weitere Vitalopt."/>
+
+                <ImageView
+                    style="@style/function_Button_Icon"
+                    android:layout_marginTop="260dp"
+                    android:src="@drawable/more_vitals_icon" />
+
+                <Button
+                    android:id="@+id/function_btn_environment"
+                    style="@style/function_Button"
+                    android:layout_marginTop="300dp"
+                    android:tag="function_btn_environment"
+                    android:onClick="functionClick"
+                    android:text="Umgebung"/>
+
+                <ImageView
+                    style="@style/function_Button_Icon"
+                    android:layout_marginTop="310dp"
+                    android:src="@drawable/environment_icon" />
+
+                <Button
+                    android:id="@+id/function_btn_options"
+                    style="@style/function_Button"
+                    android:layout_marginTop="350dp"
+                    android:tag="function_btn_options"
+                    android:onClick="functionClick"
+                    android:text="Einstellungen"/>
+
+                <ImageView
+                    style="@style/function_Button_Icon"
+                    android:layout_marginTop="360dp"
+                    android:src="@drawable/options_icon" />
+
+
+
+            </FrameLayout>
+
+
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/down_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|center"
+            android:src="@drawable/ic_down"/>
+
+    </FrameLayout>
+
+
+</androidx.wear.widget.BoxInsetLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:context=".MainActivity"
+    tools:deviceIds="wear">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center">
+
+        <TextView
+            style="@style/time"
+            />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            style="@style/headline"
+            android:text="Verbinden"
+            />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp">
+
+            <TextView
+                style="@style/EditText_headline"
+                android:text="Einsatz-ID"/>
+
+
+            <EditText
+                style="@style/EditText"
+                android:inputType="number"
+                android:layout_marginRight="60dp"
+                android:hint="ID eingeben"/>
+
+
+            <Button
+                style="@style/check_button"
+                android:onClick="openFunctionsView"/>
+
+            <TextView
+                style="@style/EditText_headline"
+                android:text="Neu"
+                android:layout_marginTop="50dp"/>
+
+            <Button
+                style="@style/new_button"
+                android:onClick="openCreateAccountView"
+                android:layout_marginTop="62dp"
+                android:layout_marginRight="20dp"
+                android:text="Account anlegen"/>
+
+        </FrameLayout>
+
+
+    </FrameLayout>
+
+
+</androidx.wear.widget.BoxInsetLayout>
