@@ -38,16 +38,16 @@ public class FunctionsActivity extends Activity {
                 intent = new Intent(FunctionsActivity.this, CommandsActivity.class);
                 break;
             case "function_btn_navigation":
-                intent = new Intent(FunctionsActivity.this, CreateAccountActivity.class);
+                intent = new Intent(FunctionsActivity.this, NavigationActivity.class);
                 break;
             case "function_btn_more_vitals":
-                intent = new Intent(FunctionsActivity.this, CreateAccountActivity.class);
+                intent = new Intent(FunctionsActivity.this, MoreVitalsActivity.class);
                 break;
             case "function_btn_environment":
                 intent = new Intent(FunctionsActivity.this, CreateAccountActivity.class);
                 break;
             case "function_btn_options":
-                intent = new Intent(FunctionsActivity.this, CreateAccountActivity.class);
+                intent = new Intent(FunctionsActivity.this, OptionsActivity.class);
                 break;
         }
 

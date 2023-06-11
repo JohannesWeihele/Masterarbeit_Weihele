@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".FunctionsActivity"
+    tools:context=".OptionsActivity"
     tools:deviceIds="wear">
 
     <FrameLayout
@@ -26,7 +26,7 @@
 
         <TextView
             style="@style/headline"
-            android:text="Funktionen"
+            android:text="Einstellungen"
             />
 
         <ScrollView
@@ -53,7 +53,7 @@
                 <ImageView
                     style="@style/function_Button_Icon"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/vitalparameter_icon" />
+                    android:src="@drawable/options_icon" />
 
                 <Button
                     android:id="@+id/function_btn_communication"
@@ -66,7 +66,7 @@
                 <ImageView
                     style="@style/function_Button_Icon"
                     android:layout_marginTop="55dp"
-                    android:src="@drawable/kommunikation_icon" />
+                    android:src="@drawable/options_icon" />
 
                 <Button
                     android:id="@+id/function_btn_emergency"
@@ -79,7 +79,7 @@
                 <ImageView
                     style="@style/function_Button_Icon"
                     android:layout_marginTop="100dp"
-                    android:src="@drawable/notfall_icon" />
+                    android:src="@drawable/options_icon" />
 
                 <Button
                     android:id="@+id/function_btn_commands"
@@ -92,7 +92,7 @@
                 <ImageView
                     style="@style/function_Button_Icon"
                     android:layout_marginTop="145dp"
-                    android:src="@drawable/commands_icon" />
+                    android:src="@drawable/options_icon" />
 
                 <Button
                     android:id="@+id/function_btn_navigation"
@@ -105,7 +105,7 @@
                 <ImageView
                     style="@style/function_Button_Icon"
                     android:layout_marginTop="190dp"
-                    android:src="@drawable/navigation_icon" />
+                    android:src="@drawable/options_icon" />
 
                 <Button
                     android:id="@+id/function_btn_more_vitals"
@@ -118,7 +118,7 @@
                 <ImageView
                     style="@style/function_Button_Icon"
                     android:layout_marginTop="235dp"
-                    android:src="@drawable/more_vitals_icon" />
+                    android:src="@drawable/options_icon" />
 
                 <Button
                     android:id="@+id/function_btn_environment"
@@ -131,26 +131,8 @@
                 <ImageView
                     style="@style/function_Button_Icon"
                     android:layout_marginTop="280dp"
-                    android:src="@drawable/environment_icon" />
-
-                <Button
-                    android:id="@+id/function_btn_options"
-                    style="@style/function_Button"
-                    android:layout_marginTop="315dp"
-                    android:tag="function_btn_options"
-                    android:onClick="functionClick"
-                    android:text="Einstellungen"/>
-
-                <ImageView
-                    style="@style/function_Button_Icon"
-                    android:layout_marginTop="325dp"
                     android:src="@drawable/options_icon" />
-
-
-
             </FrameLayout>
-
-
         </ScrollView>
 
         <ImageView
@@ -159,7 +141,6 @@
             android:layout_height="20dp"
             android:layout_gravity="bottom|center"
             android:src="@drawable/ic_down"/>
-
     </FrameLayout>
 
 

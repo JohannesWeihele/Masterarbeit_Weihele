@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:context=".MoreVitalsActivity"
+    tools:deviceIds="wear">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center">
+
+        <TextView
+            style="@style/time"
+            />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            style="@style/headline"
+            android:text="Weitere Vitaloptionen"
+            android:textSize="10dp"
+            />
+
+        <ScrollView
+            android:id="@+id/createAccout_Scroll"
+            android:layout_marginTop="35dp"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:scrollbars="none"
+            android:paddingBottom="20dp"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_marginRight="30dp"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/function_btn_vitals"
+                    style="@style/function_Button"
+                    android:tag="function_btn_vitals"
+                    android:onClick="functionClick"
+                    android:text="Blutsauerstoff"/>
+
+                <ImageView
+                    style="@style/function_Button_Icon"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/blood_icon" />
+
+                <Button
+                    android:id="@+id/function_btn_communication"
+                    style="@style/function_Button"
+                    android:layout_marginTop="45dp"
+                    android:tag="function_btn_communication"
+                    android:onClick="functionClick"
+                    android:text="EKG"/>
+
+                <ImageView
+                    style="@style/function_Button_Icon"
+                    android:layout_marginTop="55dp"
+                    android:src="@drawable/ekg_icon" />
+
+                <Button
+                    android:id="@+id/function_btn_emergency"
+                    style="@style/function_Button"
+                    android:layout_marginTop="90dp"
+                    android:tag="function_btn_emergency"
+                    android:onClick="functionClick"
+                    android:text="Blutdruck"/>
+
+                <ImageView
+                    style="@style/function_Button_Icon"
+                    android:layout_marginTop="100dp"
+                    android:src="@drawable/blood_pressure_icon" />
+
+            </FrameLayout>
+
+
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/down_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|center"
+            android:src="@drawable/ic_down"/>
+
+    </FrameLayout>
+
+
+</androidx.wear.widget.BoxInsetLayout>

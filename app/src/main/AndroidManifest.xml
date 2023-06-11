@@ -53,6 +53,15 @@
         <activity
             android:name=".CommandsActivity"
             android:label="Commands" />
+
+        <activity android:name=".NavigationActivity"
+            android:label="Navigation" />
+
+        <activity android:name=".MoreVitalsActivity"
+            android:label="More Vitals" />
+
+        <activity android:name=".OptionsActivity"
+            android:label="Options" />
     </application>
 
 </manifest>
