@@ -19,4 +19,36 @@ public class OptionsActivity extends Activity {
         binding = ActivityOptionsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
     }
+
+    public void optionClick(View v){
+        Button clickedButton = (Button) v;
+
+        switch (clickedButton.getTag().toString()){
+            case "options_btn_vitals":
+                setContentView(R.layout.activity_options_vitals);
+                break;
+            case "options_btn_communication":
+                setContentView(R.layout.activity_options_communication);
+                break;
+            case "options_btn_emergency":
+                setContentView(R.layout.activity_options_emergency);
+                break;
+            case "options_btn_commands":
+                setContentView(R.layout.activity_options_vitals);
+                break;
+            case "options_btn_navigation":
+                setContentView(R.layout.activity_options_vitals);
+                break;
+            case "options_btn_more_vitals":
+                setContentView(R.layout.activity_options_vitals);
+                break;
+            case "options_btn_environment":
+                setContentView(R.layout.activity_options_vitals);
+                break;
+            case "options_btn_options":
+                setContentView(R.layout.activity_options_vitals);
+                break;
+        }
+
+    }
 }

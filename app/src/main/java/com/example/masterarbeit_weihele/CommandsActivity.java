@@ -2,6 +2,8 @@ package com.example.masterarbeit_weihele;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,19 +30,23 @@ public class CommandsActivity extends Activity{
 
     public void createRecycler(){
         RecyclerView recyclerView = findViewById(R.id.commands_recyclerview);
+        TextView noCommandsView = findViewById(R.id.no_commands_textview);
 
         List<Command_Item> items = new ArrayList<Command_Item>();
         items.add(new Command_Item("Abschnitt A löschen"));
         items.add(new Command_Item("Abschnitt B löschen"));
         items.add(new Command_Item("Abschnitt C löschen"));
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        CommandAdapter adapter = new CommandAdapter(getApplicationContext(), items);
-        CommandItemTouchHelperCallback touchHelperCallback = new CommandItemTouchHelperCallback(adapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelperCallback);
-        adapter.setItemTouchHelper(itemTouchHelper);
-        recyclerView.setAdapter(adapter);
-
+        if(items.size() != 0){
+            noCommandsView.setVisibility(View.GONE);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            CommandAdapter adapter = new CommandAdapter(getApplicationContext(), items, recyclerView);
+            CommandItemTouchHelperCallback touchHelperCallback = new CommandItemTouchHelperCallback(adapter);
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelperCallback);
+            adapter.setItemTouchHelper(itemTouchHelper);
+            recyclerView.setAdapter(adapter);
+        } else {
+            noCommandsView.setVisibility(View.VISIBLE);
+        }
     }
 }

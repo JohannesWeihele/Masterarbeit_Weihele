@@ -52,98 +52,98 @@
 
                 <ImageView
                     style="@style/function_Button_Icon"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="17dp"
                     android:src="@drawable/vitalparameter_icon" />
 
                 <Button
                     android:id="@+id/function_btn_communication"
                     style="@style/function_Button"
-                    android:layout_marginTop="45dp"
+                    android:layout_marginTop="60dp"
                     android:tag="function_btn_communication"
                     android:onClick="functionClick"
                     android:text="Kommunikation"/>
 
                 <ImageView
                     style="@style/function_Button_Icon"
-                    android:layout_marginTop="55dp"
+                    android:layout_marginTop="77dp"
                     android:src="@drawable/kommunikation_icon" />
 
                 <Button
                     android:id="@+id/function_btn_emergency"
                     style="@style/function_Button"
-                    android:layout_marginTop="90dp"
+                    android:layout_marginTop="120dp"
                     android:tag="function_btn_emergency"
                     android:onClick="functionClick"
                     android:text="Notfall"/>
 
                 <ImageView
                     style="@style/function_Button_Icon"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="137dp"
                     android:src="@drawable/notfall_icon" />
 
                 <Button
                     android:id="@+id/function_btn_commands"
                     style="@style/function_Button"
-                    android:layout_marginTop="135dp"
+                    android:layout_marginTop="180dp"
                     android:tag="function_btn_commands"
                     android:onClick="functionClick"
                     android:text="Befehle"/>
 
                 <ImageView
                     style="@style/function_Button_Icon"
-                    android:layout_marginTop="145dp"
+                    android:layout_marginTop="197dp"
                     android:src="@drawable/commands_icon" />
 
                 <Button
                     android:id="@+id/function_btn_navigation"
                     style="@style/function_Button"
-                    android:layout_marginTop="180dp"
+                    android:layout_marginTop="240dp"
                     android:tag="function_btn_navigation"
                     android:onClick="functionClick"
                     android:text="Navigation"/>
 
                 <ImageView
                     style="@style/function_Button_Icon"
-                    android:layout_marginTop="190dp"
+                    android:layout_marginTop="257dp"
                     android:src="@drawable/navigation_icon" />
 
                 <Button
                     android:id="@+id/function_btn_more_vitals"
                     style="@style/function_Button"
-                    android:layout_marginTop="225dp"
+                    android:layout_marginTop="300dp"
                     android:tag="function_btn_more_vitals"
                     android:onClick="functionClick"
                     android:text="Weitere Vitalopt."/>
 
                 <ImageView
                     style="@style/function_Button_Icon"
-                    android:layout_marginTop="235dp"
+                    android:layout_marginTop="317dp"
                     android:src="@drawable/more_vitals_icon" />
 
                 <Button
                     android:id="@+id/function_btn_environment"
                     style="@style/function_Button"
-                    android:layout_marginTop="270dp"
+                    android:layout_marginTop="360dp"
                     android:tag="function_btn_environment"
                     android:onClick="functionClick"
                     android:text="Umgebung"/>
 
                 <ImageView
                     style="@style/function_Button_Icon"
-                    android:layout_marginTop="280dp"
+                    android:layout_marginTop="377dp"
                     android:src="@drawable/environment_icon" />
 
                 <Button
                     android:id="@+id/function_btn_options"
                     style="@style/function_Button"
-                    android:layout_marginTop="315dp"
+                    android:layout_marginTop="420dp"
                     android:tag="function_btn_options"
                     android:onClick="functionClick"
                     android:text="Einstellungen"/>
 
                 <ImageView
                     style="@style/function_Button_Icon"
-                    android:layout_marginTop="325dp"
+                    android:layout_marginTop="437dp"
                     android:src="@drawable/options_icon" />
 
 

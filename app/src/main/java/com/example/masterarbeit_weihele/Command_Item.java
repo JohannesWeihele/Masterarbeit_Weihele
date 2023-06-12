@@ -3,6 +3,7 @@ package com.example.masterarbeit_weihele;
 public class Command_Item {
     String command_name;
     Boolean isCompleted = false;
+    Boolean isFocused = false;
 
     public Command_Item(String command_name) {
         this.command_name = command_name;
@@ -24,5 +25,7 @@ public class Command_Item {
         isCompleted = completed;
     }
 
+    public Boolean getIsFocused() {return isFocused;}
 
+    public void setIsFocused(Boolean Focused) {isFocused = Focused; }
 }

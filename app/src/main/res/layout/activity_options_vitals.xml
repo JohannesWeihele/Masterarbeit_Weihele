@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:context=".OptionsActivity"
+    tools:deviceIds="wear">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center">
+
+        <TextView
+            style="@style/time"
+            />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            style="@style/headline"
+            android:text="Vitalparameter"
+            />
+
+        <ScrollView
+            android:id="@+id/createAccout_Scroll"
+            android:layout_marginTop="35dp"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:scrollbars="none"
+            android:paddingBottom="20dp"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_marginRight="30dp"
+                android:layout_height="wrap_content">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/options_btn_vitals_bpm"
+                        style="@style/options_Button"
+                        android:text="Herzfrequenz"/>
+
+                    <Switch
+                        style="@style/options_switch"/>
+
+                    <FrameLayout
+                        style="@style/options_val_wrapper">
+
+                        <TextView
+                            style="@style/options_val_headline"
+                            android:text="Kritische Werte" />
+
+                        <EditText
+                            style="@style/options_val_edit"
+                            android:layout_marginLeft="10dp"
+                            android:hint="min"/>
+
+                            <TextView
+                                style="@style/options_val_unit"
+                                android:text="bpm"/>
+
+                        <EditText
+                            style="@style/options_val_edit"
+                            android:layout_marginLeft="90dp"
+                            android:hint="max"/>
+
+                            <TextView
+                                style="@style/options_val_additional_text"
+                                android:text="von"
+                                android:layout_marginLeft="20dp"
+                             />
+
+                            <TextView
+                                style="@style/options_val_additional_text"
+                                android:text="bis"
+                                android:layout_marginLeft="102dp"/>
+                    </FrameLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="110dp"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/options_btn_vitals_stress"
+                        style="@style/options_Button"
+                        android:text="Stresswert"/>
+
+                    <Switch
+                        style="@style/options_switch"/>
+
+                    <FrameLayout
+                        style="@style/options_val_wrapper">
+
+                        <TextView
+                            style="@style/options_val_headline"
+                            android:text="Kritische Werte" />
+
+                        <EditText
+                            style="@style/options_val_edit"
+                            android:layout_marginLeft="10dp"
+                            android:hint="min"/>
+
+                        <TextView
+                            style="@style/options_val_unit"
+                            android:text="HRV"/>
+
+                        <EditText
+                            style="@style/options_val_edit"
+                            android:layout_marginLeft="90dp"
+                            android:hint="max"/>
+
+                        <TextView
+                            style="@style/options_val_additional_text"
+                            android:text="von"
+                            android:layout_marginLeft="20dp"
+                            />
+
+                        <TextView
+                            style="@style/options_val_additional_text"
+                            android:text="bis"
+                            android:layout_marginLeft="102dp"/>
+                    </FrameLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="220dp"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/options_btn_vitals_body_temperature"
+                        style="@style/options_Button"
+                        android:text="Körperwärme"/>
+
+                    <Switch
+                        style="@style/options_switch"/>
+
+                    <FrameLayout
+                        style="@style/options_val_wrapper">
+
+                        <TextView
+                            style="@style/options_val_headline"
+                            android:text="Kritische Werte" />
+
+                        <EditText
+                            style="@style/options_val_edit"
+                            android:layout_marginLeft="10dp"
+                            android:hint="min"/>
+
+                        <TextView
+                            style="@style/options_val_unit"
+                            android:text="°C"/>
+
+                        <EditText
+                            style="@style/options_val_edit"
+                            android:layout_marginLeft="90dp"
+                            android:hint="max"/>
+
+                        <TextView
+                            style="@style/options_val_additional_text"
+                            android:text="von"
+                            android:layout_marginLeft="20dp"
+                            />
+
+                        <TextView
+                            style="@style/options_val_additional_text"
+                            android:text="bis"
+                            android:layout_marginLeft="102dp"/>
+                    </FrameLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="330dp"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/options_btn_vitals_breathe_frequence"
+                        style="@style/options_Button"
+                        android:text="Atemfrequenz"/>
+
+                    <Switch
+                        style="@style/options_switch"/>
+
+                    <FrameLayout
+                        style="@style/options_val_wrapper">
+
+                        <TextView
+                            style="@style/options_val_headline"
+                            android:text="Kritische Werte" />
+
+                        <EditText
+                            style="@style/options_val_edit"
+                            android:layout_marginLeft="10dp"
+                            android:hint="min"/>
+
+                        <TextView
+                            style="@style/options_val_unit"
+                            android:text="AZ/min."/>
+
+                        <EditText
+                            style="@style/options_val_edit"
+                            android:layout_marginLeft="90dp"
+                            android:hint="max"/>
+
+                        <TextView
+                            style="@style/options_val_additional_text"
+                            android:text="von"
+                            android:layout_marginLeft="20dp"
+                            />
+
+                        <TextView
+                            style="@style/options_val_additional_text"
+                            android:text="bis"
+                            android:layout_marginLeft="102dp"/>
+                    </FrameLayout>
+                </FrameLayout>
+            </FrameLayout>
+        </ScrollView>
+        <ImageView
+            android:id="@+id/down_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|center"
+            android:src="@drawable/ic_down"/>
+    </FrameLayout>
+
+
+</androidx.wear.widget.BoxInsetLayout>

@@ -12,15 +12,15 @@ public class CommandItemTouchHelperCallback extends ItemTouchHelper.Callback {
         this.adapter = adapter;
     }
 
-    @Override
-    public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-        int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN; // Erlaubt das Ziehen nach oben und unten
-        int swipeFlags = 0; // Deaktiviert das Swipen
-        return makeMovementFlags(dragFlags, swipeFlags);
-    }
+
     @Override
     public boolean isLongPressDragEnabled() {
         return true;
+    }
+
+    @Override
+    public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+        return 0;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class CommandItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         // Hole die Position des geschwippten Items
         int swipedPosition = viewHolder.getAdapterPosition();
-
+        System.out.println("Swipe Action");
         // Entferne das Item aus der Liste
         adapter.removeItem(swipedPosition);
     }

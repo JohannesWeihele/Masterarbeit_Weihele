@@ -20,9 +20,11 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandViewHolder> {
     Context context;
     List<Command_Item> items;
     ItemTouchHelper itemTouchHelper;
-    public CommandAdapter(Context context, List<Command_Item> items) {
+    RecyclerView recyclerView;
+    public CommandAdapter(Context context, List<Command_Item> items, RecyclerView recyclerView) {
         this.context = context;
         this.items = items;
+        this.recyclerView = recyclerView;
     }
 
     public void setItemTouchHelper(ItemTouchHelper itemTouchHelper) {
@@ -39,20 +41,47 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull CommandViewHolder holder, int position) {
         Command_Item command_item = items.get(position);
-
+        Drawable focused_drawable = context.getDrawable(R.drawable.rounded_button_background);
+        Drawable unfocused_drawable = context.getDrawable(R.drawable.rounded_command_button_background);
         holder.commandView.setText(command_item.getCommand_name());
-        holder.commandView.setOnClickListener(view -> {
-            if (!command_item.isCompleted) {
-                setItemCompleted(command_item, holder.commandView, holder.getAdapterPosition());
+
+        holder.commandView.setOnLongClickListener(view -> {
+            if(command_item.getIsFocused()){
+                command_item.setIsFocused(false);
+                holder.commandView.setBackground(unfocused_drawable);
             } else {
-                setItemIncompleted(command_item, holder.commandView, holder.getBindingAdapterPosition());
+                if(!command_item.isCompleted){
+                    Command_Item current_item;
+                    for(int i = 0; i<items.size(); i++){
+                        current_item = items.get(i);
+                        current_item.setIsFocused(false);
+                        if(!current_item.isCompleted){
+                            CommandViewHolder current_holder = (CommandViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
+                            if (current_holder != null) {
+                                current_holder.commandView.setBackground(unfocused_drawable);
+                            }
+                        }
+                    }
+                    command_item.setIsFocused(true);
+                    moveItemToFront(holder.getBindingAdapterPosition());
+                    holder.commandView.setBackground(focused_drawable);
+                }
             }
-        });
-        holder.itemView.setOnLongClickListener(view -> {
-            itemTouchHelper.startDrag(holder); // Starte den Drag-and-Drop-Vorgang
             return true;
         });
 
+        holder.commandView.setOnClickListener(view -> {
+            if(command_item.isFocused){
+                setItemIncompleted(command_item, holder.commandView, holder.getBindingAdapterPosition());
+                command_item.setIsFocused(false);
+            } else {
+                if (!command_item.isCompleted) {
+                    setItemCompleted(command_item, holder.commandView, holder.getBindingAdapterPosition());
+                } else {
+                    setItemIncompleted(command_item, holder.commandView, holder.getBindingAdapterPosition());
+                }
+            }
+        });
     }
 
 
@@ -70,10 +99,20 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandViewHolder> {
 
     public void moveItemToFront(int sourcePosition) {
         Command_Item item = items.get(sourcePosition);
+        boolean isFirstItemFocused = items.get(0).isFocused;
         items.remove(sourcePosition);
-        items.add(0, item);
-        notifyItemMoved(sourcePosition, 0);
+
+        if (isFirstItemFocused && sourcePosition != 0) {
+            items.add(1, item);
+            notifyItemMoved(sourcePosition, 1);
+        } else {
+            items.add(0, item);
+            notifyItemMoved(sourcePosition, 0);
+        }
+
     }
+
+
 
     public void removeItem(int position) {
         items.remove(position);
