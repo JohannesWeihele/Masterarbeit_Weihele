@@ -29,7 +29,7 @@ public class FunctionsActivity extends Activity {
                 intent = new Intent(FunctionsActivity.this, VitalsActivity.class);
                 break;
             case "function_btn_communication":
-                intent = new Intent(FunctionsActivity.this, CreateAccountActivity.class);
+                intent = new Intent(FunctionsActivity.this, CommunicationActivity.class);
                 break;
             case "function_btn_emergency":
                 intent = new Intent(FunctionsActivity.this, EmergencyActivity.class);

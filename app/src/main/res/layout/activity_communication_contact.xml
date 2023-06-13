@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:context=".CommunicationActivity"
+    tools:deviceIds="wear">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center">
+
+        <TextView
+            style="@style/time"
+            />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            style="@style/headline"
+            android:text="Kommunikation"
+            android:textSize="10dp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:visibility="visible"
+            android:id="@+id/contact_recyclerview"/>
+
+        <TextView
+            android:id="@+id/no_contacts_textview"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/rounded_completed_command_button_background"
+            android:text="Keine Kontakte gefunden"
+            android:textColor="#FFFFFF"
+            android:textAlignment="center"
+            android:layout_marginLeft="20dp"
+            android:visibility="visible"
+            android:layout_marginRight="20dp"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:layout_marginTop="-20dp"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
+
+</androidx.wear.widget.BoxInsetLayout>

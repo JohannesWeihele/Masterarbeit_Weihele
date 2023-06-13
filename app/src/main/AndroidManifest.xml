@@ -69,6 +69,10 @@
         <activity
             android:name=".EnvironmentActivity"
             android:label="Environment" />
+
+        <activity
+            android:name=".CommunicationActivity"
+            android:label="Communication" />
     </application>
 
 </manifest>

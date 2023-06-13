@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:context=".CommunicationActivity"
+    tools:deviceIds="wear">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center">
+
+        <TextView
+            style="@style/time"
+            />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            style="@style/headline"
+            android:text="Kommunikation"
+            android:textSize="10dp"
+            />
+
+        <ScrollView
+            android:layout_marginTop="35dp"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:scrollbars="none"
+            android:paddingBottom="20dp"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_marginRight="30dp"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/communication_btn_contactall"
+                    style="@style/function_Button"
+                    android:tag="communication_btn_contactall"
+                    android:onClick="communicationClick"
+                    android:text="Alle kontaktieren"/>
+
+                <ImageView
+                    style="@style/function_Button_Icon"
+                    android:layout_marginTop="17dp"
+                    android:src="@drawable/contactall_icon" />
+
+                <Button
+                    android:id="@+id/communication_btn_contactleader"
+                    style="@style/function_Button"
+                    android:layout_marginTop="60dp"
+                    android:tag="communication_btn_contactleader"
+                    android:onClick="communicationClick"
+                    android:text="Einsatzleiter"/>
+
+                <ImageView
+                    style="@style/function_Button_Icon"
+                    android:layout_marginTop="77dp"
+                    android:src="@drawable/contact_icon" />
+
+                <Button
+                    android:id="@+id/communication_btn_contact"
+                    style="@style/function_Button"
+                    android:layout_marginTop="120dp"
+                    android:tag="communication_btn_contact"
+                    android:onClick="communicationClick"
+                    android:text="Kontakt wählen"/>
+
+                <ImageView
+                    style="@style/function_Button_Icon"
+                    android:layout_marginTop="137dp"
+                    android:src="@drawable/contact_icon" />
+
+            </FrameLayout>
+
+
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/down_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|center"
+            android:src="@drawable/ic_down"/>
+
+    </FrameLayout>
+
+
+</androidx.wear.widget.BoxInsetLayout>

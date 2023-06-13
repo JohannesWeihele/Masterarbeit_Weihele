@@ -1,8 +1,10 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.CommandRecycler;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.masterarbeit_weihele.CommandRecycler.CommandAdapter;
 
 public class CommandItemTouchHelperCallback extends ItemTouchHelper.Callback {
 

@@ -33,7 +33,7 @@ public class OptionsActivity extends Activity {
             case "options_btn_emergency":
                 setContentView(R.layout.activity_options_emergency);
                 break;
-            case "options_btn_commands":
+            case "options_btn_account":
                 setContentView(R.layout.activity_options_account);
                 break;
         }

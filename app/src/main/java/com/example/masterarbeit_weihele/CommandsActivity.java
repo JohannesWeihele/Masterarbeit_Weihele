@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.masterarbeit_weihele.CommandRecycler.CommandAdapter;
+import com.example.masterarbeit_weihele.CommandRecycler.CommandItemTouchHelperCallback;
+import com.example.masterarbeit_weihele.CommandRecycler.Command_Item;
 import com.example.masterarbeit_weihele.databinding.ActivityCommandsBinding;
 
 import java.util.ArrayList;
@@ -32,7 +35,7 @@ public class CommandsActivity extends Activity{
         RecyclerView recyclerView = findViewById(R.id.commands_recyclerview);
         TextView noCommandsView = findViewById(R.id.no_commands_textview);
 
-        List<Command_Item> items = new ArrayList<Command_Item>();
+        List<Command_Item> items = new ArrayList<>();
         items.add(new Command_Item("Abschnitt A löschen"));
         items.add(new Command_Item("Abschnitt B löschen"));
         items.add(new Command_Item("Abschnitt C löschen"));

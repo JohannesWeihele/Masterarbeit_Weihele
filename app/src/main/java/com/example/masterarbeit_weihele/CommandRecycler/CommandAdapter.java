@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.CommandRecycler;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -11,7 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Collections;
+import com.example.masterarbeit_weihele.R;
+
 import java.util.List;
 
 public class CommandAdapter extends RecyclerView.Adapter<CommandViewHolder> {

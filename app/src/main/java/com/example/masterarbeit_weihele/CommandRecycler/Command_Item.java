@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.CommandRecycler;
 
 public class Command_Item {
     String command_name;
