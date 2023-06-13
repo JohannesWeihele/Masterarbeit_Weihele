@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:context=".OptionsActivity"
+    tools:deviceIds="wear">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center">
+
+        <TextView
+            style="@style/time"
+            />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            style="@style/headline"
+            android:text="Konto"
+            />
+
+        <ScrollView
+            android:id="@+id/options_Accout_Scroll"
+            android:layout_marginTop="35dp"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:scrollbars="none"
+            android:paddingBottom="20dp"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_marginRight="30dp"
+                android:layout_height="wrap_content"
+          >
+
+                <TextView
+                    style="@style/EditText_headline"
+                    android:text="Name"/>
+
+                <EditText
+                    style="@style/EditText"
+                    android:textSize="12dp"
+                    android:inputType="text|textNoSuggestions"
+                    android:hint="Name eingeben"/>
+
+                <TextView
+                    style="@style/EditText_headline"
+                    android:layout_marginTop="50dp"
+                    android:text="Alter"/>
+
+                <EditText
+                    style="@style/EditText"
+                    android:layout_marginTop="62dp"
+                    android:textSize="12dp"
+                    android:inputType="number"
+                    android:hint="Alter eingeben"/>
+
+                <TextView
+                    style="@style/EditText_headline"
+                    android:layout_marginTop="100dp"
+                    android:text="Körpergröße"/>
+
+                <EditText
+                    style="@style/EditText"
+                    android:textSize="12dp"
+                    android:layout_marginTop="112dp"
+                    android:inputType="number"
+                    android:hint="Körpergröße in cm"/>
+
+                <TextView
+                    style="@style/EditText_headline"
+                    android:layout_marginTop="150dp"
+                    android:text="Gewicht"/>
+
+                <EditText
+                    style="@style/EditText"
+                    android:textSize="12dp"
+                    android:layout_marginTop="162dp"
+                    android:inputType="number"
+                    android:hint="Gewicht in kg"/>
+
+                <Button
+                    android:id="@+id/update_Button"
+                    style="@style/new_button"
+                    android:text="Aktualisieren"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="210dp"/>
+
+            </FrameLayout>
+
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/down_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|center"
+            android:src="@drawable/ic_down"/>
+
+    </FrameLayout>
+
+
+</androidx.wear.widget.BoxInsetLayout>

@@ -54,14 +54,21 @@
             android:name=".CommandsActivity"
             android:label="Commands" />
 
-        <activity android:name=".NavigationActivity"
+        <activity
+            android:name=".NavigationActivity"
             android:label="Navigation" />
 
-        <activity android:name=".MoreVitalsActivity"
+        <activity
+            android:name=".MoreVitalsActivity"
             android:label="More Vitals" />
 
-        <activity android:name=".OptionsActivity"
+        <activity
+            android:name=".OptionsActivity"
             android:label="Options" />
+
+        <activity
+            android:name=".EnvironmentActivity"
+            android:label="Environment" />
     </application>
 
 </manifest>

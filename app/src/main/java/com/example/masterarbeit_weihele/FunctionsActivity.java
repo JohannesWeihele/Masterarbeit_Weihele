@@ -44,7 +44,7 @@ public class FunctionsActivity extends Activity {
                 intent = new Intent(FunctionsActivity.this, MoreVitalsActivity.class);
                 break;
             case "function_btn_environment":
-                intent = new Intent(FunctionsActivity.this, CreateAccountActivity.class);
+                intent = new Intent(FunctionsActivity.this, EnvironmentActivity.class);
                 break;
             case "function_btn_options":
                 intent = new Intent(FunctionsActivity.this, OptionsActivity.class);

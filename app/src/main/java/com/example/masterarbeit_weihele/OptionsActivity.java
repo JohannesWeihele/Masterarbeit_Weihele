@@ -34,19 +34,7 @@ public class OptionsActivity extends Activity {
                 setContentView(R.layout.activity_options_emergency);
                 break;
             case "options_btn_commands":
-                setContentView(R.layout.activity_options_vitals);
-                break;
-            case "options_btn_navigation":
-                setContentView(R.layout.activity_options_vitals);
-                break;
-            case "options_btn_more_vitals":
-                setContentView(R.layout.activity_options_vitals);
-                break;
-            case "options_btn_environment":
-                setContentView(R.layout.activity_options_vitals);
-                break;
-            case "options_btn_options":
-                setContentView(R.layout.activity_options_vitals);
+                setContentView(R.layout.activity_options_account);
                 break;
         }
 

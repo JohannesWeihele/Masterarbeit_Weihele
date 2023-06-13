@@ -82,56 +82,18 @@
                     android:src="@drawable/options_icon" />
 
                 <Button
-                    android:id="@+id/options_btn_commands"
+                    android:id="@+id/options_btn_account"
                     style="@style/function_Button"
                     android:layout_marginTop="180dp"
-                    android:tag="options_btn_commands"
+                    android:tag="options_btn_personal"
                     android:onClick="optionClick"
-                    android:text="Befehle"/>
+                    android:text="Account"/>
 
                 <ImageView
                     style="@style/function_Button_Icon"
                     android:layout_marginTop="197dp"
                     android:src="@drawable/options_icon" />
 
-                <Button
-                    android:id="@+id/options_btn_navigation"
-                    style="@style/function_Button"
-                    android:layout_marginTop="240dp"
-                    android:tag="options_btn_navigation"
-                    android:onClick="optionClick"
-                    android:text="Navigation"/>
-
-                <ImageView
-                    style="@style/function_Button_Icon"
-                    android:layout_marginTop="257dp"
-                    android:src="@drawable/options_icon" />
-
-                <Button
-                    android:id="@+id/options_btn_more_vitals"
-                    style="@style/function_Button"
-                    android:layout_marginTop="300dp"
-                    android:tag="options_btn_more_vitals"
-                    android:onClick="optionClick"
-                    android:text="Weitere Vitalopt."/>
-
-                <ImageView
-                    style="@style/function_Button_Icon"
-                    android:layout_marginTop="317dp"
-                    android:src="@drawable/options_icon" />
-
-                <Button
-                    android:id="@+id/options_btn_environment"
-                    style="@style/function_Button"
-                    android:layout_marginTop="360dp"
-                    android:tag="options_btn_environment"
-                    android:onClick="optionClick"
-                    android:text="Umgebung"/>
-
-                <ImageView
-                    style="@style/function_Button_Icon"
-                    android:layout_marginTop="377dp"
-                    android:src="@drawable/options_icon" />
             </FrameLayout>
         </ScrollView>
 
