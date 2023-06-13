@@ -49,8 +49,10 @@
                     android:text="Name"/>
 
                 <EditText
+                    android:id="@+id/options_accountName"
                     style="@style/EditText"
                     android:textSize="12dp"
+                    android:imeOptions="actionDone"
                     android:inputType="text|textNoSuggestions"
                     android:hint="Name eingeben"/>
 
@@ -60,8 +62,10 @@
                     android:text="Alter"/>
 
                 <EditText
+                    android:id="@+id/options_accountAge"
                     style="@style/EditText"
                     android:layout_marginTop="62dp"
+                    android:imeOptions="actionDone"
                     android:textSize="12dp"
                     android:inputType="number"
                     android:hint="Alter eingeben"/>
@@ -69,23 +73,27 @@
                 <TextView
                     style="@style/EditText_headline"
                     android:layout_marginTop="100dp"
-                    android:text="Körpergröße"/>
+                    android:text="Körpergröße (in cm)"/>
 
                 <EditText
+                    android:id="@+id/options_accountBodysize"
                     style="@style/EditText"
                     android:textSize="12dp"
                     android:layout_marginTop="112dp"
+                    android:imeOptions="actionDone"
                     android:inputType="number"
                     android:hint="Körpergröße in cm"/>
 
                 <TextView
                     style="@style/EditText_headline"
                     android:layout_marginTop="150dp"
-                    android:text="Gewicht"/>
+                    android:text="Gewicht (in kg)"/>
 
                 <EditText
+                    android:id="@+id/options_accountBodyweight"
                     style="@style/EditText"
                     android:textSize="12dp"
+                    android:imeOptions="actionDone"
                     android:layout_marginTop="162dp"
                     android:inputType="number"
                     android:hint="Gewicht in kg"/>
@@ -96,7 +104,8 @@
                     android:text="Aktualisieren"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="210dp"/>
+                    android:layout_marginTop="210dp"
+                    android:onClick="updateAccountVals"/>
 
             </FrameLayout>
 

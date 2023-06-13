@@ -85,7 +85,7 @@
                     android:id="@+id/options_btn_account"
                     style="@style/function_Button"
                     android:layout_marginTop="180dp"
-                    android:tag="options_btn_personal"
+                    android:tag="options_btn_account"
                     android:onClick="optionClick"
                     android:text="Account"/>
 

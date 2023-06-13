@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/emergency_button"
     android:padding="@dimen/box_inset_layout_padding"
+    android:onClick="startEmergency"
     tools:context=".EmergencyActivity"
     tools:deviceIds="wear">
 
@@ -25,6 +26,7 @@
         android:layout_marginTop="30dp">
 
         <TextView
+            android:id="@+id/emergency_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
@@ -35,7 +37,19 @@
             android:visibility="visible"
             android:text="Notfall melden"/>
 
+        <TextView
+            android:id="@+id/emergency_activated_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:visibility="gone"
+            android:text="Notfallsignal beginnt in X Sekunden..."/>
+
         <Button
+            android:id="@+id/emergency_cancel_btn"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="90dp"
@@ -44,10 +58,12 @@
             android:textAllCaps="false"
             android:text="Abbrechen"
             android:textColor="#FFFFFF"
+            android:onClick="stopEmergency"
             android:visibility="gone"
             android:background="@drawable/rounded_emergency_button_background"/>
 
         <FrameLayout
+            android:id="@+id/emergency_vitals_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone">

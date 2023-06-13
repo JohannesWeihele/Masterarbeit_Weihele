@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:alpha="0.5"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/alert_button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/rounded_completed_command_button_background"
+            android:text="Alerttext"
+            android:textColor="#FFFFFF"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/contact_item_icon"
+            style="@style/function_Button_Icon"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="17dp"
+            android:src="@drawable/alert_icon" />
+    </FrameLayout>
+
+</LinearLayout>

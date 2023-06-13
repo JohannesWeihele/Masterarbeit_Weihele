@@ -55,9 +55,6 @@ public class CommunicationActivity extends Activity implements OnContactClickLis
         TextView noContactsView = findViewById(R.id.no_contacts_textview);
 
         List<Contact_Item> items = new ArrayList<>();
-        items.add(new Contact_Item("Sarah"));
-        items.add(new Contact_Item("Jürgen"));
-        items.add(new Contact_Item("Max"));
 
         if(items.size() != 0){
             noContactsView.setVisibility(View.GONE);
@@ -75,4 +72,6 @@ public class CommunicationActivity extends Activity implements OnContactClickLis
         communicationOption = findViewById(R.id.communcation_option_text);
         communicationOption.setText(contact.getContact_name());
     }
+
+
 }
