@@ -54,6 +54,7 @@
                         android:text="Sturzerkennung"/>
 
                     <Switch
+                        android:id="@+id/options_emergency_fall_switch"
                         style="@style/options_switch"/>
 
                 </FrameLayout>
@@ -70,6 +71,7 @@
                         android:text="Abbruchzeit"/>
 
                     <EditText
+                        android:id="@+id/options_emergency_cancel_time"
                         style="@style/options_val_edit"
                         android:elevation="3dp"
                         android:hint="sek"
@@ -99,6 +101,7 @@
                         android:text="Herzfrequenz"/>
 
                     <Switch
+                        android:id="@+id/options_emergency_bpm_switch"
                         style="@style/options_switch"/>
                 </FrameLayout>
 
@@ -114,6 +117,7 @@
                         android:text="Stresswert"/>
 
                     <Switch
+                        android:id="@+id/options_emergency_stress_switch"
                         style="@style/options_switch"/>
                 </FrameLayout>
 
@@ -129,6 +133,7 @@
                         android:text="Körperwärme"/>
 
                     <Switch
+                        android:id="@+id/options_emergency_bodytemp_switch"
                         style="@style/options_switch"/>
                 </FrameLayout>
 
@@ -144,8 +149,18 @@
                         android:text="Atemfrequenz"/>
 
                     <Switch
+                        android:id="@+id/options_emergency_breathe_freq_switch"
                         style="@style/options_switch"/>
                 </FrameLayout>
+
+                <Button
+                    android:id="@+id/update_Button"
+                    style="@style/new_button"
+                    android:text="Aktualisieren"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="360dp"
+                    android:onClick="updateEmergencyVals"/>
             </FrameLayout>
         </ScrollView>
         <ImageView

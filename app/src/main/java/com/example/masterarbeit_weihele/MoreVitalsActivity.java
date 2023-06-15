@@ -16,5 +16,8 @@ public class MoreVitalsActivity extends Activity {
         binding = ActivityMorevitalsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        BasicFunctions basics = new BasicFunctions(this);
+        basics.hideDownIcon();
+
     }
 }

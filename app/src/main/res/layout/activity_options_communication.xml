@@ -54,8 +54,18 @@
                         android:text="Push-To-Talk"/>
 
                     <Switch
+                        android:id="@+id/options_communication_switch"
                         style="@style/options_switch"/>
                 </FrameLayout>
+
+                <Button
+                    android:id="@+id/update_Button"
+                    style="@style/new_button"
+                    android:text="Aktualisieren"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="60dp"
+                    android:onClick="updateCommunicationVals"/>
             </FrameLayout>
         </ScrollView>
         <ImageView

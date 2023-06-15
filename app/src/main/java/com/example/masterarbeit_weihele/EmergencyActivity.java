@@ -20,12 +20,13 @@ public class EmergencyActivity extends Activity {
     private TextView emergencyActivatedText;
     private FrameLayout emergencyVitals;
     private CountDownTimer countDownTimer;
-
+    private Integer PreferenceCountDown;
     private Button emergencyCancelButton;
-    private int countdownSeconds = 5;
     private SoundPool soundPool;
     private boolean isInitialized = false;
     private int soundId;
+
+    private SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,14 @@ public class EmergencyActivity extends Activity {
         emergencyBtnText = findViewById(R.id.emergency_text);
         emergencyVitals = findViewById(R.id.emergency_vitals_wrapper);
         emergencyCancelButton = findViewById(R.id.emergency_cancel_btn);
+
+        checkAccountPreferences();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkAccountPreferences();
     }
 
     public void playEmergencySound(){
@@ -62,15 +71,15 @@ public class EmergencyActivity extends Activity {
     }
 
     public void startEmergency(View v) {
-        emergencyActivatedText.setText("Notfallsignal beginnt in " + countdownSeconds + " Sekunden...");
+        emergencyActivatedText.setText("Notfallsignal beginnt in " + PreferenceCountDown + " Sekunden...");
         emergencyActivatedText.setVisibility(View.VISIBLE);
         emergencyBtnText.setVisibility(View.GONE);
         emergencyCancelButton.setVisibility(View.VISIBLE);
-        countDownTimer = new CountDownTimer(countdownSeconds * 1000, 1000) {
+        countDownTimer = new CountDownTimer(PreferenceCountDown * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                countdownSeconds--;
-                emergencyActivatedText.setText("Notfallsignal beginnt in " + countdownSeconds + " Sekunden...");
+                PreferenceCountDown--;
+                emergencyActivatedText.setText("Notfallsignal beginnt in " + PreferenceCountDown + " Sekunden...");
             }
 
             @Override
@@ -95,10 +104,36 @@ public class EmergencyActivity extends Activity {
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
-        countdownSeconds = 5;
 
-        soundPool.stop(soundId);
-        soundPool.release();
-        isInitialized = false;
+        if(PreferenceCountDown == 0){
+            soundPool.stop(soundId);
+            soundPool.release();
+            isInitialized = false;
+        }
+        PreferenceCountDown = Integer.valueOf(sharedPreferencesVals.emergencyCancelTime);
+    }
+
+    public void checkAccountPreferences(){
+        sharedPreferencesVals.getEmergencyPreferenceVals();
+        PreferenceCountDown = Integer.valueOf(sharedPreferencesVals.emergencyCancelTime);
+        System.out.println(PreferenceCountDown);
+
+        FrameLayout BPMView = findViewById(R.id.emergency_bpm_wrapper);
+        FrameLayout StressView = findViewById(R.id.emergency_stress_wrapper);
+        FrameLayout BodyTempView = findViewById(R.id.emergency_bodytemp_wrapper);
+        FrameLayout BreatheFreqView = findViewById(R.id.emergency_breathe_freq_wrapper);
+
+        setViewVisibility(BPMView, sharedPreferencesVals.emergencyBPM);
+        setViewVisibility(StressView, sharedPreferencesVals.emergencyStress);
+        setViewVisibility(BodyTempView, sharedPreferencesVals.emergencyBodytemp);
+        setViewVisibility(BreatheFreqView, sharedPreferencesVals.emergencyBreatheFreq);
+    }
+
+    public void setViewVisibility(FrameLayout view, Boolean isVisible){
+        if(isVisible){
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(View.GONE);
+        }
     }
 }

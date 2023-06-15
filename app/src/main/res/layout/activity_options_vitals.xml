@@ -53,6 +53,7 @@
                         android:text="Herzfrequenz"/>
 
                     <Switch
+                        android:id="@+id/options_vitals_bpm_switch"
                         style="@style/options_switch"/>
 
                     <FrameLayout
@@ -63,6 +64,7 @@
                             android:text="Kritische Werte" />
 
                         <EditText
+                            android:id="@+id/options_vitals_bpm_min"
                             style="@style/options_val_edit"
                             android:layout_marginLeft="10dp"
                             android:hint="min"/>
@@ -72,6 +74,7 @@
                                 android:text="bpm"/>
 
                         <EditText
+                            android:id="@+id/options_vitals_bpm_max"
                             style="@style/options_val_edit"
                             android:layout_marginLeft="90dp"
                             android:hint="max"/>
@@ -100,6 +103,7 @@
                         android:text="Stresswert"/>
 
                     <Switch
+                        android:id="@+id/options_vitals_stress_switch"
                         style="@style/options_switch"/>
 
                     <FrameLayout
@@ -110,6 +114,7 @@
                             android:text="Kritische Werte" />
 
                         <EditText
+                            android:id="@+id/options_vitals_stress_min"
                             style="@style/options_val_edit"
                             android:layout_marginLeft="10dp"
                             android:hint="min"/>
@@ -119,6 +124,7 @@
                             android:text="HRV"/>
 
                         <EditText
+                            android:id="@+id/options_vitals_stress_max"
                             style="@style/options_val_edit"
                             android:layout_marginLeft="90dp"
                             android:hint="max"/>
@@ -147,6 +153,7 @@
                         android:text="Körperwärme"/>
 
                     <Switch
+                        android:id="@+id/options_vitals_bodytemp_switch"
                         style="@style/options_switch"/>
 
                     <FrameLayout
@@ -157,6 +164,7 @@
                             android:text="Kritische Werte" />
 
                         <EditText
+                            android:id="@+id/options_vitals_bodytemp_min"
                             style="@style/options_val_edit"
                             android:layout_marginLeft="10dp"
                             android:hint="min"/>
@@ -166,6 +174,7 @@
                             android:text="°C"/>
 
                         <EditText
+                            android:id="@+id/options_vitals_bodytemp_max"
                             style="@style/options_val_edit"
                             android:layout_marginLeft="90dp"
                             android:hint="max"/>
@@ -194,6 +203,7 @@
                         android:text="Atemfrequenz"/>
 
                     <Switch
+                        android:id="@+id/options_vitals_breathe_freq_switch"
                         style="@style/options_switch"/>
 
                     <FrameLayout
@@ -204,6 +214,7 @@
                             android:text="Kritische Werte" />
 
                         <EditText
+                            android:id="@+id/options_vitals_breathe_freq_min"
                             style="@style/options_val_edit"
                             android:layout_marginLeft="10dp"
                             android:hint="min"/>
@@ -213,6 +224,7 @@
                             android:text="AZ/min."/>
 
                         <EditText
+                            android:id="@+id/options_vitals_breathe_freq_max"
                             style="@style/options_val_edit"
                             android:layout_marginLeft="90dp"
                             android:hint="max"/>
@@ -229,6 +241,14 @@
                             android:layout_marginLeft="102dp"/>
                     </FrameLayout>
                 </FrameLayout>
+                <Button
+                    android:id="@+id/update_Button"
+                    style="@style/new_button"
+                    android:text="Aktualisieren"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="440dp"
+                    android:onClick="updateVitalVals"/>
             </FrameLayout>
         </ScrollView>
         <ImageView

@@ -18,6 +18,9 @@ public class FunctionsActivity extends Activity {
 
         binding = ActivityFunctionsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        BasicFunctions basics = new BasicFunctions(this);
+        basics.hideDownIcon();
     }
 
     public void functionClick(View v){

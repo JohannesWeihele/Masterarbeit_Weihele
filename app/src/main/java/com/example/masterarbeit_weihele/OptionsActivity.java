@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.masterarbeit_weihele.databinding.ActivityOptionsBinding;
@@ -17,12 +18,17 @@ public class OptionsActivity extends Activity {
 
     private ActivityOptionsBinding binding;
 
+    private SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityOptionsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        BasicFunctions basics = new BasicFunctions(this);
+        basics.hideDownIcon();
     }
 
     public void optionClick(View v){
@@ -31,12 +37,15 @@ public class OptionsActivity extends Activity {
         switch (clickedButton.getTag().toString()){
             case "options_btn_vitals":
                 setContentView(R.layout.activity_options_vitals);
+                getVitalVals();
                 break;
             case "options_btn_communication":
                 setContentView(R.layout.activity_options_communication);
+                getCommunicationVals();
                 break;
             case "options_btn_emergency":
                 setContentView(R.layout.activity_options_emergency);
+                getEmergencyVals();
                 break;
             case "options_btn_account":
                 setContentView(R.layout.activity_options_account);
@@ -47,22 +56,16 @@ public class OptionsActivity extends Activity {
     }
 
     public void getAccountVals(){
-        SharedPreferences sharedPreferences = getSharedPreferences("Account", Context.MODE_PRIVATE);
-
+        sharedPreferencesVals.getAccountPreferenceVals();
         EditText nameView = findViewById(R.id.options_accountName);
         EditText ageView = findViewById(R.id.options_accountAge);
         EditText bodysizeView = findViewById(R.id.options_accountBodysize);
         EditText bodyweightView = findViewById(R.id.options_accountBodyweight);
 
-        String accountName = sharedPreferences.getString("accountName", "");
-        String accountAge = sharedPreferences.getString("accountAge", "");
-        String accountBodysize = sharedPreferences.getString("accountBodysize", "");
-        String accountBodyweight = sharedPreferences.getString("accountBodyweight", "");
-
-        nameView.setText(accountName);
-        ageView.setText(accountAge);
-        bodysizeView.setText(accountBodysize);
-        bodyweightView.setText(accountBodyweight);
+        nameView.setText(sharedPreferencesVals.accountName);
+        ageView.setText(sharedPreferencesVals.accountAge);
+        bodysizeView.setText(sharedPreferencesVals.accountBodysize);
+        bodyweightView.setText(sharedPreferencesVals.accountBodyweight);
     }
 
     public void updateAccountVals(View v) {
@@ -97,4 +100,165 @@ public class OptionsActivity extends Activity {
             setContentView(R.layout.activity_options);
         }
     }
+
+    public void getCommunicationVals() {
+        sharedPreferencesVals.getCommunicationPreferenceVals();
+
+        Switch pushToTalk = findViewById(R.id.options_communication_switch);
+
+        pushToTalk.setChecked(sharedPreferencesVals.pushToTalkVal);
+    }
+
+    public void updateCommunicationVals(View v) {
+        Switch pushToTalk = findViewById(R.id.options_communication_switch);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("Communication", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putBoolean("pushToTalkVal", pushToTalk.isChecked());
+        editor.apply();
+
+        Toast.makeText(getApplicationContext(), "Optionen aktualisiert", Toast.LENGTH_SHORT).show();
+
+        setContentView(R.layout.activity_options);
+    }
+
+    public void getEmergencyVals() {
+        sharedPreferencesVals.getEmergencyPreferenceVals();
+
+        Switch emergencyFallSwitch = findViewById(R.id.options_emergency_fall_switch);
+        Switch emergencyBPMSwitch = findViewById(R.id.options_emergency_bpm_switch);
+        Switch emergencyStressSwitch = findViewById(R.id.options_emergency_stress_switch);
+        Switch emergencyBodyTempSwitch = findViewById(R.id.options_emergency_bodytemp_switch);
+        Switch emergencyBreatheFreqSwitch = findViewById(R.id.options_emergency_breathe_freq_switch);
+        EditText emergencyCancelTimeView = findViewById(R.id.options_emergency_cancel_time);
+
+        emergencyFallSwitch.setChecked(sharedPreferencesVals.emergencyFall);
+        emergencyBPMSwitch.setChecked(sharedPreferencesVals.emergencyBPM);
+        emergencyStressSwitch.setChecked(sharedPreferencesVals.emergencyStress);
+        emergencyBodyTempSwitch.setChecked(sharedPreferencesVals.emergencyBodytemp);
+        emergencyBreatheFreqSwitch.setChecked(sharedPreferencesVals.emergencyBreatheFreq);
+        emergencyCancelTimeView.setText(sharedPreferencesVals.emergencyCancelTime);
+    }
+
+    public void updateEmergencyVals(View v) {
+        Switch emergencyFallSwitch = findViewById(R.id.options_emergency_fall_switch);
+        Switch emergencyBPMSwitch = findViewById(R.id.options_emergency_bpm_switch);
+        Switch emergencyStressSwitch = findViewById(R.id.options_emergency_stress_switch);
+        Switch emergencyBodyTempSwitch = findViewById(R.id.options_emergency_bodytemp_switch);
+        Switch emergencyBreatheFreqSwitch = findViewById(R.id.options_emergency_breathe_freq_switch);
+        EditText emergencyCancelTimeView = findViewById(R.id.options_emergency_cancel_time);
+
+        if (TextUtils.isEmpty(emergencyCancelTimeView.getText())) {
+            Toast.makeText(getApplicationContext(), "Bitte alle Felder ausfüllen", Toast.LENGTH_SHORT).show();
+        } else {
+            String emergencyCancelTime = emergencyCancelTimeView.getText().toString();
+
+            SharedPreferences sharedPreferences = getSharedPreferences("Emergency", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putBoolean("EmergencyFallVal",  emergencyFallSwitch.isChecked());
+            editor.putBoolean("EmergencyBPMVal", emergencyBPMSwitch.isChecked());
+            editor.putBoolean("EmergencyStressVal", emergencyStressSwitch.isChecked());
+            editor.putBoolean("EmergencyBodytempVal", emergencyBodyTempSwitch.isChecked());
+            editor.putBoolean("EmergencyBreatheVal", emergencyBreatheFreqSwitch.isChecked());
+            editor.putString("EmergencyCancelTime", emergencyCancelTime);
+            editor.apply();
+
+            Toast.makeText(getApplicationContext(), "Optionen aktualisiert", Toast.LENGTH_SHORT).show();
+
+            setContentView(R.layout.activity_options);
+        }
+    }
+
+    public void getVitalVals() {
+        sharedPreferencesVals.getVitalPreferenceVals();
+
+        Switch vitalsBPMSwitch = findViewById(R.id.options_vitals_bpm_switch);
+        Switch vitalsStressSwitch = findViewById(R.id.options_vitals_stress_switch);
+        Switch vitalsBodyTempSwitch = findViewById(R.id.options_vitals_bodytemp_switch);
+        Switch vitalsBreatheFreqSwitch = findViewById(R.id.options_vitals_breathe_freq_switch);
+
+        EditText vitalsBPMMinView = findViewById(R.id.options_vitals_bpm_min);
+        EditText vitalsStressMinView = findViewById(R.id.options_vitals_stress_min);
+        EditText vitalsBodyTempMinView = findViewById(R.id.options_vitals_bodytemp_min);
+        EditText vitalsBreatheFreqMinView = findViewById(R.id.options_vitals_breathe_freq_min);
+
+        EditText vitalsBPMMaxView = findViewById(R.id.options_vitals_bpm_max);
+        EditText vitalsStressMaxView = findViewById(R.id.options_vitals_stress_max);
+        EditText vitalsBodyTempMaxView = findViewById(R.id.options_vitals_bodytemp_max);
+        EditText vitalsBreatheFreqMaxView = findViewById(R.id.options_vitals_breathe_freq_max);
+
+        vitalsBPMSwitch.setChecked(sharedPreferencesVals.vitalsBPM);
+        vitalsStressSwitch.setChecked(sharedPreferencesVals.vitalsStress);
+        vitalsBodyTempSwitch.setChecked(sharedPreferencesVals.vitalsBodytemp);
+        vitalsBreatheFreqSwitch.setChecked(sharedPreferencesVals.vitalsBreatheFreq);
+
+        vitalsBPMMinView.setText(sharedPreferencesVals.vitalsBPMMinVal);
+        vitalsStressMinView.setText(sharedPreferencesVals.vitalsStressMinVal);
+        vitalsBodyTempMinView.setText(sharedPreferencesVals.vitalsBodyTempMinVal);
+        vitalsBreatheFreqMinView.setText(sharedPreferencesVals.vitalsBreatheFreqMinVal);
+
+        vitalsBPMMaxView.setText(sharedPreferencesVals.vitalsBPMMaxVal);
+        vitalsStressMaxView.setText(sharedPreferencesVals.vitalsStressMaxVal);
+        vitalsBodyTempMaxView.setText(sharedPreferencesVals.vitalsBodyTempMaxVal);
+        vitalsBreatheFreqMaxView.setText(sharedPreferencesVals.vitalsBreatheFreqMaxVal);
+    }
+
+    public void updateVitalVals(View v) {
+        Switch vitalsBPMSwitch = findViewById(R.id.options_vitals_bpm_switch);
+        Switch vitalsStressSwitch = findViewById(R.id.options_vitals_stress_switch);
+        Switch vitalsBodyTempSwitch = findViewById(R.id.options_vitals_bodytemp_switch);
+        Switch vitalsBreatheFreqSwitch = findViewById(R.id.options_vitals_breathe_freq_switch);
+        EditText vitalsBPMMinView = findViewById(R.id.options_vitals_bpm_min);
+        EditText vitalsStressMinView = findViewById(R.id.options_vitals_stress_min);
+        EditText vitalsBodyTempMinView = findViewById(R.id.options_vitals_bodytemp_min);
+        EditText vitalsBreatheFreqMinView = findViewById(R.id.options_vitals_breathe_freq_min);
+        EditText vitalsBPMMaxView = findViewById(R.id.options_vitals_bpm_max);
+        EditText vitalsStressMaxView = findViewById(R.id.options_vitals_stress_max);
+        EditText vitalsBodyTempMaxView = findViewById(R.id.options_vitals_bodytemp_max);
+        EditText vitalsBreatheFreqMaxView = findViewById(R.id.options_vitals_breathe_freq_max);
+
+        String vitalsBPMMinVal = vitalsBPMMinView.getText().toString().trim();
+        String vitalsStressMinVal = vitalsStressMinView.getText().toString().trim();
+        String vitalsBodyTempMinVal = vitalsBodyTempMinView.getText().toString().trim();
+        String vitalsBreatheFreqMinVal = vitalsBreatheFreqMinView.getText().toString().trim();
+        String vitalsBPMMaxVal = vitalsBPMMaxView.getText().toString().trim();
+        String vitalsStressMaxVal = vitalsStressMaxView.getText().toString().trim();
+        String vitalsBodyTempMaxVal = vitalsBodyTempMaxView.getText().toString().trim();
+        String vitalsBreatheFreqMaxVal = vitalsBreatheFreqMaxView.getText().toString().trim();
+
+        if (TextUtils.isEmpty(vitalsBPMMinVal) || TextUtils.isEmpty(vitalsStressMinVal) ||
+                TextUtils.isEmpty(vitalsBodyTempMinVal) || TextUtils.isEmpty(vitalsBreatheFreqMinVal) ||
+                TextUtils.isEmpty(vitalsBPMMaxVal) || TextUtils.isEmpty(vitalsStressMaxVal) ||
+                TextUtils.isEmpty(vitalsBodyTempMaxVal) || TextUtils.isEmpty(vitalsBreatheFreqMaxVal)) {
+            Toast.makeText(getApplicationContext(), "Bitte alle Felder ausfüllen", Toast.LENGTH_SHORT).show();
+        } else {
+
+            SharedPreferences sharedPreferences = getSharedPreferences("Vitals", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putBoolean("VitalsBPMVal", vitalsBPMSwitch.isChecked());
+            editor.putBoolean("VitalsStressVal", vitalsStressSwitch.isChecked());
+            editor.putBoolean("VitalsBodytempVal", vitalsBodyTempSwitch.isChecked());
+            editor.putBoolean("VitalsBreatheFreq", vitalsBreatheFreqSwitch.isChecked());
+
+            editor.putString("VitalsBPMMinVal", vitalsBPMMinVal);
+            editor.putString("VitalsStressMinVal", vitalsStressMinVal);
+            editor.putString("VitalsBodyTempMinVal", vitalsBodyTempMinVal);
+            editor.putString("VitalsBreatheFreqMinVal", vitalsBreatheFreqMinVal);
+
+            editor.putString("VitalsBPMMaxVal", vitalsBPMMaxVal);
+            editor.putString("VitalsStressMaxVal", vitalsStressMaxVal);
+            editor.putString("VitalsBodyTempMaxVal", vitalsBodyTempMaxVal);
+            editor.putString("VitalsBreatheFreqMaxVal", vitalsBreatheFreqMaxVal);
+
+            editor.apply();
+
+            Toast.makeText(getApplicationContext(), "Optionen aktualisiert", Toast.LENGTH_SHORT).show();
+
+            setContentView(R.layout.activity_options);
+        }
+    }
+
 }
