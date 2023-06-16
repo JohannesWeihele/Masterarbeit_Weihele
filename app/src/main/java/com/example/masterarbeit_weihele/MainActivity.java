@@ -10,13 +10,13 @@ import com.example.masterarbeit_weihele.databinding.ActivityMainBinding;
 public class MainActivity extends Activity {
 
     private ActivityMainBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
     }
 
     public void openCreateAccountView(View v) {
@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
     }
 
     public void openFunctionsView(View v){
-        Intent intent = new Intent(MainActivity.this, FunctionsActivity.class);
-        startActivity(intent);
+       Intent intent = new Intent(MainActivity.this, FunctionsActivity.class);
+       startActivity(intent);
     }
 }

@@ -45,33 +45,33 @@ public class SharedPreferencesVals {
 
     public void getCommunicationPreferenceVals(){
         SharedPreferences sharedPreferencesCommunication = context.getSharedPreferences("Communication", Context.MODE_PRIVATE);
-        pushToTalkVal = sharedPreferencesCommunication.getBoolean("pushToTalkVal", false);
+        pushToTalkVal = sharedPreferencesCommunication.getBoolean("pushToTalkVal", true);
     }
 
     public void getEmergencyPreferenceVals(){
         SharedPreferences sharedPreferencesEmergency = context.getSharedPreferences("Emergency", Context.MODE_PRIVATE);
-        emergencyFall = sharedPreferencesEmergency.getBoolean("EmergencyFallVal", false);
-        emergencyBPM = sharedPreferencesEmergency.getBoolean("EmergencyBPMVal", false);
-        emergencyStress = sharedPreferencesEmergency.getBoolean("EmergencyStressVal", false);
-        emergencyBodytemp = sharedPreferencesEmergency.getBoolean("EmergencyBodytempVal", false);
-        emergencyBreatheFreq = sharedPreferencesEmergency.getBoolean("EmergencyBreatheVal", false);
-        emergencyCancelTime = sharedPreferencesEmergency.getString("EmergencyCancelTime", "");
+        emergencyFall = sharedPreferencesEmergency.getBoolean("EmergencyFallVal", true);
+        emergencyBPM = sharedPreferencesEmergency.getBoolean("EmergencyBPMVal", true);
+        emergencyStress = sharedPreferencesEmergency.getBoolean("EmergencyStressVal", true);
+        emergencyBodytemp = sharedPreferencesEmergency.getBoolean("EmergencyBodytempVal", true);
+        emergencyBreatheFreq = sharedPreferencesEmergency.getBoolean("EmergencyBreatheVal", true);
+        emergencyCancelTime = sharedPreferencesEmergency.getString("EmergencyCancelTime", "5");
     }
 
     public void getVitalPreferenceVals(){
         SharedPreferences sharedPreferencesVitals = context.getSharedPreferences("Vitals", Context.MODE_PRIVATE);
-        vitalsBPM = sharedPreferencesVitals.getBoolean("VitalsBPMVal", false);
-        vitalsStress = sharedPreferencesVitals.getBoolean("VitalsStressVal", false);
-        vitalsBodytemp = sharedPreferencesVitals.getBoolean("VitalsBodytempVal", false);
-        vitalsBreatheFreq = sharedPreferencesVitals.getBoolean("VitalsBreatheFreq", false);
-        vitalsBPMMinVal = sharedPreferencesVitals.getString("VitalsBPMMinVal", "");
-        vitalsStressMinVal = sharedPreferencesVitals.getString("VitalsStressMinVal", "");
-        vitalsBodyTempMinVal = sharedPreferencesVitals.getString("VitalsBodyTempMinVal", "");
-        vitalsBreatheFreqMinVal = sharedPreferencesVitals.getString("VitalsBreatheFreqMinVal", "");
-        vitalsBPMMaxVal = sharedPreferencesVitals.getString("VitalsBPMMaxVal", "");
-        vitalsStressMaxVal = sharedPreferencesVitals.getString("VitalsStressMaxVal", "");
-        vitalsBodyTempMaxVal = sharedPreferencesVitals.getString("VitalsBodyTempMaxVal", "");
-        vitalsBreatheFreqMaxVal = sharedPreferencesVitals.getString("VitalsBreatheFreqMaxVal", "");
+        vitalsBPM = sharedPreferencesVitals.getBoolean("VitalsBPMVal", true);
+        vitalsStress = sharedPreferencesVitals.getBoolean("VitalsStressVal", true);
+        vitalsBodytemp = sharedPreferencesVitals.getBoolean("VitalsBodytempVal", true);
+        vitalsBreatheFreq = sharedPreferencesVitals.getBoolean("VitalsBreatheFreq", true);
+        vitalsBPMMinVal = sharedPreferencesVitals.getString("VitalsBPMMinVal", "35");
+        vitalsStressMinVal = sharedPreferencesVitals.getString("VitalsStressMinVal", "25");
+        vitalsBodyTempMinVal = sharedPreferencesVitals.getString("VitalsBodyTempMinVal", "36");
+        vitalsBreatheFreqMinVal = sharedPreferencesVitals.getString("VitalsBreatheFreqMinVal", "15");
+        vitalsBPMMaxVal = sharedPreferencesVitals.getString("VitalsBPMMaxVal", "180");
+        vitalsStressMaxVal = sharedPreferencesVitals.getString("VitalsStressMaxVal", "75");
+        vitalsBodyTempMaxVal = sharedPreferencesVitals.getString("VitalsBodyTempMaxVal", "42");
+        vitalsBreatheFreqMaxVal = sharedPreferencesVitals.getString("VitalsBreatheFreqMaxVal", "60");
     }
 
 }

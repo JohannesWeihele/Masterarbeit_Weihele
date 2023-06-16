@@ -22,6 +22,7 @@ public class VitalsActivity extends Activity {
         checkAccountPreferences();
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
