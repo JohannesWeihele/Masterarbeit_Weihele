@@ -1,6 +1,5 @@
 package com.example.masterarbeit_weihele;
 
-import android.app.Activity;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.masterarbeit_weihele.databinding.ActivityEmergencyBinding;
 
-public class EmergencyActivity extends Activity {
+public class EmergencyActivity extends WakeLockActivity {
 
     private ActivityEmergencyBinding binding;
 
@@ -24,7 +23,9 @@ public class EmergencyActivity extends Activity {
     private Button emergencyCancelButton;
     private SoundPool soundPool;
     private boolean isInitialized = false;
+    private boolean isClicked = false;
     private int soundId;
+
 
     private SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
 
@@ -41,12 +42,19 @@ public class EmergencyActivity extends Activity {
         emergencyCancelButton = findViewById(R.id.emergency_cancel_btn);
 
         checkAccountPreferences();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         checkAccountPreferences();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        stopEmergency(null);
     }
 
     public void playEmergencySound(){
@@ -64,33 +72,37 @@ public class EmergencyActivity extends Activity {
 
         soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
             isInitialized = true;
-            soundPool.play(soundId, 1.0f, 1.0f, 0, -1, 1.0f);
+            soundPool.play(soundId, 0.1f, 0.1f, 0, -1, 1.0f);
         });
 
         soundId = soundPool.load(this, R.raw.alarm_noise, 1);
     }
 
     public void startEmergency(View v) {
-        emergencyActivatedText.setText("Notfallsignal beginnt in " + PreferenceCountDown + " Sekunden...");
-        emergencyActivatedText.setVisibility(View.VISIBLE);
-        emergencyBtnText.setVisibility(View.GONE);
-        emergencyCancelButton.setVisibility(View.VISIBLE);
-        countDownTimer = new CountDownTimer(PreferenceCountDown * 1000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                PreferenceCountDown--;
-                emergencyActivatedText.setText("Notfallsignal beginnt in " + PreferenceCountDown + " Sekunden...");
-            }
+        if(!isClicked){
+            isClicked = true;
+            emergencyActivatedText.setText("Notfallsignal beginnt in " + PreferenceCountDown + " Sekunden...");
+            emergencyActivatedText.setVisibility(View.VISIBLE);
+            emergencyBtnText.setVisibility(View.GONE);
+            emergencyCancelButton.setVisibility(View.VISIBLE);
+            countDownTimer = new CountDownTimer(PreferenceCountDown * 1000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    PreferenceCountDown--;
+                    emergencyActivatedText.setText("Notfallsignal beginnt in " + PreferenceCountDown + " Sekunden...");
+                }
 
-            @Override
-            public void onFinish() {
-                emergencyActivatedText.setVisibility(View.GONE);
-                emergencyVitals.setVisibility(View.VISIBLE);
-                playEmergencySound();
-            }
-        }.start();
+                @Override
+                public void onFinish() {
+                    emergencyActivatedText.setVisibility(View.GONE);
+                    emergencyVitals.setVisibility(View.VISIBLE);
+                    playEmergencySound();
+                }
+            }.start();
+        }
     }
     public void stopEmergency(View v){
+        isClicked = false;
         TextView emergencyBtnText = findViewById(R.id.emergency_text);
         TextView emergencyActivatedText = findViewById(R.id.emergency_activated_text);
         Button emergencyCancelButton = findViewById(R.id.emergency_cancel_btn);

@@ -1,6 +1,5 @@
 package com.example.masterarbeit_weihele;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.masterarbeit_weihele.CommunicationRecycler.ContactAdapter;
 import com.example.masterarbeit_weihele.CommunicationRecycler.Contact_Item;
 import com.example.masterarbeit_weihele.CommunicationRecycler.OnContactClickListener;
@@ -16,7 +16,7 @@ import com.example.masterarbeit_weihele.databinding.ActivityCommunicationBinding
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommunicationActivity extends Activity implements OnContactClickListener {
+public class CommunicationActivity extends WakeLockActivity implements OnContactClickListener {
 
     private ActivityCommunicationBinding binding;
     TextView communicationOption;

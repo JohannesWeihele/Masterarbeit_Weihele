@@ -6,11 +6,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.example.masterarbeit_weihele.databinding.ActivityVitalsBinding;
+import com.samsung.android.sdk.healthdata.HealthDataStore;
+
 
 public class VitalsActivity extends Activity {
 
     private ActivityVitalsBinding binding;
     private SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
+    private HealthDataStore healthDataStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
