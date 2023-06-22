@@ -38,6 +38,7 @@
                 style="@style/big_ellipse"/>
 
             <TextView
+                android:id="@+id/environment_temperature"
                 style="@style/ellipse_text"
                 android:textSize="30dp"
                 android:text="0"/>
@@ -64,6 +65,7 @@
                     style="@style/small_ellipse"/>
 
                 <TextView
+                    android:id="@+id/environment_windspeed"
                     style="@style/ellipse_text"
                     android:textSize="16sp"
                     android:text="0"/>
@@ -86,6 +88,7 @@
                     style="@style/small_ellipse"/>
 
                 <TextView
+                    android:id="@+id/environment_humidity"
                     style="@style/ellipse_text"
                     android:textSize="16sp"
                     android:text="0"/>
@@ -105,14 +108,14 @@
                 android:layout_marginTop="10dp">
 
                 <ImageView
-                    style="@style/small_ellipse"/>
+                    style="@style/small_ellipse_light"/>
 
                 <ImageView
-                    android:layout_height="20dp"
-                    android:layout_width="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/rain_icon"/>
+                    android:id="@+id/environment_weatherIcon"
+                    android:layout_height="30dp"
+                    android:layout_width="30dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"/>
 
             </FrameLayout>
 
