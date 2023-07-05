@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rotation_wrapper"
     android:background="@drawable/background"
     android:padding="@dimen/box_inset_layout_padding"
     tools:context=".CommandsActivity"
@@ -26,6 +27,7 @@
 
     <TextView
         style="@style/headline"
+        android:id="@+id/headline"
         android:text="Befehle"
         />
 

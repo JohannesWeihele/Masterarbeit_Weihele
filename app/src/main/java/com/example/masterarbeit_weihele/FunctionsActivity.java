@@ -1,16 +1,29 @@
 package com.example.masterarbeit_weihele;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.example.masterarbeit_weihele.databinding.ActivityFunctionsBinding;
 
-public class FunctionsActivity extends Activity {
+public class FunctionsActivity extends WakeLockActivity {
 
     private ActivityFunctionsBinding binding;
+    BasicFunctions basicFunctions = new BasicFunctions(this);
+    private Intent vitalsServiceIntent;
+    private Intent allServiceIntent;
+    private Intent selfServiceIntent;
+    private static final int PERMISSION_REQ_ID = 22;
+    private static final String[] REQUESTED_PERMISSIONS = {
+            Manifest.permission.RECORD_AUDIO
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,41 +32,73 @@ public class FunctionsActivity extends Activity {
         binding = ActivityFunctionsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        BasicFunctions basics = new BasicFunctions(this);
-        basics.hideDownIcon();
+        basicFunctions.hideDownIcon();
+        basicFunctions.changeActivityOnRotation(OptionsActivity.class, VitalsActivity.class);
+
+        vitalsServiceIntent = new Intent(this, VitalsService.class);
+        startService(vitalsServiceIntent);
+
+        if (!checkSelfPermission()) {
+            ActivityCompat.requestPermissions(this, REQUESTED_PERMISSIONS, PERMISSION_REQ_ID);
+        } else {
+            startCommunicationService();
+        }
+    }
+
+    private boolean checkSelfPermission() {
+        return ContextCompat.checkSelfPermission(this, REQUESTED_PERMISSIONS[0]) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void startCommunicationService() {
+
+        selfServiceIntent = new Intent(this, SelfCommunicationService.class);
+        startService(selfServiceIntent);
+
+        allServiceIntent = new Intent(this, AllCommunicationService.class);
+        startService(allServiceIntent);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(vitalsServiceIntent);
+        stopService(allServiceIntent);
+        stopService(selfServiceIntent);
     }
 
     public void functionClick(View v){
         Button clickedButton = (Button) v;
-        Intent intent = null;
+        Class<? extends Activity> activity = null;
 
         switch (clickedButton.getTag().toString()){
             case "function_btn_vitals":
-                intent = new Intent(FunctionsActivity.this, VitalsActivity.class);
+                activity = VitalsActivity.class;
                 break;
             case "function_btn_communication":
-                intent = new Intent(FunctionsActivity.this, CommunicationActivity.class);
+                activity = CommunicationActivity.class;
                 break;
             case "function_btn_emergency":
-                intent = new Intent(FunctionsActivity.this, EmergencyActivity.class);
+                activity = EmergencyActivity.class;
                 break;
             case "function_btn_commands":
-                intent = new Intent(FunctionsActivity.this, CommandsActivity.class);
+                activity = CommandsActivity.class;
                 break;
             case "function_btn_navigation":
-                intent = new Intent(FunctionsActivity.this, NavigationActivity.class);
+                activity = NavigationActivity.class;
                 break;
             case "function_btn_more_vitals":
-                intent = new Intent(FunctionsActivity.this, MoreVitalsActivity.class);
+                activity = MoreVitalsActivity.class;
                 break;
             case "function_btn_environment":
-                intent = new Intent(FunctionsActivity.this, EnvironmentActivity.class);
+                activity = EnvironmentActivity.class;
                 break;
             case "function_btn_options":
-                intent = new Intent(FunctionsActivity.this, OptionsActivity.class);
+                activity = OptionsActivity.class;
                 break;
         }
 
-        startActivity(intent);
+        basicFunctions.loadActivity(activity);
     }
+
 }

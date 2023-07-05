@@ -1,11 +1,14 @@
 package com.example.masterarbeit_weihele;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Toast;
 
@@ -31,13 +34,16 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 
 public class NavigationActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener, GoogleMap.OnInfoWindowLongClickListener {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private final BasicFunctions basicFunctions = new BasicFunctions(this);
 
     private ActivityNavigationBinding binding;
     private MapView mapView;
@@ -45,7 +51,10 @@ public class NavigationActivity extends AppCompatActivity implements OnMapReadyC
     private LatLng selectedMarkerLatLng;
     private Marker lastMarker;
     private Polyline lastPolyline;
-    List<Marker> clientList = new ArrayList<>(); // Liste initialisieren
+    List<Marker> clientMarkers = new ArrayList<>();
+    HashMap<String, LatLng> clientPositions = new HashMap<>();
+    private String emergencyName = "Sabrina";
+    private Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +62,13 @@ public class NavigationActivity extends AppCompatActivity implements OnMapReadyC
 
         binding = ActivityNavigationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        basicFunctions.changeActivityOnRotation(EmergencyActivity.class, CommunicationActivity.class);
 
         mapView = binding.mapView;
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
     }
 
@@ -191,26 +203,22 @@ public class NavigationActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     private void getClientPositions(){
-        LatLng client_one = new LatLng(37.421606238636436, -122.08620999008417);
-        LatLng client_two = new LatLng(37.42012362454773, -122.08417184650897);
-        LatLng client_three = new LatLng(37.41985042413669, -122.0768279582262);
+
+        //HIER CLIENTDATEN VOM SERVER ABFRAGEN
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
-        Marker marker_one = googleMap.addMarker(markerOptions.position(client_one).title("Jonas"));
-        Marker marker_two = googleMap.addMarker(markerOptions.position(client_two).title("Sabrina"));
-        Marker marker_three = googleMap.addMarker(markerOptions.position(client_three).title("Alex"));
+        clientPositions.put("Jonas", new LatLng(37.421606238636436, -122.08620999008417));
+        clientPositions.put("Sabrina", new LatLng(37.42012362454773, -122.08417184650897));
+        clientPositions.put("Alex", new LatLng(37.41985042413669, -122.0768279582262));
 
-        clientList.add(marker_one);
-        clientList.add(marker_two);
-        clientList.add(marker_three);
-
-        marker_one.setInfoWindowAnchor(0.5f, 1.0f);
-        marker_two.setInfoWindowAnchor(0.5f, 1.0f);
-        marker_three.setInfoWindowAnchor(0.5f, 1.0f);
+        for (Map.Entry<String, LatLng> entry : clientPositions.entrySet()) {
+            Marker marker = googleMap.addMarker(markerOptions.position(entry.getValue()).title(entry.getKey()));
+            clientMarkers.add(marker);
+            marker.setInfoWindowAnchor(0.5f, 1.0f);
+        }
     }
-
 
     private void getUserPosition(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -243,17 +251,43 @@ public class NavigationActivity extends AppCompatActivity implements OnMapReadyC
 
     public void getEmergency(View view) {
 
-        MarkerOptions test = new MarkerOptions();
+        MarkerOptions emergencyMarkerOptions = new MarkerOptions();
 
-        for (Marker m : clientList) {
-            if (Objects.equals(m.getTitle(), "Sabrina")) {
+        for (Marker m : clientMarkers) {
+            if (Objects.equals(m.getTitle(), emergencyName)) {
                 m.remove();
-                test.position(m.getPosition());
-                test.title(m.getTitle());
-                test.icon(BitmapDescriptorFactory.fromResource(R.drawable.alert_icon));
-                Marker testmarker = googleMap.addMarker(test);
-                testmarker.showInfoWindow();
+                emergencyMarkerOptions.position(m.getPosition());
+                emergencyMarkerOptions.title(m.getTitle());
+                emergencyMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.emergency_icon));
+                Marker emergencyMarker = googleMap.addMarker(emergencyMarkerOptions);
+                emergencyMarker.showInfoWindow();
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(m.getPosition(), 15.0f));
+                Toast.makeText(getApplicationContext(), emergencyName + " benötigt Hilfe!", Toast.LENGTH_SHORT).show();
+                vibrate();
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        basicFunctions.loadActivity(FunctionsActivity.class);
+        super.onBackPressed();
+    }
+
+    private void vibrate() {
+        if (vibrator != null && vibrator.hasVibrator()) {
+            long[] pattern = {0, 2000, 500, 2000, 500, 2000, 500};
+            int repeat = -1;
+            vibrator.vibrate(pattern, repeat);
+        }
+    }
+
+    public void deleteLastMarker(View view) {
+        if (lastMarker != null) {
+            lastMarker.remove();
+            lastPolyline.remove();
+        } else {
+            Toast.makeText(getApplicationContext(), "kein Marker gesetzt", Toast.LENGTH_SHORT).show();
         }
     }
 

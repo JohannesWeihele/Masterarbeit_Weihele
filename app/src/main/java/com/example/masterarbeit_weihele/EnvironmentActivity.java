@@ -1,13 +1,17 @@
 package com.example.masterarbeit_weihele;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.masterarbeit_weihele.databinding.ActivityEnvironmentBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -20,15 +24,18 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class EnvironmentActivity extends Activity {
+public class EnvironmentActivity extends WakeLockActivity {
 
     private ActivityEnvironmentBinding binding;
+    private final BasicFunctions basicFunctions = new BasicFunctions(this);
+
     private float temperature = 0.0f;
     private float humidity = 0.0f;
     private float wind_speed = 0.0f;
     private double position_long = 0.0f;
     private double position_lat = 0.0f;
     private String icon = "01d";
+    private static final int PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +43,13 @@ public class EnvironmentActivity extends Activity {
 
         binding = ActivityEnvironmentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        basicFunctions.changeActivityOnRotation(CommunicationActivity.class, MoreVitalsActivity.class);
+
         getCurrentLocation();
+        Toast.makeText(this, "lädt Daten...", Toast.LENGTH_LONG).show();
+
     }
+
 
     public void getEnvironmentVals() {
         Retrofit retrofit = new Retrofit.Builder()

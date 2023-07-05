@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/emergency_button"
+    android:id="@+id/rotation_wrapper"
     android:padding="@dimen/box_inset_layout_padding"
     android:onClick="startEmergency"
     tools:context=".EmergencyActivity"
@@ -78,6 +79,7 @@
                     android:layout_gravity="center"/>
 
                 <TextView
+                    android:id="@+id/emergency_bpm"
                     style="@style/ellipse_text"
                     android:textSize="16dp"
                     android:text="0"/>

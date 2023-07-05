@@ -1,5 +1,9 @@
 package com.example.masterarbeit_weihele;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -8,12 +12,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.masterarbeit_weihele.databinding.ActivityEmergencyBinding;
 
 public class EmergencyActivity extends WakeLockActivity {
 
     private ActivityEmergencyBinding binding;
+    private final BasicFunctions basicFunctions = new BasicFunctions(this);
 
     private TextView emergencyBtnText;
     private TextView emergencyActivatedText;
@@ -24,8 +30,10 @@ public class EmergencyActivity extends WakeLockActivity {
     private SoundPool soundPool;
     private boolean isInitialized = false;
     private boolean isClicked = false;
+    private boolean isVitalsEmergency = false;
     private int soundId;
-
+    private int heartRate;
+    private boolean isToastShown = false;
 
     private SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
 
@@ -35,26 +43,36 @@ public class EmergencyActivity extends WakeLockActivity {
 
         binding = ActivityEmergencyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        emergencyActivatedText = findViewById(R.id.emergency_activated_text);
-        emergencyBtnText = findViewById(R.id.emergency_text);
-        emergencyVitals = findViewById(R.id.emergency_vitals_wrapper);
-        emergencyCancelButton = findViewById(R.id.emergency_cancel_btn);
+        basicFunctions.changeActivityOnRotation(CommandsActivity.class, NavigationActivity.class);
 
         checkAccountPreferences();
+
+        Intent intent = getIntent();
+        isVitalsEmergency = intent.getBooleanExtra("isVitalsEmergency", false);
+
+        if(isVitalsEmergency){
+            startEmergency(null);
+        }
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        Intent intent = getIntent();
+        isVitalsEmergency = intent.getBooleanExtra("isVitalsEmergency", false);
         checkAccountPreferences();
+
+        IntentFilter intentFilter = new IntentFilter("HEART_RATE_UPDATE");
+        registerReceiver(heartRateReceiver, intentFilter);
     }
 
     @Override
     protected void onPause(){
         super.onPause();
         stopEmergency(null);
+        unregisterReceiver(heartRateReceiver);
     }
 
     public void playEmergencySound(){
@@ -72,13 +90,19 @@ public class EmergencyActivity extends WakeLockActivity {
 
         soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
             isInitialized = true;
-            soundPool.play(soundId, 0.1f, 0.1f, 0, -1, 1.0f);
+            soundPool.play(soundId, 1.0f, 1.0f, 0, -1, 1.0f);
         });
 
         soundId = soundPool.load(this, R.raw.alarm_noise, 1);
     }
 
     public void startEmergency(View v) {
+
+        emergencyActivatedText = findViewById(R.id.emergency_activated_text);
+        emergencyBtnText = findViewById(R.id.emergency_text);
+        emergencyVitals = findViewById(R.id.emergency_vitals_wrapper);
+        emergencyCancelButton = findViewById(R.id.emergency_cancel_btn);
+
         if(!isClicked){
             isClicked = true;
             emergencyActivatedText.setText("Notfallsignal beginnt in " + PreferenceCountDown + " Sekunden...");
@@ -126,6 +150,7 @@ public class EmergencyActivity extends WakeLockActivity {
     }
 
     public void checkAccountPreferences(){
+        sharedPreferencesVals.getVitalPreferenceVals();
         sharedPreferencesVals.getEmergencyPreferenceVals();
         PreferenceCountDown = Integer.valueOf(sharedPreferencesVals.emergencyCancelTime);
         System.out.println(PreferenceCountDown);
@@ -135,10 +160,10 @@ public class EmergencyActivity extends WakeLockActivity {
         FrameLayout BodyTempView = findViewById(R.id.emergency_bodytemp_wrapper);
         FrameLayout BreatheFreqView = findViewById(R.id.emergency_breathe_freq_wrapper);
 
-        setViewVisibility(BPMView, sharedPreferencesVals.emergencyBPM);
-        setViewVisibility(StressView, sharedPreferencesVals.emergencyStress);
-        setViewVisibility(BodyTempView, sharedPreferencesVals.emergencyBodytemp);
-        setViewVisibility(BreatheFreqView, sharedPreferencesVals.emergencyBreatheFreq);
+        setViewVisibility(BPMView, sharedPreferencesVals.vitalsBPM);
+        setViewVisibility(StressView, sharedPreferencesVals.vitalsStress);
+        setViewVisibility(BodyTempView, sharedPreferencesVals.vitalsBodytemp);
+        setViewVisibility(BreatheFreqView, sharedPreferencesVals.vitalsBreatheFreq);
     }
 
     public void setViewVisibility(FrameLayout view, Boolean isVisible){
@@ -148,4 +173,24 @@ public class EmergencyActivity extends WakeLockActivity {
             view.setVisibility(View.GONE);
         }
     }
+
+    private BroadcastReceiver heartRateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("HEART_RATE_UPDATE")) {
+                heartRate = intent.getIntExtra("heartRate", 0);
+
+                TextView heartRateView = findViewById(R.id.emergency_bpm);
+                heartRateView.setText(String.valueOf(heartRate));
+
+                if (heartRate == 0 && !isToastShown) {
+                    Toast.makeText(getApplicationContext(), "ermittle Daten...", Toast.LENGTH_LONG).show();
+                    isToastShown = true;
+                } else if (heartRate != 0) {
+                    isToastShown = false;
+                }
+            }
+        }
+    };
+
 }

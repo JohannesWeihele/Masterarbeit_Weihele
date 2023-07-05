@@ -1,6 +1,7 @@
 package com.example.masterarbeit_weihele;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,10 +14,12 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.masterarbeit_weihele.databinding.ActivityOptionsBinding;
+import com.jakewharton.processphoenix.ProcessPhoenix;
 
-public class OptionsActivity extends Activity {
+public class OptionsActivity extends WakeLockActivity {
 
     private ActivityOptionsBinding binding;
+    private final BasicFunctions basicFunctions = new BasicFunctions(this);
 
     private SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
 
@@ -27,8 +30,8 @@ public class OptionsActivity extends Activity {
         binding = ActivityOptionsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        BasicFunctions basics = new BasicFunctions(this);
-        basics.hideDownIcon();
+        basicFunctions.hideDownIcon();
+        basicFunctions.changeActivityOnRotation(MoreVitalsActivity.class, FunctionsActivity.class);
     }
 
     public void optionClick(View v){
@@ -127,26 +130,14 @@ public class OptionsActivity extends Activity {
         sharedPreferencesVals.getEmergencyPreferenceVals();
 
         Switch emergencyFallSwitch = findViewById(R.id.options_emergency_fall_switch);
-        Switch emergencyBPMSwitch = findViewById(R.id.options_emergency_bpm_switch);
-        Switch emergencyStressSwitch = findViewById(R.id.options_emergency_stress_switch);
-        Switch emergencyBodyTempSwitch = findViewById(R.id.options_emergency_bodytemp_switch);
-        Switch emergencyBreatheFreqSwitch = findViewById(R.id.options_emergency_breathe_freq_switch);
         EditText emergencyCancelTimeView = findViewById(R.id.options_emergency_cancel_time);
 
         emergencyFallSwitch.setChecked(sharedPreferencesVals.emergencyFall);
-        emergencyBPMSwitch.setChecked(sharedPreferencesVals.emergencyBPM);
-        emergencyStressSwitch.setChecked(sharedPreferencesVals.emergencyStress);
-        emergencyBodyTempSwitch.setChecked(sharedPreferencesVals.emergencyBodytemp);
-        emergencyBreatheFreqSwitch.setChecked(sharedPreferencesVals.emergencyBreatheFreq);
         emergencyCancelTimeView.setText(sharedPreferencesVals.emergencyCancelTime);
     }
 
     public void updateEmergencyVals(View v) {
         Switch emergencyFallSwitch = findViewById(R.id.options_emergency_fall_switch);
-        Switch emergencyBPMSwitch = findViewById(R.id.options_emergency_bpm_switch);
-        Switch emergencyStressSwitch = findViewById(R.id.options_emergency_stress_switch);
-        Switch emergencyBodyTempSwitch = findViewById(R.id.options_emergency_bodytemp_switch);
-        Switch emergencyBreatheFreqSwitch = findViewById(R.id.options_emergency_breathe_freq_switch);
         EditText emergencyCancelTimeView = findViewById(R.id.options_emergency_cancel_time);
 
         if (TextUtils.isEmpty(emergencyCancelTimeView.getText())) {
@@ -158,10 +149,6 @@ public class OptionsActivity extends Activity {
             SharedPreferences.Editor editor = sharedPreferences.edit();
 
             editor.putBoolean("EmergencyFallVal",  emergencyFallSwitch.isChecked());
-            editor.putBoolean("EmergencyBPMVal", emergencyBPMSwitch.isChecked());
-            editor.putBoolean("EmergencyStressVal", emergencyStressSwitch.isChecked());
-            editor.putBoolean("EmergencyBodytempVal", emergencyBodyTempSwitch.isChecked());
-            editor.putBoolean("EmergencyBreatheVal", emergencyBreatheFreqSwitch.isChecked());
             editor.putString("EmergencyCancelTime", emergencyCancelTime);
             editor.apply();
 
@@ -259,6 +246,22 @@ public class OptionsActivity extends Activity {
 
             setContentView(R.layout.activity_options);
         }
+
+        restartApp();
+
+    }
+
+    private void restartApp() {
+        Intent intent = new Intent(this, MainActivity.class);
+        restartLoading();
+        ProcessPhoenix.triggerRebirth(this, intent);
+    }
+
+    private void restartLoading() {
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Neustart...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
     }
 
 }

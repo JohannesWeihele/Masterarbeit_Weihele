@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.example.masterarbeit_weihele.databinding.ActivityCreateaccountBinding;
 
-public class CreateAccountActivity extends Activity {
+public class CreateAccountActivity extends WakeLockActivity {
 
     private ActivityCreateaccountBinding binding;
 

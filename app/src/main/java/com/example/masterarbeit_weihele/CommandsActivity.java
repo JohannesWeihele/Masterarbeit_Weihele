@@ -17,9 +17,10 @@ import com.example.masterarbeit_weihele.databinding.ActivityCommandsBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandsActivity extends Activity{
+public class CommandsActivity extends WakeLockActivity {
 
     private ActivityCommandsBinding binding;
+    private final BasicFunctions basicFunctions = new BasicFunctions(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class CommandsActivity extends Activity{
 
         binding = ActivityCommandsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        basicFunctions.changeActivityOnRotation(VitalsActivity.class, EmergencyActivity.class);
 
         createRecycler();
     }

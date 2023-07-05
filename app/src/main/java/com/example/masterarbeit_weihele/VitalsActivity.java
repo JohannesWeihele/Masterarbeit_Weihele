@@ -1,26 +1,38 @@
 package com.example.masterarbeit_weihele;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.masterarbeit_weihele.databinding.ActivityVitalsBinding;
 
-import com.samsung.android.sdk.healthdata.HealthConnectionErrorResult;
-import com.samsung.android.sdk.healthdata.HealthConstants;
-import com.samsung.android.sdk.healthdata.HealthData;
-import com.samsung.android.sdk.healthdata.HealthDataResolver;
-import com.samsung.android.sdk.healthdata.HealthDataResolver.ReadRequest;
-import com.samsung.android.sdk.healthdata.HealthDataResolver.ReadResult;
-import com.samsung.android.sdk.healthdata.HealthDataStore;
-import com.samsung.android.sdk.healthdata.HealthResultHolder;
+import java.util.ArrayList;
+import java.util.List;
 
-public class VitalsActivity extends Activity {
+public class VitalsActivity extends WakeLockActivity {
+
+    private int heartRate;
+    private boolean isToastShown = false;
 
     private ActivityVitalsBinding binding;
-    private HealthDataStore healthDataStore;
     private SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
+    private final BasicFunctions basicFunctions = new BasicFunctions(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,37 +40,10 @@ public class VitalsActivity extends Activity {
 
         binding = ActivityVitalsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        basicFunctions.changeActivityOnRotation(FunctionsActivity.class, CommandsActivity.class);
 
         checkAccountPreferences();
 
-        // Initialisiere die HealthDataStore
-        healthDataStore = new HealthDataStore(this, new HealthDataStore.ConnectionListener() {
-            @Override
-            public void onConnected() {
-                // Bei erfolgreicher Verbindung
-                readHeartRate();
-            }
-
-            @Override
-            public void onConnectionFailed(HealthConnectionErrorResult error) {
-                // Bei Verbindungsfehlern
-            }
-
-            @Override
-            public void onDisconnected() {
-                // Bei Verbindungstrennung
-            }
-        });
-
-        // Verbinde mit der HealthDataStore
-        healthDataStore.connectService();
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkAccountPreferences();
     }
 
     public void checkAccountPreferences(){
@@ -83,31 +68,39 @@ public class VitalsActivity extends Activity {
         }
     }
 
+    private BroadcastReceiver heartRateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("HEART_RATE_UPDATE")) {
+                heartRate = intent.getIntExtra("heartRate", 0);
 
-    private void readHeartRate() {
-        HealthDataResolver resolver = new HealthDataResolver(healthDataStore, null);
+                TextView heartRateView = findViewById(R.id.vitals_bpm);
+                heartRateView.setText(String.valueOf(heartRate));
 
-        // Erstelle die Anfrage zum Lesen der Herzfrequenzdaten
-        ReadRequest request = new ReadRequest.Builder()
-                .setDataType(HealthConstants.HeartRate.HEALTH_DATA_TYPE)
-                .build();
-
-        // Führe die Anfrage aus
-        resolver.read(request).setResultListener(new HealthResultHolder.ResultListener<ReadResult>() {
-            @Override
-            public void onResult(ReadResult readResult) {
-                try {
-                    for (HealthData data : readResult) {
-                        // Lies die Herzfrequenzdaten aus
-                        int heartRate = data.getInt(HealthConstants.HeartRate.HEART_RATE);
-
-                        System.out.println(heartRate);
-                    }
-                } finally {
-                    readResult.close();
+                if (heartRate == 0 && !isToastShown) {
+                    Toast.makeText(getApplicationContext(), "ermittle Daten...", Toast.LENGTH_LONG).show();
+                    isToastShown = true;
+                } else if (heartRate != 0) {
+                    isToastShown = false;
                 }
             }
-        });
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkAccountPreferences();
+
+        IntentFilter intentFilter = new IntentFilter("HEART_RATE_UPDATE");
+        registerReceiver(heartRateReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        unregisterReceiver(heartRateReceiver);
     }
 
 }

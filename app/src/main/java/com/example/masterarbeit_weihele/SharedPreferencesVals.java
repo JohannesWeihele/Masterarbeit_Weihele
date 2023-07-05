@@ -13,10 +13,6 @@ public class SharedPreferencesVals {
     String accountBodyweight = "";
     Boolean pushToTalkVal = false;
     Boolean emergencyFall = false;
-    Boolean emergencyBPM = false;
-    Boolean emergencyStress = false;
-    Boolean emergencyBodytemp = false;
-    Boolean emergencyBreatheFreq = false;
     String emergencyCancelTime = "";
     Boolean vitalsBPM = false;
     Boolean vitalsStress = false;
@@ -51,10 +47,6 @@ public class SharedPreferencesVals {
     public void getEmergencyPreferenceVals(){
         SharedPreferences sharedPreferencesEmergency = context.getSharedPreferences("Emergency", Context.MODE_PRIVATE);
         emergencyFall = sharedPreferencesEmergency.getBoolean("EmergencyFallVal", true);
-        emergencyBPM = sharedPreferencesEmergency.getBoolean("EmergencyBPMVal", true);
-        emergencyStress = sharedPreferencesEmergency.getBoolean("EmergencyStressVal", true);
-        emergencyBodytemp = sharedPreferencesEmergency.getBoolean("EmergencyBodytempVal", true);
-        emergencyBreatheFreq = sharedPreferencesEmergency.getBoolean("EmergencyBreatheVal", true);
         emergencyCancelTime = sharedPreferencesEmergency.getString("EmergencyCancelTime", "5");
     }
 

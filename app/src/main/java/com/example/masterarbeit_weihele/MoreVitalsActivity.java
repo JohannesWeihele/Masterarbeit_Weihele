@@ -5,9 +5,10 @@ import android.os.Bundle;
 
 import com.example.masterarbeit_weihele.databinding.ActivityMorevitalsBinding;
 
-public class MoreVitalsActivity extends Activity {
+public class MoreVitalsActivity extends WakeLockActivity {
 
     private ActivityMorevitalsBinding binding;
+    private final BasicFunctions basicFunctions = new BasicFunctions(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,8 +17,8 @@ public class MoreVitalsActivity extends Activity {
         binding = ActivityMorevitalsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        BasicFunctions basics = new BasicFunctions(this);
-        basics.hideDownIcon();
+        basicFunctions.hideDownIcon();
+        basicFunctions.changeActivityOnRotation(EnvironmentActivity.class, OptionsActivity.class);
 
     }
 }

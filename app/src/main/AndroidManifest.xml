@@ -11,12 +11,18 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="com.samsung.android.health.permission.read" />
+    <uses-permission android:name="android.permission.BODY_SENSORS" />
 
 
     <uses-permission android:name="android.permission.health.READ_HEART_RATE"/>
     <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/>
     <uses-permission android:name="android.permission.health.READ_STEPS"/>
     <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
+    
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <uses-feature android:name="android.hardware.type.watch" />
 
@@ -101,6 +107,22 @@
 
         <activity android:name=".WakeLockActivity"
             android:label="Basics" />
+
+        <service
+            android:name=".VitalsService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name=".SelfCommunicationService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name=".AllCommunicationService"
+            android:enabled="true"
+            android:exported="false" />
+
     </application>
 
 </manifest>

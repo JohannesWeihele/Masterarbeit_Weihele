@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
+    android:id="@+id/rotation_wrapper"
     android:padding="@dimen/box_inset_layout_padding"
     tools:context=".EnvironmentActivity"
     tools:deviceIds="wear">
@@ -26,6 +27,7 @@
 
         <TextView
             style="@style/headline"
+            android:id="@+id/headline"
             android:text="Umgebung"
             />
 
