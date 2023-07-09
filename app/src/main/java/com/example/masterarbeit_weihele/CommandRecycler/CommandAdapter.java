@@ -1,6 +1,7 @@
 package com.example.masterarbeit_weihele.CommandRecycler;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -113,8 +114,6 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandViewHolder> {
 
     }
 
-
-
     public void removeItem(int position) {
         items.remove(position);
         notifyItemRemoved(position);
@@ -136,5 +135,29 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandViewHolder> {
         commandButton.setBackground(incompleted_drawable);
         commandButton.setPaintFlags(commandButton.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         moveItemToFront(position);
+    }
+
+    public void saveItemStates() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("ItemStates", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        for (int i = 0; i < items.size(); i++) {
+            Command_Item item = items.get(i);
+            editor.putBoolean("item_" + i, item.getIsFocused());
+        }
+
+        editor.apply();
+    }
+
+    public void restoreItemStates() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("ItemStates", Context.MODE_PRIVATE);
+
+        for (int i = 0; i < items.size(); i++) {
+            Command_Item item = items.get(i);
+            boolean isFocused = sharedPreferences.getBoolean("item_" + i, false);
+            item.setIsFocused(isFocused);
+        }
+
+        notifyDataSetChanged();
     }
 }

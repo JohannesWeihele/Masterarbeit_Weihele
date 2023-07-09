@@ -1,15 +1,17 @@
 package com.example.masterarbeit_weihele;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,12 +19,6 @@ import com.example.masterarbeit_weihele.CommunicationRecycler.ContactAdapter;
 import com.example.masterarbeit_weihele.CommunicationRecycler.Contact_Item;
 import com.example.masterarbeit_weihele.CommunicationRecycler.OnContactClickListener;
 import com.example.masterarbeit_weihele.databinding.ActivityCommunicationBinding;
-
-import io.agora.rtc2.Constants;
-import io.agora.rtc2.IRtcEngineEventHandler;
-import io.agora.rtc2.RtcEngine;
-import io.agora.rtc2.RtcEngineConfig;
-import io.agora.rtc2.ChannelMediaOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,74 +29,17 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
     private final BasicFunctions basicFunctions = new BasicFunctions(this);
 
     private TextView communicationOption;
-    private final String appId = "ee00498594584239a1280448fe70713c";
-    private String channelName = "1234";
-    private String token = "007eJxTYDjM/OV/wiFnr7jyVJ1ejgiRHb+mXxA84Fr+/RdDyKclRSYKDKmpBgYmlhamliamFiZGxpaJhkYWBiYmFmmp5gbmhsbJ14uXpjQEMjJwvDRgZWSAQBCfhcHQyNiEgQEAMnAd0g==";
+    private TextView buttonTextView;
+    private Button pushToTalkButton;
+    private String channelName = "";
+    private String currentToken = "";
+    private String leaderChannelToken = "007eJxTYFh3LsL6/K2bE/xnlR3y3H3BIzjWReyhpu00H5djanazDpcqMKSmGhiYWFqYWpqYWpgYGVsmGhpZGJiYWKSlmhuYGxonl3SsSmkIZGTosjzBysgAgSA+L4NrZl5xYklVTmpmSWoRAwMAbmMicA==";
+    private String allChannelToken = "007eJxTYFCQCvXyEHEtWBDcr+O4JvDF/mnbE1eqv9LM6/1yXCzgwzYFhtRUAwMTSwtTSxNTCxMjY8tEQyMLAxMTi7RUcwNzQ+PkuI5VKQ2BjAynqyeyMjJAIIjPwuCYk5PKwAAAt5sdtw==";
+    private boolean pushToTalkPreference = true;
 
-    //--> HashMap mit "ChannelName, Token" und dann für jeden Namen eins bereitstellen + einsatzleiter + Alle
-    private int uid = 0;
-    private boolean isJoined = false;
-    private RtcEngine agoraEngine;
-    private static final int PERMISSION_REQ_ID = 22;
-    private static final String[] REQUESTED_PERMISSIONS =
-            {
-                    Manifest.permission.RECORD_AUDIO
-            };
-
-    private boolean checkSelfPermission()
-    {
-        if (ContextCompat.checkSelfPermission(this, REQUESTED_PERMISSIONS[0]) !=  PackageManager.PERMISSION_GRANTED)
-        {
-            return false;
-        }
-        return true;
-    }
-
-    void showMessage(String message) {
-        runOnUiThread(() ->
-                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show());
-    }
-
-
-    private void setupVoiceSDKEngine() {
-        try {
-            RtcEngineConfig config = new RtcEngineConfig();
-            config.mContext = getBaseContext();
-            config.mAppId = appId;
-            config.mEventHandler = mRtcEventHandler;
-            agoraEngine = RtcEngine.create(config);
-        } catch (Exception e) {
-            throw new RuntimeException("Check the error.");
-        }
-    }
-
-    private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
-        @Override
-        // Listen for the remote user joining the channel.
-        public void onUserJoined(int uid, int elapsed) {
-            runOnUiThread(()->Toast.makeText(getApplicationContext(), "User joined", Toast.LENGTH_SHORT).show());
-        }
-
-        @Override
-        public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
-            // Successfully joined a channel
-            isJoined = true;
-            showMessage("Joined Channel " + channel);
-        }
-
-        @Override
-        public void onUserOffline(int uid, int reason) {
-            // Listen for remote users leaving the channel
-            showMessage("Remote user offline " + uid + " " + reason);
-        }
-
-        @Override
-        public void onLeaveChannel(RtcStats 	stats) {
-            // Listen for the local user leaving the channel
-            isJoined = false;
-        }
-    };
-
+    private CommunicationService communicationService;
+    private CommunicationService.CommunicationBinder communicationBinder;
+    private boolean isCommunicationServiceBound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,42 +48,34 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
         binding = ActivityCommunicationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if (!checkSelfPermission()) {
-            ActivityCompat.requestPermissions(this, REQUESTED_PERMISSIONS, PERMISSION_REQ_ID);
-        }
-
-        setupVoiceSDKEngine();
         basicFunctions.changeActivityOnRotation(NavigationActivity.class, EnvironmentActivity.class);
-    }
 
-    private void joinChannel() {
-        ChannelMediaOptions options = new ChannelMediaOptions();
-        options.autoSubscribeAudio = true;
-        // Set both clients as the BROADCASTER.
-        options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
-        // Set the channel profile as BROADCASTING.
-        options.channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
-
-        // Join the channel with a temp token.
-        // You need to specify the user ID yourself, and ensure that it is unique in the channel.
-        agoraEngine.joinChannel(token, channelName, uid, options);
+        Intent communicationServiceIntent = new Intent(this, CommunicationService.class);
+        bindService(communicationServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     public void communicationClick(View v){
         Button clickedButton = (Button) v;
-         communicationOption = findViewById(R.id.communcation_option_text);
+        communicationOption = findViewById(R.id.communcation_option_text);
+
         switch (clickedButton.getTag().toString()){
             case "communication_btn_contactall":
+                channelName = "Alle";
+                currentToken = allChannelToken;
                 setContentView(R.layout.activity_communication_talk);
+                setupPushToTalk();
                 communicationOption = findViewById(R.id.communcation_option_text);
                 communicationOption.setText("An Alle");
-                joinChannel();
+                communicationService.joinChannel(channelName, currentToken);
                 break;
             case "communication_btn_contactleader":
+                channelName = "Einsatzleiter";
+                currentToken = leaderChannelToken;
                 setContentView(R.layout.activity_communication_talk);
+                setupPushToTalk();
                 communicationOption = findViewById(R.id.communcation_option_text);
                 communicationOption.setText("An Einsatzleiter");
-                joinChannel();
+                communicationService.joinChannel(channelName, currentToken);
                 break;
             case "communication_btn_contact":
                 setContentView(R.layout.activity_communication_contact);
@@ -154,11 +85,40 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        pushToTalkPreference = communicationService.getPushToTalkPreference();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    public void setupPushToTalk(){
+        buttonTextView = findViewById(R.id.communication_btn_Text);
+        pushToTalkButton = findViewById(R.id.pushToTalk_Btn);
+
+        if(pushToTalkPreference){
+            buttonTextView.setText("Push To Talk");
+            pushToTalkButton.setOnTouchListener((v, event) -> {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    communicationService.muteMicrophon(false);
+                } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    communicationService.muteMicrophon(true);
+                }
+                return false;
+            });
+        } else {
+            buttonTextView.setText("Jetzt Sprechen");
+        }
+    }
+
+    @Override
     public void onContactClick(Contact_Item contact) {
+        channelName = contact.getContact_name();
+        currentToken = contact.getToken();
         setContentView(R.layout.activity_communication_talk);
+        setupPushToTalk();
         communicationOption = findViewById(R.id.communcation_option_text);
         communicationOption.setText(contact.getContact_name());
-        joinChannel();
+        communicationService.joinChannel(channelName, currentToken);
     }
 
     public void createRecycler(){
@@ -166,6 +126,9 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
         TextView noContactsView = findViewById(R.id.no_contacts_textview);
 
         List<Contact_Item> items = new ArrayList<>();
+        items.add(new Contact_Item("Jonas", "007eJxTYPDmvHaNYeZS+QdNn5K/brCfuT+YuZjtgODizpkR6x+uPbZLgSE11cDAxNLC1NLE1MLEyNgy0dDIwsDExCIt1dzA3NA4eW3PqpSGQEYGHi4nVkYGCATxWRm88vMSixkYAHoWHwM="));
+        items.add(new Contact_Item("Sabrina", "007eJxTYFjP5/VqQ0F9waq66sd3lVjUXlcpzjvr0seXPfnKjBv/a/IUGFJTDQxMLC1MLU1MLUyMjC0TDY0sDExMLNJSzQ3MDY2T9/esSmkIZGTo/pLNzMgAgSA+O0NwYlJRZl4iAwMA4EkhTQ=="));
+        items.add(new Contact_Item("Alex", "007eJxTYOiU57hSxZfcri61b/HPgz8lHhs6ZVSmqcY2f4pjirz654ICQ2qqgYGJpYWppYmphYmRsWWioZGFgYmJRVqquYG5oXHyxZ5VKQ2BjAwG6pdYGBkgEMRnYXDMSa1gYAAA8LweDA=="));
 
         if(items.size() != 0){
             noContactsView.setVisibility(View.GONE);
@@ -179,13 +142,7 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
 
     protected void onDestroy() {
         super.onDestroy();
-        agoraEngine.leaveChannel();
-
-        // Destroy the engine in a sub-thread to avoid congestion
-        new Thread(() -> {
-            RtcEngine.destroy();
-            agoraEngine = null;
-        }).start();
+        unbindService(serviceConnection);
     }
 
     @Override
@@ -194,7 +151,18 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
         super.onBackPressed();
     }
 
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            communicationBinder = (CommunicationService.CommunicationBinder) service;
+            communicationService = communicationBinder.getService();
+            isCommunicationServiceBound = true;
+            communicationService.updatePreferences();
+            pushToTalkPreference = communicationService.getPushToTalkPreference();
+        }
 
-
-
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
 }

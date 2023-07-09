@@ -227,6 +227,7 @@ public class NavigationActivity extends AppCompatActivity implements OnMapReadyC
             fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
                 if (location != null) {
                     LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    System.out.println("Ficken " + currentLatLng);
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f));
                 }
             });
@@ -286,6 +287,8 @@ public class NavigationActivity extends AppCompatActivity implements OnMapReadyC
         if (lastMarker != null) {
             lastMarker.remove();
             lastPolyline.remove();
+            lastMarker = null;
+            Toast.makeText(getApplicationContext(), "Marker entfernt", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getApplicationContext(), "kein Marker gesetzt", Toast.LENGTH_SHORT).show();
         }

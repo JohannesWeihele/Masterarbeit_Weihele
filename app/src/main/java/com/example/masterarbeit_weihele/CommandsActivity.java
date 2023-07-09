@@ -20,6 +20,7 @@ import java.util.List;
 public class CommandsActivity extends WakeLockActivity {
 
     private ActivityCommandsBinding binding;
+    CommandAdapter adapter;
     private final BasicFunctions basicFunctions = new BasicFunctions(this);
 
     @Override
@@ -31,6 +32,7 @@ public class CommandsActivity extends WakeLockActivity {
         basicFunctions.changeActivityOnRotation(VitalsActivity.class, EmergencyActivity.class);
 
         createRecycler();
+        adapter.restoreItemStates();
     }
 
     public void createRecycler(){
@@ -45,7 +47,7 @@ public class CommandsActivity extends WakeLockActivity {
         if(items.size() != 0){
             noCommandsView.setVisibility(View.GONE);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            CommandAdapter adapter = new CommandAdapter(getApplicationContext(), items, recyclerView);
+            adapter = new CommandAdapter(getApplicationContext(), items, recyclerView);
             CommandItemTouchHelperCallback touchHelperCallback = new CommandItemTouchHelperCallback(adapter);
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelperCallback);
             adapter.setItemTouchHelper(itemTouchHelper);
@@ -53,5 +55,11 @@ public class CommandsActivity extends WakeLockActivity {
         } else {
             noCommandsView.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        adapter.saveItemStates();
     }
 }

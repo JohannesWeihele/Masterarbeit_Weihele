@@ -40,12 +40,13 @@ public class EmergencyActivity extends WakeLockActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferencesVals.getEmergencyPreferenceVals();
 
         binding = ActivityEmergencyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         basicFunctions.changeActivityOnRotation(CommandsActivity.class, NavigationActivity.class);
 
-        checkAccountPreferences();
+        checkPreferences();
 
         Intent intent = getIntent();
         isVitalsEmergency = intent.getBooleanExtra("isVitalsEmergency", false);
@@ -62,7 +63,7 @@ public class EmergencyActivity extends WakeLockActivity {
 
         Intent intent = getIntent();
         isVitalsEmergency = intent.getBooleanExtra("isVitalsEmergency", false);
-        checkAccountPreferences();
+        checkPreferences();
 
         IntentFilter intentFilter = new IntentFilter("HEART_RATE_UPDATE");
         registerReceiver(heartRateReceiver, intentFilter);
@@ -149,9 +150,7 @@ public class EmergencyActivity extends WakeLockActivity {
         PreferenceCountDown = Integer.valueOf(sharedPreferencesVals.emergencyCancelTime);
     }
 
-    public void checkAccountPreferences(){
-        sharedPreferencesVals.getVitalPreferenceVals();
-        sharedPreferencesVals.getEmergencyPreferenceVals();
+    public void checkPreferences(){
         PreferenceCountDown = Integer.valueOf(sharedPreferencesVals.emergencyCancelTime);
         System.out.println(PreferenceCountDown);
 

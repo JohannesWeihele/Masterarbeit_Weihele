@@ -21,8 +21,17 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+
+        android:layout_height="match_parent"
         android:layout_marginTop="20dp">
+
+        <Button
+            android:id="@+id/pushToTalk_Btn"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:background="@null">
+        </Button>
+
 
         <TextView
             android:id="@+id/communcation_option_text"
@@ -41,6 +50,7 @@
             android:text="Alle kontaktieren"/>
 
         <TextView
+            android:id="@+id/communication_btn_Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"

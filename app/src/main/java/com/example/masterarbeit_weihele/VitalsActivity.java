@@ -42,11 +42,11 @@ public class VitalsActivity extends WakeLockActivity {
         setContentView(binding.getRoot());
         basicFunctions.changeActivityOnRotation(FunctionsActivity.class, CommandsActivity.class);
 
-        checkAccountPreferences();
+        checkPreferences();
 
     }
 
-    public void checkAccountPreferences(){
+    public void checkPreferences(){
         sharedPreferencesVals.getVitalPreferenceVals();
 
         FrameLayout BPMView = findViewById(R.id.vitals_bpm_wrapper);
@@ -90,7 +90,7 @@ public class VitalsActivity extends WakeLockActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        checkAccountPreferences();
+        checkPreferences();
 
         IntentFilter intentFilter = new IntentFilter("HEART_RATE_UPDATE");
         registerReceiver(heartRateReceiver, intentFilter);

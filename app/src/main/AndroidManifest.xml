@@ -114,12 +114,7 @@
             android:exported="false" />
 
         <service
-            android:name=".SelfCommunicationService"
-            android:enabled="true"
-            android:exported="false" />
-
-        <service
-            android:name=".AllCommunicationService"
+            android:name=".CommunicationService"
             android:enabled="true"
             android:exported="false" />
 

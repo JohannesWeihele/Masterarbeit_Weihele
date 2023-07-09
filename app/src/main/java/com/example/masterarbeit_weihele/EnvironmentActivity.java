@@ -1,18 +1,18 @@
 package com.example.masterarbeit_weihele;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
+import com.example.masterarbeit_weihele.WeatherData.WeatherApiInterface;
+import com.example.masterarbeit_weihele.WeatherData.WeatherConditionData;
+import com.example.masterarbeit_weihele.WeatherData.WeatherData;
+import com.example.masterarbeit_weihele.WeatherData.WeatherResponse;
 import com.example.masterarbeit_weihele.databinding.ActivityEnvironmentBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -60,7 +60,7 @@ public class EnvironmentActivity extends WakeLockActivity {
 
         System.out.println(position_long);
         System.out.println(position_lat);
-        WeatherApiService apiService = retrofit.create(WeatherApiService.class);
+        WeatherApiInterface apiService = retrofit.create(WeatherApiInterface.class);
         Call<WeatherResponse> call = apiService.getWeatherData(position_lat, position_long, "0e9ad80a98bb47d3df5444d62e712be3");
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
@@ -69,7 +69,7 @@ public class EnvironmentActivity extends WakeLockActivity {
                     WeatherResponse weatherResponse = response.body();
                     if (weatherResponse != null) {
                         WeatherData weatherData = weatherResponse.getWeatherData();
-                        WeatherCondition[] weatherConditions = weatherResponse.getWeatherConditions();
+                        WeatherConditionData[] weatherConditions = weatherResponse.getWeatherConditions();
 
                         float temperature_kelvin = weatherData.getTemperature();
                         temperature = temperature_kelvin - 273.15f;

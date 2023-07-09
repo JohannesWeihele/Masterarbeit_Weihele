@@ -1,8 +1,8 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.WeatherData;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Wind {
+public class WindData {
 
     @SerializedName("speed")
     private float speed;

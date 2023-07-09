@@ -60,6 +60,7 @@ public class OptionsActivity extends WakeLockActivity {
 
     public void getAccountVals(){
         sharedPreferencesVals.getAccountPreferenceVals();
+
         EditText nameView = findViewById(R.id.options_accountName);
         EditText ageView = findViewById(R.id.options_accountAge);
         EditText bodysizeView = findViewById(R.id.options_accountBodysize);
@@ -108,7 +109,6 @@ public class OptionsActivity extends WakeLockActivity {
         sharedPreferencesVals.getCommunicationPreferenceVals();
 
         Switch pushToTalk = findViewById(R.id.options_communication_switch);
-
         pushToTalk.setChecked(sharedPreferencesVals.pushToTalkVal);
     }
 

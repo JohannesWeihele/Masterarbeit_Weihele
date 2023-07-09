@@ -18,8 +18,7 @@ public class FunctionsActivity extends WakeLockActivity {
     private ActivityFunctionsBinding binding;
     BasicFunctions basicFunctions = new BasicFunctions(this);
     private Intent vitalsServiceIntent;
-    private Intent allServiceIntent;
-    private Intent selfServiceIntent;
+    private Intent communicationServiceIntent;
     private static final int PERMISSION_REQ_ID = 22;
     private static final String[] REQUESTED_PERMISSIONS = {
             Manifest.permission.RECORD_AUDIO
@@ -41,7 +40,8 @@ public class FunctionsActivity extends WakeLockActivity {
         if (!checkSelfPermission()) {
             ActivityCompat.requestPermissions(this, REQUESTED_PERMISSIONS, PERMISSION_REQ_ID);
         } else {
-            startCommunicationService();
+            communicationServiceIntent = new Intent(this, CommunicationService.class);
+            startService(communicationServiceIntent);
         }
     }
 
@@ -49,22 +49,10 @@ public class FunctionsActivity extends WakeLockActivity {
         return ContextCompat.checkSelfPermission(this, REQUESTED_PERMISSIONS[0]) == PackageManager.PERMISSION_GRANTED;
     }
 
-    private void startCommunicationService() {
-
-        selfServiceIntent = new Intent(this, SelfCommunicationService.class);
-        startService(selfServiceIntent);
-
-        allServiceIntent = new Intent(this, AllCommunicationService.class);
-        startService(allServiceIntent);
-
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         stopService(vitalsServiceIntent);
-        stopService(allServiceIntent);
-        stopService(selfServiceIntent);
     }
 
     public void functionClick(View v){

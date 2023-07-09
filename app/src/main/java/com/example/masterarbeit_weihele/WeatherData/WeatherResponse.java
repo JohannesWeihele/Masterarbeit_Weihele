@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.WeatherData;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -8,20 +8,20 @@ public class WeatherResponse {
     private WeatherData weatherData;
 
     @SerializedName("wind")
-    private Wind wind;
+    private WindData wind;
 
     @SerializedName("weather")
-    private WeatherCondition[] weatherConditions;
+    private WeatherConditionData[] weatherConditions;
 
     public WeatherData getWeatherData() {
         return weatherData;
     }
 
-    public Wind getWind() {
+    public WindData getWind() {
         return wind;
     }
 
-    public WeatherCondition[] getWeatherConditions() {
+    public WeatherConditionData[] getWeatherConditions() {
         return weatherConditions;
     }
 

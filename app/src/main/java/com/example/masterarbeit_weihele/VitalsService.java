@@ -32,7 +32,7 @@ public class VitalsService extends Service implements SensorEventListener {
     private Sensor heartRateSensor;
     private Vibrator vibrator;
 
-    private SharedPreferencesVals sharedPreferencesVals;
+    private SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
     private int heartRate;
     private boolean isHeartRateApplied;
     private int critMinHeartRate;
@@ -40,9 +40,9 @@ public class VitalsService extends Service implements SensorEventListener {
 
     private boolean isToastShown = false;
     private boolean isEmergencyActivated = false;
-    private boolean isFirstReading = true;
     private Handler handler;
     private Runnable vitalsCheckRunnable;
+    private long lastCriticalValsCheckTime = System.currentTimeMillis();
     private Toast toast;
 
     public VitalsService() {
@@ -54,6 +54,15 @@ public class VitalsService extends Service implements SensorEventListener {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         heartRateSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        handler = new Handler();
+        vitalsCheckRunnable = new Runnable() {
+            @Override
+            public void run() {
+                checkCriticalVitals();
+                handler.postDelayed(this, 30000);
+            }
+        };
     }
 
     @Override
@@ -71,9 +80,7 @@ public class VitalsService extends Service implements SensorEventListener {
 
     private void startMonitoring() {
 
-        sharedPreferencesVals = new SharedPreferencesVals(this);
-        sharedPreferencesVals.getVitalPreferenceVals();
-        checkSharedPreferencesVals();
+        checkPreferences();
 
         if (heartRateSensor != null && isHeartRateApplied) {
             sensorManager.registerListener(this, heartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
@@ -83,7 +90,7 @@ public class VitalsService extends Service implements SensorEventListener {
         }
     }
 
-    private void checkSharedPreferencesVals(){
+    private void checkPreferences(){
         SharedPreferences sharedPreferences = getSharedPreferences("Vitals", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -148,19 +155,18 @@ public class VitalsService extends Service implements SensorEventListener {
                 heartRate = (int) event.values[0];
                 Log.d(TAG, "Heart rate: " + heartRate);
 
-                if(isFirstReading){
-                    handler = new Handler();
-                    vitalsCheckRunnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            checkCriticalVitals();
-                        }
-                    };
+                long currentTime = System.currentTimeMillis();
 
-                    handler.postDelayed(vitalsCheckRunnable, 20000);
-                } else {
-                    checkCriticalVitals();
+                System.out.println("Herzfrequenz-Check: " + (currentTime - lastCriticalValsCheckTime));
+                if (currentTime - lastCriticalValsCheckTime >= 30000) {
+
+                    if (handler != null && vitalsCheckRunnable != null && !handler.hasCallbacks(vitalsCheckRunnable)) {
+                        handler.post(vitalsCheckRunnable);
+                    }
+
+                    lastCriticalValsCheckTime = currentTime;
                 }
+
 
                 Intent intent = new Intent("HEART_RATE_UPDATE");
                 intent.putExtra("heartRate", heartRate);
