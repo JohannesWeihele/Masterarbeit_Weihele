@@ -1,9 +1,9 @@
 package com.example.masterarbeit_weihele.Recycler.CommandRecycler;
 
 public class Command_Item {
-    String command_name;
-    Boolean isCompleted = false;
-    Boolean isFocused = false;
+    private String command_name;
+    private Boolean isCompleted = false;
+    private Boolean isFocused = false;
 
     public Command_Item(String command_name, boolean isCompleted, boolean isFocused) {
         this.command_name = command_name;

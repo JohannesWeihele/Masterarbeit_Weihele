@@ -40,19 +40,25 @@ import java.util.Objects;
 
 public class NavigationActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener, GoogleMap.OnInfoWindowLongClickListener {
 
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    //Basics
+    private ActivityNavigationBinding binding;
     private final BasicFunctions basicFunctions = new BasicFunctions(this);
 
-    private ActivityNavigationBinding binding;
-    private MapView mapView;
+    //Variables
     private GoogleMap googleMap;
     private LatLng selectedMarkerLatLng;
     private Marker lastMarker;
     private Polyline lastPolyline;
-    List<Marker> clientMarkers = new ArrayList<>();
-    HashMap<String, LatLng> clientPositions = new HashMap<>();
-    private String emergencyName = "Sabrina";
+    private List<Marker> clientMarkers = new ArrayList<>();
+    private HashMap<String, LatLng> clientPositions = new HashMap<>();
     private Vibrator vibrator;
+
+    //Views
+    private MapView mapView;
+
+    //Prefix
+    private static final int PREF_LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final String PREF_EMERGENCY_NAME ="Sabrina";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,40 +73,20 @@ public class NavigationActivity extends AppCompatActivity implements OnMapReadyC
         mapView.getMapAsync(this);
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
-
-    @Override
-    public void onMapReady(GoogleMap map) {
-        googleMap = map;
-        setupMap();
-        googleMap.setOnMapLongClickListener(this);
-        googleMap.setOnInfoWindowLongClickListener(this);
-        getUserPosition();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PREF_LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    googleMap.setMyLocationEnabled(true);
+                }
+            } else {
+                Toast.makeText(this, "Standortberechtigung wurde abgelehnt.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void setupMap() {
@@ -110,21 +96,39 @@ public class NavigationActivity extends AppCompatActivity implements OnMapReadyC
             googleMap.getUiSettings().setRotateGesturesEnabled(true);
             getClientPositions();
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PREF_LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    googleMap.setMyLocationEnabled(true);
+    //Hier zukünftig die Daten alle paar Sekunden vom Server gefetched werden, um die aktueller Position anderer Nutzer darzustellen
+    private void getClientPositions(){
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+        clientPositions.put("Jonas", new LatLng(37.421606238636436, -122.08620999008417));
+        clientPositions.put("Sabrina", new LatLng(37.42012362454773, -122.08417184650897));
+        clientPositions.put("Alex", new LatLng(37.41985042413669, -122.0768279582262));
+
+        for (Map.Entry<String, LatLng> entry : clientPositions.entrySet()) {
+            Marker marker = googleMap.addMarker(markerOptions.position(entry.getValue()).title(entry.getKey()));
+            clientMarkers.add(marker);
+            marker.setInfoWindowAnchor(0.5f, 1.0f);
+        }
+    }
+
+    private void getUserPosition(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            googleMap.setMyLocationEnabled(true);
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+                if (location != null) {
+                    LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f));
                 }
-            } else {
-                Toast.makeText(this, "Standortberechtigung wurde abgelehnt.", Toast.LENGTH_SHORT).show();
-            }
+            });
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PREF_LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
 
@@ -150,10 +154,52 @@ public class NavigationActivity extends AppCompatActivity implements OnMapReadyC
         showDistanceToSelectedMarker();
     }
 
+    @Override
+    public void onInfoWindowLongClick(@NonNull Marker marker) {
+        if (lastMarker != null) {
+            lastMarker.remove();
+            lastPolyline.remove();
+        }
+
+        MarkerOptions markerOptions = new MarkerOptions().position(marker.getPosition());
+        lastMarker = googleMap.addMarker(markerOptions);
+        selectedMarkerLatLng = marker.getPosition();
+        calculateShortestPath();
+
+        showDistanceToSelectedMarker();
+    }
+
+    private void showDistanceToSelectedMarker() {
+        if (selectedMarkerLatLng != null) {
+            Location selectedLocation = new Location("");
+            selectedLocation.setLatitude(selectedMarkerLatLng.latitude);
+            selectedLocation.setLongitude(selectedMarkerLatLng.longitude);
+
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+                if (location != null) {
+                    Location currentLocation = new Location("");
+                    currentLocation.setLatitude(location.getLatitude());
+                    currentLocation.setLongitude(location.getLongitude());
+
+                    float distance = currentLocation.distanceTo(selectedLocation) / 1000;
+                    String distanceText = String.format("%.2f km", distance);
+
+                    Toast.makeText(NavigationActivity.this, "Entfernung zum Marker: " + distanceText, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
     private void calculateShortestPath() {
         if (selectedMarkerLatLng != null) {
             FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
@@ -175,85 +221,12 @@ public class NavigationActivity extends AppCompatActivity implements OnMapReadyC
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(endLatLng, 15f));
     }
 
-    private void showDistanceToSelectedMarker() {
-        if (selectedMarkerLatLng != null) {
-            Location selectedLocation = new Location("");
-            selectedLocation.setLatitude(selectedMarkerLatLng.latitude);
-            selectedLocation.setLongitude(selectedMarkerLatLng.longitude);
-
-            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-                if (location != null) {
-                    Location currentLocation = new Location("");
-                    currentLocation.setLatitude(location.getLatitude());
-                    currentLocation.setLongitude(location.getLongitude());
-
-                    float distance = currentLocation.distanceTo(selectedLocation) / 1000;
-                    String distanceText = String.format("%.2f km", distance);
-
-                    Toast.makeText(NavigationActivity.this, "Entfernung zum Marker: " + distanceText, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
-
-    private void getClientPositions(){
-
-        //HIER CLIENTDATEN VOM SERVER ABFRAGEN
-
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-
-        clientPositions.put("Jonas", new LatLng(37.421606238636436, -122.08620999008417));
-        clientPositions.put("Sabrina", new LatLng(37.42012362454773, -122.08417184650897));
-        clientPositions.put("Alex", new LatLng(37.41985042413669, -122.0768279582262));
-
-        for (Map.Entry<String, LatLng> entry : clientPositions.entrySet()) {
-            Marker marker = googleMap.addMarker(markerOptions.position(entry.getValue()).title(entry.getKey()));
-            clientMarkers.add(marker);
-            marker.setInfoWindowAnchor(0.5f, 1.0f);
-        }
-    }
-
-    private void getUserPosition(){
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            googleMap.setMyLocationEnabled(true);
-            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-                if (location != null) {
-                    LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    System.out.println("Ficken " + currentLatLng);
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f));
-                }
-            });
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-        }
-    }
-
-    @Override
-    public void onInfoWindowLongClick(@NonNull Marker marker) {
-        if (lastMarker != null) {
-            lastMarker.remove();
-            lastPolyline.remove();
-        }
-
-        MarkerOptions markerOptions = new MarkerOptions().position(marker.getPosition());
-        lastMarker = googleMap.addMarker(markerOptions);
-        selectedMarkerLatLng = marker.getPosition();
-        calculateShortestPath();
-        showDistanceToSelectedMarker();
-    }
-
     public void getEmergency(View view) {
 
         MarkerOptions emergencyMarkerOptions = new MarkerOptions();
 
         for (Marker m : clientMarkers) {
-            if (Objects.equals(m.getTitle(), emergencyName)) {
+            if (Objects.equals(m.getTitle(), PREF_EMERGENCY_NAME)) {
                 m.remove();
                 emergencyMarkerOptions.position(m.getPosition());
                 emergencyMarkerOptions.title(m.getTitle());
@@ -261,23 +234,9 @@ public class NavigationActivity extends AppCompatActivity implements OnMapReadyC
                 Marker emergencyMarker = googleMap.addMarker(emergencyMarkerOptions);
                 emergencyMarker.showInfoWindow();
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(m.getPosition(), 15.0f));
-                Toast.makeText(getApplicationContext(), emergencyName + " benötigt Hilfe!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), PREF_EMERGENCY_NAME + " benötigt Hilfe!", Toast.LENGTH_SHORT).show();
                 vibrate();
             }
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        basicFunctions.loadActivity(FunctionsActivity.class);
-        super.onBackPressed();
-    }
-
-    private void vibrate() {
-        if (vibrator != null && vibrator.hasVibrator()) {
-            long[] pattern = {0, 2000, 500, 2000, 500, 2000, 500};
-            int repeat = -1;
-            vibrator.vibrate(pattern, repeat);
         }
     }
 
@@ -290,6 +249,53 @@ public class NavigationActivity extends AppCompatActivity implements OnMapReadyC
         } else {
             Toast.makeText(getApplicationContext(), "kein Marker gesetzt", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void vibrate() {
+        if (vibrator != null && vibrator.hasVibrator()) {
+            long[] pattern = {0, 2000, 500, 2000, 500, 2000, 500};
+            int repeat = -1;
+            vibrator.vibrate(pattern, repeat);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        basicFunctions.loadActivity(FunctionsActivity.class);
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
+        setupMap();
+        googleMap.setOnMapLongClickListener(this);
+        googleMap.setOnInfoWindowLongClickListener(this);
+        getUserPosition();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 
 }

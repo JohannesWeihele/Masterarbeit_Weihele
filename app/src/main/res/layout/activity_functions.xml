@@ -50,7 +50,7 @@
                     android:id="@+id/function_btn_vitals"
                     style="@style/function_Button"
                     android:tag="function_btn_vitals"
-                    android:onClick="functionClick"
+                    android:onClick="onFunctionButtonClick"
                     android:text="Vitalparameter"/>
 
                 <ImageView
@@ -63,7 +63,7 @@
                     style="@style/function_Button"
                     android:layout_marginTop="60dp"
                     android:tag="function_btn_communication"
-                    android:onClick="functionClick"
+                    android:onClick="onFunctionButtonClick"
                     android:text="Kommunikation"/>
 
                 <ImageView
@@ -76,7 +76,7 @@
                     style="@style/function_Button"
                     android:layout_marginTop="120dp"
                     android:tag="function_btn_emergency"
-                    android:onClick="functionClick"
+                    android:onClick="onFunctionButtonClick"
                     android:text="Notfall"/>
 
                 <ImageView
@@ -89,7 +89,7 @@
                     style="@style/function_Button"
                     android:layout_marginTop="180dp"
                     android:tag="function_btn_commands"
-                    android:onClick="functionClick"
+                    android:onClick="onFunctionButtonClick"
                     android:text="Befehle"/>
 
                 <ImageView
@@ -102,7 +102,7 @@
                     style="@style/function_Button"
                     android:layout_marginTop="240dp"
                     android:tag="function_btn_navigation"
-                    android:onClick="functionClick"
+                    android:onClick="onFunctionButtonClick"
                     android:text="Navigation"/>
 
                 <ImageView
@@ -115,7 +115,7 @@
                     style="@style/function_Button"
                     android:layout_marginTop="300dp"
                     android:tag="function_btn_more_vitals"
-                    android:onClick="functionClick"
+                    android:onClick="onFunctionButtonClick"
                     android:text="Weitere Vitalopt."/>
 
                 <ImageView
@@ -128,7 +128,7 @@
                     style="@style/function_Button"
                     android:layout_marginTop="360dp"
                     android:tag="function_btn_environment"
-                    android:onClick="functionClick"
+                    android:onClick="onFunctionButtonClick"
                     android:text="Umgebung"/>
 
                 <ImageView
@@ -141,7 +141,7 @@
                     style="@style/function_Button"
                     android:layout_marginTop="420dp"
                     android:tag="function_btn_options"
-                    android:onClick="functionClick"
+                    android:onClick="onFunctionButtonClick"
                     android:text="Einstellungen"/>
 
                 <ImageView

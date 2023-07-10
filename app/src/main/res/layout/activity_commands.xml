@@ -55,8 +55,6 @@
             android:layout_marginTop="-20dp"
             android:layout_gravity="center"/>
 
-
-
     </FrameLayout>
 
 </androidx.wear.widget.BoxInsetLayout>

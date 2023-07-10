@@ -26,7 +26,6 @@ public class SharedPreferencesVals {
     private String vitalsStressMaxVal = "";
     private String vitalsBodyTempMaxVal = "";
     private String vitalsBreatheFreqMaxVal = "";
-    private int calculatedMaxBPMFrequence;
 
     public SharedPreferencesVals(Context context) {
         this.context = context;

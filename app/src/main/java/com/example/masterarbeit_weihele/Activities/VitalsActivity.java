@@ -17,12 +17,17 @@ import com.example.masterarbeit_weihele.databinding.ActivityVitalsBinding;
 
 public class VitalsActivity extends WakeLockActivity {
 
-    private int heartRate;
-    private boolean isToastShown = false;
-
+    //Basics
     private ActivityVitalsBinding binding;
     private SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
     private final BasicFunctions basicFunctions = new BasicFunctions(this);
+
+    //Variables
+    private boolean isToastShown = false;
+
+    //Prefixes
+    private static final String PREF_HEARTRATE_UPDATE = "HEART_RATE_UPDATE";
+    private static final String PREF_INTENT_HEARTRATE_EXTRA = "heartRate";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,19 +55,11 @@ public class VitalsActivity extends WakeLockActivity {
         setViewVisibility(BreatheFreqView, sharedPreferencesVals.getVitalsBreatheFreq());
     }
 
-    public void setViewVisibility(FrameLayout view, Boolean isVisible){
-        if(isVisible){
-            view.setVisibility(View.VISIBLE);
-        } else {
-            view.setVisibility(View.GONE);
-        }
-    }
-
-    private BroadcastReceiver heartRateReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver heartRateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals("HEART_RATE_UPDATE")) {
-                heartRate = intent.getIntExtra("heartRate", 0);
+            if (intent.getAction().equals(PREF_HEARTRATE_UPDATE)) {
+                int heartRate = intent.getIntExtra(PREF_INTENT_HEARTRATE_EXTRA, 0);
 
                 TextView heartRateView = findViewById(R.id.vitals_bpm);
                 heartRateView.setText(String.valueOf(heartRate));
@@ -77,12 +74,20 @@ public class VitalsActivity extends WakeLockActivity {
         }
     };
 
+    public void setViewVisibility(FrameLayout view, Boolean isVisible){
+        if(isVisible){
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         getPreferences();
 
-        IntentFilter intentFilter = new IntentFilter("HEART_RATE_UPDATE");
+        IntentFilter intentFilter = new IntentFilter(PREF_HEARTRATE_UPDATE);
         registerReceiver(heartRateReceiver, intentFilter);
     }
 

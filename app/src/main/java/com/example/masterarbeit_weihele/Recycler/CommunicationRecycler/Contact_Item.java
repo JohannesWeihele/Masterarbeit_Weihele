@@ -1,9 +1,9 @@
 package com.example.masterarbeit_weihele.Recycler.CommunicationRecycler;
 
 public class Contact_Item {
-    String contact_name;
-    String contact_id;
-    String token;
+    private String contact_name;
+    private String contact_id;
+    private String token;
 
     public Contact_Item(String contactName, String token) {
 

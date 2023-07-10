@@ -20,12 +20,14 @@ import com.example.masterarbeit_weihele.Classes.SharedPreferencesVals;
 
 public class VitalsService extends Service implements SensorEventListener {
 
-    private static final String TAG = "HeartRateService";
+    //Basics
+    private final SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
+
+    //Variables
     private SensorManager sensorManager;
     private Sensor heartRateSensor;
     private Vibrator vibrator;
 
-    private SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
     private int heartRate;
     private boolean isHeartRateApplied;
     private int critMinHeartRate;
@@ -38,6 +40,17 @@ public class VitalsService extends Service implements SensorEventListener {
     private long lastCriticalValsCheckTime = System.currentTimeMillis();
     private Toast toast;
 
+    //Prefixes
+    private static final String TAG = "HeartRateService";
+    private static final String PREF_HEARTRATE_UPDATE = "HEART_RATE_UPDATE";
+    private static final String PREF_INTENT_HEARTRATE_EXTRA = "heartRate";
+    private static final String PREF_INTENT_EMERCENCY_EXTRA = "isVitalsEmergency";
+
+    private static final String PREFS_VITALS = "Vitals";
+    private static final String PREFS_VITALS_BPM = "VitalsBPMVal";
+    private static final String PREFS_VITALS_BPM_MIN = "VitalsBPMMinVal";
+    private static final String PREFS_VITALS_BPM_MAX = "VitalsBPMMaxVal";
+
     public VitalsService() {
     }
 
@@ -47,6 +60,7 @@ public class VitalsService extends Service implements SensorEventListener {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         heartRateSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        sharedPreferencesVals.fetchVitalPreferenceVals();
 
         handler = new Handler();
         vitalsCheckRunnable = new Runnable() {
@@ -64,13 +78,6 @@ public class VitalsService extends Service implements SensorEventListener {
         return START_STICKY;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        stopMonitoring();
-        stopSelf();
-    }
-
     private void startMonitoring() {
 
         getPreferences();
@@ -83,26 +90,31 @@ public class VitalsService extends Service implements SensorEventListener {
         }
     }
 
+    private void stopMonitoring() {
+        sensorManager.unregisterListener(this);
+        Log.d(TAG, "Herzfrequenz-Übermittlung gestoppt");
+    }
+
     private void getPreferences(){
-        SharedPreferences sharedPreferences = getSharedPreferences("Vitals", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_VITALS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         if(sharedPreferencesVals.getVitalsBPMMinVal() == null || sharedPreferencesVals.getVitalsBPMMinVal().isEmpty()){
-            editor.putString("VitalsBPMMinVal", "35");
+            editor.putString(PREFS_VITALS_BPM_MIN, "35");
             critMinHeartRate = 35;
         } else {
             critMinHeartRate = Integer.parseInt(sharedPreferencesVals.getVitalsBPMMinVal());
         }
 
         if (sharedPreferencesVals.getVitalsBPMMaxVal() == null || sharedPreferencesVals.getVitalsBPMMaxVal().isEmpty()){
-            editor.putString("VitalsBPMMaxVal", "180");
+            editor.putString(PREFS_VITALS_BPM_MAX, "180");
             critMaxHeartRate = 180;
         } else {
             critMaxHeartRate = Integer.parseInt(sharedPreferencesVals.getVitalsBPMMaxVal());
         }
 
         if (sharedPreferencesVals.getVitalsBPM() == null){
-            editor.putBoolean("VitalsBPMVal", true);
+            editor.putBoolean(PREFS_VITALS_BPM, true);
             isHeartRateApplied = true;
         } else {
             isHeartRateApplied = sharedPreferencesVals.getVitalsBPM();
@@ -122,7 +134,7 @@ public class VitalsService extends Service implements SensorEventListener {
 
                 isEmergencyActivated = true;
                 Intent intent = new Intent(VitalsService.this, EmergencyActivity.class);
-                intent.putExtra("isVitalsEmergency", true);
+                intent.putExtra(PREF_INTENT_EMERCENCY_EXTRA, true);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
@@ -133,13 +145,6 @@ public class VitalsService extends Service implements SensorEventListener {
             }
         }
     }
-
-
-    private void stopMonitoring() {
-        sensorManager.unregisterListener(this);
-        Log.d(TAG, "Herzfrequenz-Übermittlung gestoppt");
-    }
-
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -160,13 +165,21 @@ public class VitalsService extends Service implements SensorEventListener {
                     lastCriticalValsCheckTime = currentTime;
                 }
 
-
-                Intent intent = new Intent("HEART_RATE_UPDATE");
-                intent.putExtra("heartRate", heartRate);
+                Intent intent = new Intent(PREF_HEARTRATE_UPDATE);
+                intent.putExtra(PREF_INTENT_HEARTRATE_EXTRA, heartRate);
                 sendBroadcast(intent);
             }
         } else {
             stopMonitoring();
+        }
+    }
+
+    private void vibrate() {
+
+        if (vibrator.hasVibrator()) {
+            long[] pattern = {0, 2000, 500, 2000, 500, 2000, 500};
+            int repeat = -1;
+            vibrator.vibrate(pattern, repeat);
         }
     }
 
@@ -179,12 +192,10 @@ public class VitalsService extends Service implements SensorEventListener {
         return null;
     }
 
-    private void vibrate() {
-
-        if (vibrator.hasVibrator()) {
-            long[] pattern = {0, 2000, 500, 2000, 500, 2000, 500};
-            int repeat = -1;
-            vibrator.vibrate(pattern, repeat);
-        }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopMonitoring();
+        stopSelf();
     }
 }

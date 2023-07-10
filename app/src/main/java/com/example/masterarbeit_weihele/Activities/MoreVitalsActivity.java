@@ -9,6 +9,7 @@ import com.example.masterarbeit_weihele.databinding.ActivityMorevitalsBinding;
 
 public class MoreVitalsActivity extends WakeLockActivity {
 
+    //Basics
     private ActivityMorevitalsBinding binding;
     private final BasicFunctions basicFunctions = new BasicFunctions(this);
 
@@ -20,8 +21,8 @@ public class MoreVitalsActivity extends WakeLockActivity {
         setContentView(binding.getRoot());
 
         basicFunctions.hideDownIcon();
-        basicFunctions.changeActivityOnRotation(EnvironmentActivity.class, OptionsActivity.class);
         basicFunctions.getTime();
+        basicFunctions.changeActivityOnRotation(EnvironmentActivity.class, OptionsActivity.class);
     }
 
     public void onMoreVitalsClick(View view){

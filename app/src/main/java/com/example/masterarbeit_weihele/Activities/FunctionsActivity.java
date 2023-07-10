@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -18,10 +19,11 @@ import com.example.masterarbeit_weihele.databinding.ActivityFunctionsBinding;
 
 public class FunctionsActivity extends WakeLockActivity {
 
+    //Basics
     private ActivityFunctionsBinding binding;
-    BasicFunctions basicFunctions = new BasicFunctions(this);
-    private Intent vitalsServiceIntent;
-    private Intent communicationServiceIntent;
+    private final BasicFunctions basicFunctions = new BasicFunctions(this);
+
+    //Prefixes
     private static final int PERMISSION_REQ_ID = 22;
     private static final String[] REQUESTED_PERMISSIONS = {
             Manifest.permission.RECORD_AUDIO
@@ -38,13 +40,17 @@ public class FunctionsActivity extends WakeLockActivity {
         basicFunctions.changeActivityOnRotation(OptionsActivity.class, VitalsActivity.class);
         basicFunctions.getTime();
 
-        vitalsServiceIntent = new Intent(this, VitalsService.class);
+        initializeServices();
+    }
+
+    public void initializeServices(){
+        Intent vitalsServiceIntent = new Intent(this, VitalsService.class);
         startService(vitalsServiceIntent);
 
         if (!checkSelfPermission()) {
             ActivityCompat.requestPermissions(this, REQUESTED_PERMISSIONS, PERMISSION_REQ_ID);
         } else {
-            communicationServiceIntent = new Intent(this, CommunicationService.class);
+            Intent communicationServiceIntent = new Intent(this, CommunicationService.class);
             startService(communicationServiceIntent);
         }
     }
@@ -53,13 +59,7 @@ public class FunctionsActivity extends WakeLockActivity {
         return ContextCompat.checkSelfPermission(this, REQUESTED_PERMISSIONS[0]) == PackageManager.PERMISSION_GRANTED;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        stopService(vitalsServiceIntent);
-    }
-
-    public void functionClick(View v){
+    public void onFunctionButtonClick(View v){
         Button clickedButton = (Button) v;
         Class<? extends Activity> activity = null;
 
@@ -89,13 +89,17 @@ public class FunctionsActivity extends WakeLockActivity {
                 activity = OptionsActivity.class;
                 break;
         }
-
         basicFunctions.loadActivity(activity);
     }
 
     @Override
     public void onBackPressed() {
-        System.out.println("Zurück nicht möglich");
+        basicFunctions.loadActivity(MainActivity.class);
+        super.onBackPressed();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

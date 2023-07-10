@@ -1,6 +1,7 @@
 package com.example.masterarbeit_weihele.Activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -28,16 +29,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EnvironmentActivity extends WakeLockActivity {
 
+    //Basics
     private ActivityEnvironmentBinding binding;
     private final BasicFunctions basicFunctions = new BasicFunctions(this);
 
+    //Variables
     private float temperature = 0.0f;
     private float humidity = 0.0f;
     private float wind_speed = 0.0f;
     private double position_long = 0.0f;
     private double position_lat = 0.0f;
     private String icon = "01d";
-    private static final int PERMISSION_REQUEST_CODE = 1;
+
+    //Prefixes
+    private static final String PREF_API_KEY = "0e9ad80a98bb47d3df5444d62e712be3";
+    private static final String PREF_ICON_LINK = "https://openweathermap.org/img/w/";
+    private static final String PREF_DATA_LINK = "https://api.openweathermap.org/data/2.5/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,26 +52,22 @@ public class EnvironmentActivity extends WakeLockActivity {
 
         binding = ActivityEnvironmentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         basicFunctions.changeActivityOnRotation(CommunicationActivity.class, MoreVitalsActivity.class);
         basicFunctions.getTime();
 
         getCurrentLocation();
-        Toast.makeText(this, "lädt Daten...", Toast.LENGTH_LONG).show();
-
     }
 
 
     public void getEnvironmentVals() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.openweathermap.org/data/2.5/")
+                .baseUrl(PREF_DATA_LINK)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-
-        System.out.println(position_long);
-        System.out.println(position_lat);
         WeatherApiInterface apiService = retrofit.create(WeatherApiInterface.class);
-        Call<WeatherResponse> call = apiService.getWeatherData(position_lat, position_long, "0e9ad80a98bb47d3df5444d62e712be3");
+        Call<WeatherResponse> call = apiService.getWeatherData(position_lat, position_long, PREF_API_KEY);
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
@@ -85,33 +88,40 @@ public class EnvironmentActivity extends WakeLockActivity {
                         setEnvironmentVals(temperature, humidity, wind_speed, icon);
                     }
                 } else {
-                    System.out.println("Keine Wetterdaten gefunden.");
+                    Toast.makeText(getApplicationContext(), "Keine Wetterdaten gefunden.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<WeatherResponse> call, Throwable t) {
-                System.out.println("Keine Wetterrückmeldung erhalten.");
+                Toast.makeText(getApplicationContext(), "Keine Wetterrückmeldung erhalten.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    @SuppressLint("DefaultLocale")
     public void setEnvironmentVals(float temperature, float humidity, float wind_speed, String icon) {
+        String iconURL = PREF_ICON_LINK + icon + ".png";
+
         TextView temperatureView = findViewById(R.id.environment_temperature);
         TextView humidityView = findViewById(R.id.environment_humidity);
         TextView windSpeedView = findViewById(R.id.environment_windspeed);
         ImageView weatherIconView = findViewById(R.id.environment_weatherIcon);
-        String iconURL = "https://openweathermap.org/img/w/" + icon + ".png";
 
         temperatureView.setText(String.format("%.1f", temperature));
         humidityView.setText(String.format("%.0f", humidity));
         windSpeedView.setText(String.format("%.0f", wind_speed));
+
         Picasso.get().load(iconURL).error(R.drawable.rain_icon).fit().into(weatherIconView);
     }
 
     private void getCurrentLocation() {
+        Toast.makeText(this, "lädt Daten...", Toast.LENGTH_LONG).show();
+
         FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
@@ -121,7 +131,7 @@ public class EnvironmentActivity extends WakeLockActivity {
                     position_long = location.getLongitude();
                     getEnvironmentVals();
                 } else {
-                    System.out.println("Position konnte nicht ermittelt werden.");
+                    Toast.makeText(getApplicationContext(), "Position konnte nicht ermittelt werden.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

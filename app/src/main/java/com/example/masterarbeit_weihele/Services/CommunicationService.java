@@ -26,24 +26,27 @@ import io.agora.rtc2.RtcEngineConfig;
 
 public class CommunicationService extends Service {
 
+    //Basics
     private final IBinder binder = new CommunicationBinder();
     private ActivityCommunicationBinding binding;
+    private final SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
+
+    //Variables
     private Handler handler;
-    private SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
-    private String AppId = "ee00498594584239a1280448fe70713c";
-    private String selfToken = "007eJxTYFjmuHeSuq53hIgNd0mGZr4vo+V1+9ySOTr/FDY9W8Via6XAkJpqYGBiaWFqaWJqYWJkbJloaGRhYGJikZZqbmBuaJy8p3tVSkMgI8OU820MjFAI4nMweOVnJOblpRYzMAAAeHEdLg==";
+    private RtcEngine agoraEngine;
     private String selfChannelName = "";
-    private String currentChannelName = "";
     private boolean isInChannel = false;
     private boolean pushToTalkPreference = false;
 
-    private RtcEngine agoraEngine;
-
+    //Prefixes
+    private static final String PREF_APPID = "ee00498594584239a1280448fe70713c";
     private static final int PERMISSION_REQ_ID = 22;
     private static final String[] REQUESTED_PERMISSIONS = {
             Manifest.permission.RECORD_AUDIO
     };
 
+    //Tokens
+    private String SELFTOKEN = "007eJxTYFjmuHeSuq53hIgNd0mGZr4vo+V1+9ySOTr/FDY9W8Via6XAkJpqYGBiaWFqaWJqYWJkbJloaGRhYGJikZZqbmBuaJy8p3tVSkMgI8OU820MjFAI4nMweOVnJOblpRYzMAAAeHEdLg==";
 
     public class CommunicationBinder extends Binder {
         public CommunicationService getService() {
@@ -54,12 +57,25 @@ public class CommunicationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
         updatePreferences();
         selfChannelName = sharedPreferencesVals.getAccountName();
         pushToTalkPreference = sharedPreferencesVals.getPushToTalkVal();
 
         setupAgoraEngine();
         handler = new Handler(Looper.getMainLooper());
+    }
+
+    private void setupAgoraEngine() {
+        try {
+            RtcEngineConfig configSelf = new RtcEngineConfig();
+            configSelf.mContext = getBaseContext();
+            configSelf.mAppId = PREF_APPID;
+            configSelf.mEventHandler = mRtcEventHandler;
+            agoraEngine = RtcEngine.create(configSelf);
+        } catch (Exception e) {
+            throw new RuntimeException("Check the error.");
+        }
     }
 
     @Override
@@ -73,28 +89,9 @@ public class CommunicationService extends Service {
         if (!checkSelfPermission()) {
             ActivityCompat.requestPermissions((Activity) getApplicationContext(), REQUESTED_PERMISSIONS, PERMISSION_REQ_ID);
         }
-        joinChannel(selfChannelName, selfToken, pushToTalkPreference);
+        joinChannel(selfChannelName, SELFTOKEN, pushToTalkPreference);
 
         return START_STICKY;
-    }
-
-    private boolean checkSelfPermission() {
-        if (ContextCompat.checkSelfPermission(this, REQUESTED_PERMISSIONS[0]) != PackageManager.PERMISSION_GRANTED) {
-            return false;
-        }
-        return true;
-    }
-
-    private void setupAgoraEngine() {
-        try {
-            RtcEngineConfig configSelf = new RtcEngineConfig();
-            configSelf.mContext = getBaseContext();
-            configSelf.mAppId = AppId;
-            configSelf.mEventHandler = mRtcEventHandler;
-            agoraEngine = RtcEngine.create(configSelf);
-        } catch (Exception e) {
-            throw new RuntimeException("Check the error.");
-        }
     }
 
     private final IAgoraEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
@@ -134,8 +131,11 @@ public class CommunicationService extends Service {
         }
     };
 
-    private void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    private boolean checkSelfPermission() {
+        if (ContextCompat.checkSelfPermission(this, REQUESTED_PERMISSIONS[0]) != PackageManager.PERMISSION_GRANTED) {
+            return false;
+        }
+        return true;
     }
 
     public void joinChannel(String channelName, String token, boolean pushToTalkPreference) {
@@ -149,11 +149,10 @@ public class CommunicationService extends Service {
             isInChannel = false;
         }
 
-        currentChannelName = channelName;
         agoraEngine.joinChannel(token, channelName, 0, optionsSelf);
         isInChannel = true;
 
-        if(currentChannelName.equals(selfChannelName)){
+        if(channelName.equals(selfChannelName)){
             agoraEngine.muteLocalAudioStream(false);
         } else {
             if(pushToTalkPreference){
@@ -166,13 +165,17 @@ public class CommunicationService extends Service {
 
     }
 
+    public void updatePreferences(){
+        sharedPreferencesVals.fetchAccountPreferenceVals();
+        sharedPreferencesVals.fetchCommunicationPreferenceVals();
+    }
+
     public void muteMicrophon(boolean isMuted){
         agoraEngine.muteLocalAudioStream(isMuted);
     }
 
-    public void updatePreferences(){
-        sharedPreferencesVals.fetchAccountPreferenceVals();
-        sharedPreferencesVals.fetchCommunicationPreferenceVals();
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

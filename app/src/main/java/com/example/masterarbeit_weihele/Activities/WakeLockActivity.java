@@ -5,11 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.WindowManager;
-import android.widget.TextView;
-
-import com.example.masterarbeit_weihele.R;
-
-import java.util.Calendar;
 
 public abstract class WakeLockActivity extends Activity {
 
@@ -19,7 +14,7 @@ public abstract class WakeLockActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "myapp:DeinWakeLockTag");
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "myapp:WakeLockTag");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 

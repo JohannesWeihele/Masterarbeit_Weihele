@@ -30,22 +30,28 @@ import java.util.List;
 
 public class CommunicationActivity extends WakeLockActivity implements OnContactClickListener {
 
+    //Basics
     private ActivityCommunicationBinding binding;
     private final BasicFunctions basicFunctions = new BasicFunctions(this);
-    private SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
+    private final SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
 
-    private TextView communicationOption;
-    private TextView buttonTextView;
-    private Button pushToTalkButton;
+    //Service
+    private CommunicationService communicationService;
+
+    //Variables
     private String channelName = "";
     private String currentToken = "";
-    private String leaderChannelToken = "007eJxTYFh3LsL6/K2bE/xnlR3y3H3BIzjWReyhpu00H5djanazDpcqMKSmGhiYWFqYWpqYWpgYGVsmGhpZGJiYWKSlmhuYGxonl3SsSmkIZGTosjzBysgAgSA+L4NrZl5xYklVTmpmSWoRAwMAbmMicA==";
-    private String allChannelToken = "007eJxTYFCQCvXyEHEtWBDcr+O4JvDF/mnbE1eqv9LM6/1yXCzgwzYFhtRUAwMTSwtTSxNTCxMjY8tEQyMLAxMTi7RUcwNzQ+PkuI5VKQ2BjAynqyeyMjJAIIjPwuCYk5PKwAAAt5sdtw==";
     private boolean pushToTalkPreference = true;
 
-    private CommunicationService communicationService;
-    private CommunicationService.CommunicationBinder communicationBinder;
-    private boolean isCommunicationServiceBound = false;
+    //Views
+    private TextView communicationOption;
+
+    //Tokens
+    private static final String ALL_CHANNEL_TOKEN = "007eJxTYFCQCvXyEHEtWBDcr+O4JvDF/mnbE1eqv9LM6/1yXCzgwzYFhtRUAwMTSwtTSxNTCxMjY8tEQyMLAxMTi7RUcwNzQ+PkuI5VKQ2BjAynqyeyMjJAIIjPwuCYk5PKwAAAt5sdtw==";
+    private static final String LEADER_CHANNEL_TOKEN = "007eJxTYFh3LsL6/K2bE/xnlR3y3H3BIzjWReyhpu00H5djanazDpcqMKSmGhiYWFqYWpqYWpgYGVsmGhpZGJiYWKSlmhuYGxonl3SsSmkIZGTosjzBysgAgSA+L4NrZl5xYklVTmpmSWoRAwMAbmMicA==";
+    private static final String USER_JONAS_CHANNEL_TOKEN = "007eJxTYPDmvHaNYeZS+QdNn5K/brCfuT+YuZjtgODizpkR6x+uPbZLgSE11cDAxNLC1NLE1MLEyNgy0dDIwsDExCIt1dzA3NA4eW3PqpSGQEYGHi4nVkYGCATxWRm88vMSixkYAHoWHwM=";
+    private static final String USER_SABRINA_CHANNEL_TOKEN = "007eJxTYFjP5/VqQ0F9waq66sd3lVjUXlcpzjvr0seXPfnKjBv/a/IUGFJTDQxMLC1MLU1MLUyMjC0TDY0sDExMLNJSzQ3MDY2T9/esSmkIZGTo/pLNzMgAgSA+O0NwYlJRZl4iAwMA4EkhTQ==";
+    private static final String USER3_ALEX_CHANNEL_TOKEN = "007eJxTYOiU57hSxZfcri61b/HPgz8lHhs6ZVSmqcY2f4pjirz654ICQ2qqgYGJpYWppYmphYmRsWWioZGFgYmJRVqquYG5oXHyxZ5VKQ2BjAwG6pdYGBkgEMRnYXDMSa1gYAAA8LweDA==";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +63,44 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
         basicFunctions.changeActivityOnRotation(NavigationActivity.class, EnvironmentActivity.class);
         basicFunctions.getTime();
 
+        sharedPreferencesVals.fetchCommunicationPreferenceVals();
+
         Intent communicationServiceIntent = new Intent(this, CommunicationService.class);
         bindService(communicationServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
 
-        sharedPreferencesVals.fetchCommunicationPreferenceVals();
+    private final ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            CommunicationService.CommunicationBinder communicationBinder = (CommunicationService.CommunicationBinder) service;
+            communicationService = communicationBinder.getService();
+            boolean isCommunicationServiceBound = true;
+            communicationService.updatePreferences();
+            pushToTalkPreference = sharedPreferencesVals.getPushToTalkVal();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
+
+    public void createRecycler(){
+        RecyclerView recyclerView = findViewById(R.id.contact_recyclerview);
+        TextView noContactsView = findViewById(R.id.no_contacts_textview);
+
+        List<Contact_Item> items = new ArrayList<>();
+        items.add(new Contact_Item("Jonas", USER_JONAS_CHANNEL_TOKEN));
+        items.add(new Contact_Item("Sabrina", USER_SABRINA_CHANNEL_TOKEN));
+        items.add(new Contact_Item("Alex", USER3_ALEX_CHANNEL_TOKEN));
+
+        if(items.size() != 0){
+            noContactsView.setVisibility(View.GONE);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            ContactAdapter adapter = new ContactAdapter(getApplicationContext(), items, this);
+            recyclerView.setAdapter(adapter);
+        } else {
+            noContactsView.setVisibility(View.VISIBLE);
+        }
     }
 
     public void communicationClick(View v){
@@ -70,7 +110,7 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
         switch (clickedButton.getTag().toString()){
             case "communication_btn_contactall":
                 channelName = "Alle";
-                currentToken = allChannelToken;
+                currentToken = ALL_CHANNEL_TOKEN;
                 setTalkLayout();
                 communicationOption = findViewById(R.id.communcation_option_text);
                 communicationOption.setText("An Alle");
@@ -78,7 +118,7 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
                 break;
             case "communication_btn_contactleader":
                 channelName = "Einsatzleiter";
-                currentToken = leaderChannelToken;
+                currentToken = LEADER_CHANNEL_TOKEN;
                 setTalkLayout();
                 communicationOption = findViewById(R.id.communcation_option_text);
                 communicationOption.setText("An Einsatzleiter");
@@ -92,18 +132,20 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        sharedPreferencesVals.fetchCommunicationPreferenceVals();
-        pushToTalkPreference = sharedPreferencesVals.getPushToTalkVal();
+    public void onContactClick(Contact_Item contact) {
+        channelName = contact.getContact_name();
+        currentToken = contact.getToken();
+        setTalkLayout();
+        communicationOption = findViewById(R.id.communcation_option_text);
+        communicationOption.setText(contact.getContact_name());
+        communicationService.joinChannel(channelName, currentToken, pushToTalkPreference);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     public void setTalkLayout(){
         setContentView(R.layout.activity_communication_talk);
-        buttonTextView = findViewById(R.id.communication_btn_Text);
-        pushToTalkButton = findViewById(R.id.pushToTalk_Btn);
+        TextView buttonTextView = findViewById(R.id.communication_btn_Text);
+        Button pushToTalkButton = findViewById(R.id.pushToTalk_Btn);
         BoxInsetLayout talk_button_background = findViewById(R.id.talk_button_background);
 
         if(pushToTalkPreference){
@@ -124,57 +166,21 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
     }
 
     @Override
-    public void onContactClick(Contact_Item contact) {
-        channelName = contact.getContact_name();
-        currentToken = contact.getToken();
-        setTalkLayout();
-        communicationOption = findViewById(R.id.communcation_option_text);
-        communicationOption.setText(contact.getContact_name());
-        communicationService.joinChannel(channelName, currentToken, pushToTalkPreference);
+    public void onBackPressed() {
+        basicFunctions.loadActivity(FunctionsActivity.class);
+        super.onBackPressed();
     }
 
-    public void createRecycler(){
-        RecyclerView recyclerView = findViewById(R.id.contact_recyclerview);
-        TextView noContactsView = findViewById(R.id.no_contacts_textview);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        List<Contact_Item> items = new ArrayList<>();
-        items.add(new Contact_Item("Jonas", "007eJxTYPDmvHaNYeZS+QdNn5K/brCfuT+YuZjtgODizpkR6x+uPbZLgSE11cDAxNLC1NLE1MLEyNgy0dDIwsDExCIt1dzA3NA4eW3PqpSGQEYGHi4nVkYGCATxWRm88vMSixkYAHoWHwM="));
-        items.add(new Contact_Item("Sabrina", "007eJxTYFjP5/VqQ0F9waq66sd3lVjUXlcpzjvr0seXPfnKjBv/a/IUGFJTDQxMLC1MLU1MLUyMjC0TDY0sDExMLNJSzQ3MDY2T9/esSmkIZGTo/pLNzMgAgSA+O0NwYlJRZl4iAwMA4EkhTQ=="));
-        items.add(new Contact_Item("Alex", "007eJxTYOiU57hSxZfcri61b/HPgz8lHhs6ZVSmqcY2f4pjirz654ICQ2qqgYGJpYWppYmphYmRsWWioZGFgYmJRVqquYG5oXHyxZ5VKQ2BjAwG6pdYGBkgEMRnYXDMSa1gYAAA8LweDA=="));
-
-        if(items.size() != 0){
-            noContactsView.setVisibility(View.GONE);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            ContactAdapter adapter = new ContactAdapter(getApplicationContext(), items, this);
-            recyclerView.setAdapter(adapter);
-        } else {
-            noContactsView.setVisibility(View.VISIBLE);
-        }
+        sharedPreferencesVals.fetchCommunicationPreferenceVals();
+        pushToTalkPreference = sharedPreferencesVals.getPushToTalkVal();
     }
 
     protected void onDestroy() {
         super.onDestroy();
         unbindService(serviceConnection);
     }
-
-    @Override
-    public void onBackPressed() {
-        basicFunctions.loadActivity(FunctionsActivity.class);
-        super.onBackPressed();
-    }
-
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            communicationBinder = (CommunicationService.CommunicationBinder) service;
-            communicationService = communicationBinder.getService();
-            isCommunicationServiceBound = true;
-            communicationService.updatePreferences();
-            pushToTalkPreference = sharedPreferencesVals.getPushToTalkVal();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-        }
-    };
 }

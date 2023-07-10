@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--___________PERMISSIONS__________-->
+
+    <!--ALLGEMEIN-->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY"/>
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="com.samsung.android.health.permission.read" />
-    <uses-permission android:name="android.permission.BODY_SENSORS" />
-
-
-    <uses-permission android:name="android.permission.health.READ_HEART_RATE"/>
-    <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/>
-    <uses-permission android:name="android.permission.health.READ_STEPS"/>
-    <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
-    
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
-
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-feature android:name="android.hardware.type.watch" />
 
+    <!-- GPS -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- VITALS -->
+    <uses-permission android:name="android.permission.BODY_SENSORS" />
+    <uses-permission android:name="android.permission.health.READ_HEART_RATE"/>
+    <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/>
+    <uses-permission android:name="com.samsung.android.health.permission.read" />
     <queries>
         <package android:name="com.google.android.apps.healthdata" />
     </queries>
+
+
+    <!--__________APPLICATION_____________-->
 
     <application
         android:allowBackup="true"
@@ -36,6 +39,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault">
+
         <uses-library
             android:name="com.google.android.wearable"
             android:required="true" />
@@ -44,22 +48,24 @@
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
 
+        <!--GOOGLE MAPS KEY-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDwM9L-am0A96E6dKj84eYr2Y1xCDHQXzs" />
 
+
+        <!--Activities-->
+
         <activity
             android:name=".Activities.MainActivity"
-            android:exported="true"
-            android:label="@string/app_name">
+            android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
         </activity>
-
 
         <activity
             android:name=".Activities.CreateAccountActivity"
@@ -73,9 +79,11 @@
             android:name=".Activities.VitalsActivity"
             android:label="Vitals"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
             </intent-filter>
+
         </activity>
 
         <activity
@@ -87,7 +95,8 @@
             android:launchMode= "singleInstance"
             android:label="Commands" />
 
-        <activity android:name=".Activities.NavigationActivity"
+        <activity
+            android:name=".Activities.NavigationActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
@@ -108,6 +117,9 @@
 
         <activity android:name=".Activities.WakeLockActivity"
             android:label="Basics" />
+
+
+        <!--Services-->
 
         <service
             android:name=".Services.VitalsService"

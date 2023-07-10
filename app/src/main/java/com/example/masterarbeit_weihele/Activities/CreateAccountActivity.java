@@ -6,10 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.example.masterarbeit_weihele.Classes.BasicFunctions;
@@ -18,8 +15,23 @@ import com.example.masterarbeit_weihele.databinding.ActivityCreateaccountBinding
 
 public class CreateAccountActivity extends WakeLockActivity {
 
+    //Basics
     private ActivityCreateaccountBinding binding;
     private final BasicFunctions basicFunctions = new BasicFunctions(this);
+
+    //Views
+    private EditText nameView;
+    private EditText ageView;
+    private EditText bodysizeView;
+    private EditText bodyweightView;
+
+    //Prefixes
+    private static final String PREFS_ACCOUNT = "Account";
+    private static final String PREFS_ACCOUNTNAME = "accountName";
+    private static final String PREFS_ACCOUNTAGE = "accountAge";
+    private static final String PREFS_ACCOUNTBODYSIZE = "accountBodysize";
+    private static final String PREFS_ACCOUNTBODYWEIGHT = "accountBodyweight";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,59 +39,59 @@ public class CreateAccountActivity extends WakeLockActivity {
 
         binding = ActivityCreateaccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         basicFunctions.getTime();
-
-        hideDownIcon();
-    }
-
-    public void hideDownIcon(){
-        ScrollView createAccountScroll = findViewById(R.id.createAccout_Scroll);
-        ImageView downIcon = findViewById(R.id.down_icon);
-
-        createAccountScroll.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                if (createAccountScroll.getChildAt(0).getBottom() <= (createAccountScroll.getHeight() + createAccountScroll.getScrollY())) {
-                    downIcon.setVisibility(View.GONE);
-                } else {
-                    downIcon.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        basicFunctions.hideDownIcon();
     }
 
     public void createAccount(View v){
-        EditText nameView = findViewById(R.id.accountName);
-        EditText ageView = findViewById(R.id.accountAge);
-        EditText bodysizeView = findViewById(R.id.accountBodysize);
-        EditText bodyweightView = findViewById(R.id.accountBodyweight);
+        nameView = findViewById(R.id.accountName);
+        ageView = findViewById(R.id.accountAge);
+        bodysizeView = findViewById(R.id.accountBodysize);
+        bodyweightView = findViewById(R.id.accountBodyweight);
 
-        if (TextUtils.isEmpty(nameView.getText())
-                || TextUtils.isEmpty(ageView.getText())
-                || TextUtils.isEmpty(bodysizeView.getText())
-                || TextUtils.isEmpty(bodyweightView.getText())) {
-
+        if(!areFieldsFilled(nameView, ageView, bodysizeView, bodyweightView)) {
             Toast.makeText(getApplicationContext(), "Bitte alle Felder ausfüllen", Toast.LENGTH_SHORT).show();
         } else {
-            String accountName = nameView.getText().toString();
-            String accountAge = ageView.getText().toString();
-            String accountBodysize = bodysizeView.getText().toString();
-            String accountBodyweight = bodyweightView.getText().toString();
+            setPreferences();
+            openFunctionsView();
+        }
+    }
 
-            SharedPreferences sharedPreferences = getSharedPreferences("Account", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+    public void openFunctionsView() {
+        Intent intent = new Intent(CreateAccountActivity.this, FunctionsActivity.class);
+        startActivity(intent);
+    }
 
-            editor.putString("accountName", accountName);
-            editor.putString("accountAge", accountAge);
-            editor.putString("accountBodysize", accountBodysize);
-            editor.putString("accountBodyweight", accountBodyweight);
+    public boolean areFieldsFilled(EditText... fields) {
+        for (EditText field : fields) {
+            if (TextUtils.isEmpty(field.getText())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void setPreferences(){
+        String accountName = nameView.getText().toString();
+        String accountAge = ageView.getText().toString();
+        String accountBodysize = bodysizeView.getText().toString();
+        String accountBodyweight = bodyweightView.getText().toString();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_ACCOUNT, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString(PREFS_ACCOUNTNAME, accountName);
+        editor.putString(PREFS_ACCOUNTAGE, accountAge);
+        editor.putString(PREFS_ACCOUNTBODYSIZE, accountBodysize);
+        editor.putString(PREFS_ACCOUNTBODYWEIGHT, accountBodyweight);
+
+        try {
             editor.apply();
-
-            Toast.makeText(getApplicationContext(), "Account wurde angelegt", Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(CreateAccountActivity.this, FunctionsActivity.class);
-            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
+        Toast.makeText(getApplicationContext(), "Account wurde angelegt", Toast.LENGTH_SHORT).show();
     }
 }

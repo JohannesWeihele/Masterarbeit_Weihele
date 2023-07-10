@@ -20,12 +20,21 @@ import java.util.List;
 
 public class CommandsActivity extends WakeLockActivity {
 
+    //Basics
     private ActivityCommandsBinding binding;
-    CommandAdapter adapter;
     private final BasicFunctions basicFunctions = new BasicFunctions(this);
-    SharedPreferences sharedPreferences;
-    boolean containsPreferences;
-    List<Command_Item> items = new ArrayList<>();
+    private SharedPreferences sharedPreferences;
+
+    //Recycler
+    private final List<Command_Item> items = new ArrayList<>();
+    private CommandAdapter adapter;
+    private boolean containsPreferences;
+
+    //Prefixes
+    private static final String PREFS_NAME = "Commands";
+    private static final String ITEM_VALUE_PREFIX = "Item_Value_";
+    private static final String ITEM_COMPLETED_PREFIX = "Item_isCompleted_";
+    private static final String ITEM_FOCUSED_PREFIX = "Item_isFocused_";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +42,12 @@ public class CommandsActivity extends WakeLockActivity {
 
         binding = ActivityCommandsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         basicFunctions.changeActivityOnRotation(VitalsActivity.class, EmergencyActivity.class);
         basicFunctions.getTime();
 
-        sharedPreferences = getSharedPreferences("Commands", Context.MODE_PRIVATE);
-        containsPreferences = sharedPreferences.contains("Item_Value_1");
+        sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        containsPreferences = sharedPreferences.contains(ITEM_VALUE_PREFIX + 1);
 
         createRecycler();
     }
@@ -64,16 +74,14 @@ public class CommandsActivity extends WakeLockActivity {
         }
     }
 
-    //Werden nur einmal benötigt, daher direkter Zugriff statt SharedPreferencesvals
-        public void getPreferences(){
-            for(int i = 0; i < 3; i++){
-                String nameKey = "Item_Value_" + i;
-                String completedKey = "Item_isCompleted_" + i;
-                String focusedKey = "Item_isFocused_" + i;
-                items.add(new Command_Item(sharedPreferences.getString(nameKey, ""), sharedPreferences.getBoolean(completedKey, false), sharedPreferences.getBoolean(focusedKey, false)));
-            }
+    public void getPreferences(){
+        for(int i = 0; i < 3; i++){
+            String nameKey = ITEM_VALUE_PREFIX + i;
+            String completedKey = ITEM_COMPLETED_PREFIX + i;
+            String focusedKey = ITEM_FOCUSED_PREFIX + i;
+            items.add(new Command_Item(sharedPreferences.getString(nameKey, ""), sharedPreferences.getBoolean(completedKey, false), sharedPreferences.getBoolean(focusedKey, false)));
         }
-
+    }
 
     @Override
     protected void onDestroy() {
