@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.Fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,6 +9,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.example.masterarbeit_weihele.R;
 
 public class MyAlertDialogFragment extends DialogFragment {
 

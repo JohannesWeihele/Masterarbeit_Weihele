@@ -1,29 +1,19 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.Activities;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.R;
+import com.example.masterarbeit_weihele.Classes.SharedPreferencesVals;
 import com.example.masterarbeit_weihele.databinding.ActivityVitalsBinding;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class VitalsActivity extends WakeLockActivity {
 
@@ -42,22 +32,22 @@ public class VitalsActivity extends WakeLockActivity {
         setContentView(binding.getRoot());
         basicFunctions.changeActivityOnRotation(FunctionsActivity.class, CommandsActivity.class);
 
-        checkPreferences();
-
+        basicFunctions.getTime();
+        getPreferences();
     }
 
-    public void checkPreferences(){
-        sharedPreferencesVals.getVitalPreferenceVals();
+    public void getPreferences(){
+        sharedPreferencesVals.fetchVitalPreferenceVals();
 
         FrameLayout BPMView = findViewById(R.id.vitals_bpm_wrapper);
         FrameLayout StressView = findViewById(R.id.vitals_stress_wrapper);
         FrameLayout BodyTempView = findViewById(R.id.vitals_bodytemp_wrapper);
         FrameLayout BreatheFreqView = findViewById(R.id.vitals_breathe_freq_wrapper);
 
-        setViewVisibility(BPMView, sharedPreferencesVals.vitalsBPM);
-        setViewVisibility(StressView, sharedPreferencesVals.vitalsStress);
-        setViewVisibility(BodyTempView, sharedPreferencesVals.vitalsBodytemp);
-        setViewVisibility(BreatheFreqView, sharedPreferencesVals.vitalsBreatheFreq);
+        setViewVisibility(BPMView, sharedPreferencesVals.getVitalsBPM());
+        setViewVisibility(StressView, sharedPreferencesVals.getVitalsStress());
+        setViewVisibility(BodyTempView, sharedPreferencesVals.getVitalsBodytemp());
+        setViewVisibility(BreatheFreqView, sharedPreferencesVals.getVitalsBreatheFreq());
     }
 
     public void setViewVisibility(FrameLayout view, Boolean isVisible){
@@ -90,7 +80,7 @@ public class VitalsActivity extends WakeLockActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        checkPreferences();
+        getPreferences();
 
         IntentFilter intentFilter = new IntentFilter("HEART_RATE_UPDATE");
         registerReceiver(heartRateReceiver, intentFilter);

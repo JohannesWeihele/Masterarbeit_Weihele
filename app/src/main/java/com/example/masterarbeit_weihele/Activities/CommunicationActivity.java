@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.Activities;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -14,10 +14,15 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.wear.widget.BoxInsetLayout;
 
-import com.example.masterarbeit_weihele.CommunicationRecycler.ContactAdapter;
-import com.example.masterarbeit_weihele.CommunicationRecycler.Contact_Item;
-import com.example.masterarbeit_weihele.CommunicationRecycler.OnContactClickListener;
+import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.Classes.SharedPreferencesVals;
+import com.example.masterarbeit_weihele.Recycler.CommunicationRecycler.ContactAdapter;
+import com.example.masterarbeit_weihele.Recycler.CommunicationRecycler.Contact_Item;
+import com.example.masterarbeit_weihele.Recycler.CommunicationRecycler.OnContactClickListener;
+import com.example.masterarbeit_weihele.Services.CommunicationService;
+import com.example.masterarbeit_weihele.R;
 import com.example.masterarbeit_weihele.databinding.ActivityCommunicationBinding;
 
 import java.util.ArrayList;
@@ -27,6 +32,7 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
 
     private ActivityCommunicationBinding binding;
     private final BasicFunctions basicFunctions = new BasicFunctions(this);
+    private SharedPreferencesVals sharedPreferencesVals = new SharedPreferencesVals(this);
 
     private TextView communicationOption;
     private TextView buttonTextView;
@@ -49,9 +55,12 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
         setContentView(binding.getRoot());
 
         basicFunctions.changeActivityOnRotation(NavigationActivity.class, EnvironmentActivity.class);
+        basicFunctions.getTime();
 
         Intent communicationServiceIntent = new Intent(this, CommunicationService.class);
         bindService(communicationServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+
+        sharedPreferencesVals.fetchCommunicationPreferenceVals();
     }
 
     public void communicationClick(View v){
@@ -62,20 +71,18 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
             case "communication_btn_contactall":
                 channelName = "Alle";
                 currentToken = allChannelToken;
-                setContentView(R.layout.activity_communication_talk);
-                setupPushToTalk();
+                setTalkLayout();
                 communicationOption = findViewById(R.id.communcation_option_text);
                 communicationOption.setText("An Alle");
-                communicationService.joinChannel(channelName, currentToken);
+                communicationService.joinChannel(channelName, currentToken, pushToTalkPreference);
                 break;
             case "communication_btn_contactleader":
                 channelName = "Einsatzleiter";
                 currentToken = leaderChannelToken;
-                setContentView(R.layout.activity_communication_talk);
-                setupPushToTalk();
+                setTalkLayout();
                 communicationOption = findViewById(R.id.communcation_option_text);
                 communicationOption.setText("An Einsatzleiter");
-                communicationService.joinChannel(channelName, currentToken);
+                communicationService.joinChannel(channelName, currentToken, pushToTalkPreference);
                 break;
             case "communication_btn_contact":
                 setContentView(R.layout.activity_communication_contact);
@@ -87,20 +94,26 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
     @Override
     protected void onResume() {
         super.onResume();
-        pushToTalkPreference = communicationService.getPushToTalkPreference();
+
+        sharedPreferencesVals.fetchCommunicationPreferenceVals();
+        pushToTalkPreference = sharedPreferencesVals.getPushToTalkVal();
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    public void setupPushToTalk(){
+    public void setTalkLayout(){
+        setContentView(R.layout.activity_communication_talk);
         buttonTextView = findViewById(R.id.communication_btn_Text);
         pushToTalkButton = findViewById(R.id.pushToTalk_Btn);
+        BoxInsetLayout talk_button_background = findViewById(R.id.talk_button_background);
 
         if(pushToTalkPreference){
             buttonTextView.setText("Push To Talk");
             pushToTalkButton.setOnTouchListener((v, event) -> {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    talk_button_background.setBackground(getResources().getDrawable(R.drawable.talk_button_pressed));
                     communicationService.muteMicrophon(false);
                 } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    talk_button_background.setBackground(getResources().getDrawable(R.drawable.talk_button));
                     communicationService.muteMicrophon(true);
                 }
                 return false;
@@ -114,11 +127,10 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
     public void onContactClick(Contact_Item contact) {
         channelName = contact.getContact_name();
         currentToken = contact.getToken();
-        setContentView(R.layout.activity_communication_talk);
-        setupPushToTalk();
+        setTalkLayout();
         communicationOption = findViewById(R.id.communcation_option_text);
         communicationOption.setText(contact.getContact_name());
-        communicationService.joinChannel(channelName, currentToken);
+        communicationService.joinChannel(channelName, currentToken, pushToTalkPreference);
     }
 
     public void createRecycler(){
@@ -158,7 +170,7 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
             communicationService = communicationBinder.getService();
             isCommunicationServiceBound = true;
             communicationService.updatePreferences();
-            pushToTalkPreference = communicationService.getPushToTalkPreference();
+            pushToTalkPreference = sharedPreferencesVals.getPushToTalkVal();
         }
 
         @Override

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".CreateAccountActivity"
+    tools:context=".Activities.CreateAccountActivity"
     tools:deviceIds="wear">
 
     <FrameLayout
@@ -15,6 +15,7 @@
         android:textAlignment="center">
 
         <TextView
+            android:id="@+id/time_textView"
             style="@style/time"
             />
     </FrameLayout>
@@ -58,40 +59,40 @@
 
                 <TextView
                     style="@style/EditText_headline"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="65dp"
                     android:text="Alter"/>
 
                 <EditText
                     android:id="@+id/accountAge"
                     style="@style/EditText"
-                    android:layout_marginTop="62dp"
+                    android:layout_marginTop="77dp"
                     android:textSize="12dp"
                     android:inputType="number"
                     android:hint="Alter eingeben"/>
 
                 <TextView
                     style="@style/EditText_headline"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="130dp"
                     android:text="Körpergröße (in cm)"/>
 
                 <EditText
                     android:id="@+id/accountBodysize"
                     style="@style/EditText"
                     android:textSize="12dp"
-                    android:layout_marginTop="112dp"
+                    android:layout_marginTop="145dp"
                     android:inputType="number"
                     android:hint="Körpergröße in cm"/>
 
                 <TextView
                     style="@style/EditText_headline"
-                    android:layout_marginTop="150dp"
+                    android:layout_marginTop="200dp"
                     android:text="Gewicht (in kg)"/>
 
                 <EditText
                     android:id="@+id/accountBodyweight"
                     style="@style/EditText"
                     android:textSize="12dp"
-                    android:layout_marginTop="162dp"
+                    android:layout_marginTop="210dp"
                     android:inputType="number"
                     android:hint="Gewicht in kg"/>
 
@@ -102,7 +103,7 @@
                     android:text="Erstellen"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="210dp"/>
+                    android:layout_marginTop="260dp"/>
 
             </FrameLayout>
 

@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.Activities;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
+import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.R;
 import com.example.masterarbeit_weihele.WeatherData.WeatherApiInterface;
 import com.example.masterarbeit_weihele.WeatherData.WeatherConditionData;
 import com.example.masterarbeit_weihele.WeatherData.WeatherData;
@@ -44,6 +46,7 @@ public class EnvironmentActivity extends WakeLockActivity {
         binding = ActivityEnvironmentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         basicFunctions.changeActivityOnRotation(CommunicationActivity.class, MoreVitalsActivity.class);
+        basicFunctions.getTime();
 
         getCurrentLocation();
         Toast.makeText(this, "lädt Daten...", Toast.LENGTH_LONG).show();

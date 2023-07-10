@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.Activities;
 
 import android.Manifest;
 import android.app.Activity;
@@ -11,6 +11,9 @@ import android.widget.Button;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.Services.CommunicationService;
+import com.example.masterarbeit_weihele.Services.VitalsService;
 import com.example.masterarbeit_weihele.databinding.ActivityFunctionsBinding;
 
 public class FunctionsActivity extends WakeLockActivity {
@@ -33,6 +36,7 @@ public class FunctionsActivity extends WakeLockActivity {
 
         basicFunctions.hideDownIcon();
         basicFunctions.changeActivityOnRotation(OptionsActivity.class, VitalsActivity.class);
+        basicFunctions.getTime();
 
         vitalsServiceIntent = new Intent(this, VitalsService.class);
         startService(vitalsServiceIntent);
@@ -87,6 +91,11 @@ public class FunctionsActivity extends WakeLockActivity {
         }
 
         basicFunctions.loadActivity(activity);
+    }
+
+    @Override
+    public void onBackPressed() {
+        System.out.println("Zurück nicht möglich");
     }
 
 }

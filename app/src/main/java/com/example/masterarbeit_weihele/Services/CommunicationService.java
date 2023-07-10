@@ -1,7 +1,6 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.Services;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
@@ -10,19 +9,17 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.view.MotionEvent;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.masterarbeit_weihele.Classes.SharedPreferencesVals;
 import com.example.masterarbeit_weihele.databinding.ActivityCommunicationBinding;
 
 import io.agora.rtc2.ChannelMediaOptions;
 import io.agora.rtc2.Constants;
 import io.agora.rtc2.IAgoraEventHandler;
-import io.agora.rtc2.IMetadataObserver;
 import io.agora.rtc2.IRtcEngineEventHandler;
 import io.agora.rtc2.RtcEngine;
 import io.agora.rtc2.RtcEngineConfig;
@@ -37,8 +34,8 @@ public class CommunicationService extends Service {
     private String selfToken = "007eJxTYFjmuHeSuq53hIgNd0mGZr4vo+V1+9ySOTr/FDY9W8Via6XAkJpqYGBiaWFqaWJqYWJkbJloaGRhYGJikZZqbmBuaJy8p3tVSkMgI8OU820MjFAI4nMweOVnJOblpRYzMAAAeHEdLg==";
     private String selfChannelName = "";
     private String currentChannelName = "";
-    private boolean pushToTalkPreference = true;
     private boolean isInChannel = false;
+    private boolean pushToTalkPreference = false;
 
     private RtcEngine agoraEngine;
 
@@ -58,8 +55,8 @@ public class CommunicationService extends Service {
     public void onCreate() {
         super.onCreate();
         updatePreferences();
-        selfChannelName = sharedPreferencesVals.accountName;
-        pushToTalkPreference = sharedPreferencesVals.pushToTalkVal;
+        selfChannelName = sharedPreferencesVals.getAccountName();
+        pushToTalkPreference = sharedPreferencesVals.getPushToTalkVal();
 
         setupAgoraEngine();
         handler = new Handler(Looper.getMainLooper());
@@ -76,7 +73,7 @@ public class CommunicationService extends Service {
         if (!checkSelfPermission()) {
             ActivityCompat.requestPermissions((Activity) getApplicationContext(), REQUESTED_PERMISSIONS, PERMISSION_REQ_ID);
         }
-        joinChannel(selfChannelName, selfToken);
+        joinChannel(selfChannelName, selfToken, pushToTalkPreference);
 
         return START_STICKY;
     }
@@ -141,7 +138,7 @@ public class CommunicationService extends Service {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    public void joinChannel(String channelName, String token) {
+    public void joinChannel(String channelName, String token, boolean pushToTalkPreference) {
         ChannelMediaOptions optionsSelf = new ChannelMediaOptions();
         optionsSelf.autoSubscribeAudio = true;
         optionsSelf.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
@@ -173,13 +170,9 @@ public class CommunicationService extends Service {
         agoraEngine.muteLocalAudioStream(isMuted);
     }
 
-    public boolean getPushToTalkPreference(){
-        return pushToTalkPreference;
-    }
-
     public void updatePreferences(){
-        sharedPreferencesVals.getAccountPreferenceVals();
-        sharedPreferencesVals.getCommunicationPreferenceVals();
+        sharedPreferencesVals.fetchAccountPreferenceVals();
+        sharedPreferencesVals.fetchCommunicationPreferenceVals();
     }
 
     @Override

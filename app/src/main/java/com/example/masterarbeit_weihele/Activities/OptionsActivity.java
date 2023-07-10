@@ -1,6 +1,5 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.Activities;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +12,9 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.R;
+import com.example.masterarbeit_weihele.Classes.SharedPreferencesVals;
 import com.example.masterarbeit_weihele.databinding.ActivityOptionsBinding;
 import com.jakewharton.processphoenix.ProcessPhoenix;
 
@@ -32,6 +34,7 @@ public class OptionsActivity extends WakeLockActivity {
 
         basicFunctions.hideDownIcon();
         basicFunctions.changeActivityOnRotation(MoreVitalsActivity.class, FunctionsActivity.class);
+        basicFunctions.getTime();
     }
 
     public void optionClick(View v){
@@ -59,17 +62,17 @@ public class OptionsActivity extends WakeLockActivity {
     }
 
     public void getAccountVals(){
-        sharedPreferencesVals.getAccountPreferenceVals();
+        sharedPreferencesVals.fetchAccountPreferenceVals();
 
         EditText nameView = findViewById(R.id.options_accountName);
         EditText ageView = findViewById(R.id.options_accountAge);
         EditText bodysizeView = findViewById(R.id.options_accountBodysize);
         EditText bodyweightView = findViewById(R.id.options_accountBodyweight);
 
-        nameView.setText(sharedPreferencesVals.accountName);
-        ageView.setText(sharedPreferencesVals.accountAge);
-        bodysizeView.setText(sharedPreferencesVals.accountBodysize);
-        bodyweightView.setText(sharedPreferencesVals.accountBodyweight);
+        nameView.setText(sharedPreferencesVals.getAccountName());
+        ageView.setText(sharedPreferencesVals.getAccountAge());
+        bodysizeView.setText(sharedPreferencesVals.getAccountBodysize());
+        bodyweightView.setText(sharedPreferencesVals.getAccountBodyweight());
     }
 
     public void updateAccountVals(View v) {
@@ -106,10 +109,10 @@ public class OptionsActivity extends WakeLockActivity {
     }
 
     public void getCommunicationVals() {
-        sharedPreferencesVals.getCommunicationPreferenceVals();
+        sharedPreferencesVals.fetchCommunicationPreferenceVals();
 
         Switch pushToTalk = findViewById(R.id.options_communication_switch);
-        pushToTalk.setChecked(sharedPreferencesVals.pushToTalkVal);
+        pushToTalk.setChecked(sharedPreferencesVals.getPushToTalkVal());
     }
 
     public void updateCommunicationVals(View v) {
@@ -127,13 +130,13 @@ public class OptionsActivity extends WakeLockActivity {
     }
 
     public void getEmergencyVals() {
-        sharedPreferencesVals.getEmergencyPreferenceVals();
+        sharedPreferencesVals.fetchEmergencyPreferenceVals();
 
         Switch emergencyFallSwitch = findViewById(R.id.options_emergency_fall_switch);
         EditText emergencyCancelTimeView = findViewById(R.id.options_emergency_cancel_time);
 
-        emergencyFallSwitch.setChecked(sharedPreferencesVals.emergencyFall);
-        emergencyCancelTimeView.setText(sharedPreferencesVals.emergencyCancelTime);
+        emergencyFallSwitch.setChecked(sharedPreferencesVals.getEmergencyFall());
+        emergencyCancelTimeView.setText(sharedPreferencesVals.getEmergencyCancelTime());
     }
 
     public void updateEmergencyVals(View v) {
@@ -159,7 +162,7 @@ public class OptionsActivity extends WakeLockActivity {
     }
 
     public void getVitalVals() {
-        sharedPreferencesVals.getVitalPreferenceVals();
+        sharedPreferencesVals.fetchVitalPreferenceVals();
 
         Switch vitalsBPMSwitch = findViewById(R.id.options_vitals_bpm_switch);
         Switch vitalsStressSwitch = findViewById(R.id.options_vitals_stress_switch);
@@ -176,20 +179,20 @@ public class OptionsActivity extends WakeLockActivity {
         EditText vitalsBodyTempMaxView = findViewById(R.id.options_vitals_bodytemp_max);
         EditText vitalsBreatheFreqMaxView = findViewById(R.id.options_vitals_breathe_freq_max);
 
-        vitalsBPMSwitch.setChecked(sharedPreferencesVals.vitalsBPM);
-        vitalsStressSwitch.setChecked(sharedPreferencesVals.vitalsStress);
-        vitalsBodyTempSwitch.setChecked(sharedPreferencesVals.vitalsBodytemp);
-        vitalsBreatheFreqSwitch.setChecked(sharedPreferencesVals.vitalsBreatheFreq);
+        vitalsBPMSwitch.setChecked(sharedPreferencesVals.getVitalsBPM());
+        vitalsStressSwitch.setChecked(sharedPreferencesVals.getVitalsStress());
+        vitalsBodyTempSwitch.setChecked(sharedPreferencesVals.getVitalsBodytemp());
+        vitalsBreatheFreqSwitch.setChecked(sharedPreferencesVals.getVitalsBreatheFreq());
 
-        vitalsBPMMinView.setText(sharedPreferencesVals.vitalsBPMMinVal);
-        vitalsStressMinView.setText(sharedPreferencesVals.vitalsStressMinVal);
-        vitalsBodyTempMinView.setText(sharedPreferencesVals.vitalsBodyTempMinVal);
-        vitalsBreatheFreqMinView.setText(sharedPreferencesVals.vitalsBreatheFreqMinVal);
+        vitalsBPMMinView.setText(sharedPreferencesVals.getVitalsBPMMinVal());
+        vitalsStressMinView.setText(sharedPreferencesVals.getVitalsStressMinVal());
+        vitalsBodyTempMinView.setText(sharedPreferencesVals.getVitalsBodyTempMinVal());
+        vitalsBreatheFreqMinView.setText(sharedPreferencesVals.getVitalsBreatheFreqMinVal());
 
-        vitalsBPMMaxView.setText(sharedPreferencesVals.vitalsBPMMaxVal);
-        vitalsStressMaxView.setText(sharedPreferencesVals.vitalsStressMaxVal);
-        vitalsBodyTempMaxView.setText(sharedPreferencesVals.vitalsBodyTempMaxVal);
-        vitalsBreatheFreqMaxView.setText(sharedPreferencesVals.vitalsBreatheFreqMaxVal);
+        vitalsBPMMaxView.setText(sharedPreferencesVals.getVitalsBPMMaxVal());
+        vitalsStressMaxView.setText(sharedPreferencesVals.getVitalsStressMaxVal());
+        vitalsBodyTempMaxView.setText(sharedPreferencesVals.getVitalsBodyTempMaxVal());
+        vitalsBreatheFreqMaxView.setText(sharedPreferencesVals.getVitalsBreatheFreqMaxVal());
     }
 
     public void updateVitalVals(View v) {

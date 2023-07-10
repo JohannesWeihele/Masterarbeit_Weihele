@@ -1,14 +1,10 @@
-package com.example.masterarbeit_weihele.CommunicationRecycler;
+package com.example.masterarbeit_weihele.Recycler.CommunicationRecycler;
 
 import android.content.Context;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.masterarbeit_weihele.R;

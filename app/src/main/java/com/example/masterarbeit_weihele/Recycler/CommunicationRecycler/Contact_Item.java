@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele.CommunicationRecycler;
+package com.example.masterarbeit_weihele.Recycler.CommunicationRecycler;
 
 public class Contact_Item {
     String contact_name;

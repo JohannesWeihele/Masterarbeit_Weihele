@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele.CommunicationRecycler;
+package com.example.masterarbeit_weihele.Recycler.CommunicationRecycler;
 
 import android.view.View;
 import android.widget.Button;

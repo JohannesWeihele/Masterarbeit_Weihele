@@ -1,12 +1,14 @@
-package com.example.masterarbeit_weihele.CommandRecycler;
+package com.example.masterarbeit_weihele.Recycler.CommandRecycler;
 
 public class Command_Item {
     String command_name;
     Boolean isCompleted = false;
     Boolean isFocused = false;
 
-    public Command_Item(String command_name) {
+    public Command_Item(String command_name, boolean isCompleted, boolean isFocused) {
         this.command_name = command_name;
+        this.isCompleted = isCompleted;
+        this.isFocused = isFocused;
     }
 
     public String getCommand_name() {

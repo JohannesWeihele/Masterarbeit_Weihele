@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.Services;
 
 import android.app.Service;
 import android.content.Intent;
@@ -10,20 +10,13 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.IBinder;
 
-import androidx.annotation.Nullable;
-
-import android.app.Service;
 import android.content.Context;
-import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.os.IBinder;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
+
+import com.example.masterarbeit_weihele.Activities.EmergencyActivity;
+import com.example.masterarbeit_weihele.Classes.SharedPreferencesVals;
 
 public class VitalsService extends Service implements SensorEventListener {
 
@@ -80,7 +73,7 @@ public class VitalsService extends Service implements SensorEventListener {
 
     private void startMonitoring() {
 
-        checkPreferences();
+        getPreferences();
 
         if (heartRateSensor != null && isHeartRateApplied) {
             sensorManager.registerListener(this, heartRateSensor, SensorManager.SENSOR_DELAY_NORMAL);
@@ -90,29 +83,29 @@ public class VitalsService extends Service implements SensorEventListener {
         }
     }
 
-    private void checkPreferences(){
+    private void getPreferences(){
         SharedPreferences sharedPreferences = getSharedPreferences("Vitals", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        if(sharedPreferencesVals.vitalsBPMMinVal == null || sharedPreferencesVals.vitalsBPMMinVal.isEmpty()){
+        if(sharedPreferencesVals.getVitalsBPMMinVal() == null || sharedPreferencesVals.getVitalsBPMMinVal().isEmpty()){
             editor.putString("VitalsBPMMinVal", "35");
             critMinHeartRate = 35;
         } else {
-            critMinHeartRate = Integer.parseInt(sharedPreferencesVals.vitalsBPMMinVal);
+            critMinHeartRate = Integer.parseInt(sharedPreferencesVals.getVitalsBPMMinVal());
         }
 
-        if (sharedPreferencesVals.vitalsBPMMaxVal == null || sharedPreferencesVals.vitalsBPMMaxVal.isEmpty()){
+        if (sharedPreferencesVals.getVitalsBPMMaxVal() == null || sharedPreferencesVals.getVitalsBPMMaxVal().isEmpty()){
             editor.putString("VitalsBPMMaxVal", "180");
             critMaxHeartRate = 180;
         } else {
-            critMaxHeartRate = Integer.parseInt(sharedPreferencesVals.vitalsBPMMaxVal);
+            critMaxHeartRate = Integer.parseInt(sharedPreferencesVals.getVitalsBPMMaxVal());
         }
 
-        if (sharedPreferencesVals.vitalsBPM == null){
+        if (sharedPreferencesVals.getVitalsBPM() == null){
             editor.putBoolean("VitalsBPMVal", true);
             isHeartRateApplied = true;
         } else {
-            isHeartRateApplied = sharedPreferencesVals.vitalsBPM;
+            isHeartRateApplied = sharedPreferencesVals.getVitalsBPM();
         }
 
         editor.apply();

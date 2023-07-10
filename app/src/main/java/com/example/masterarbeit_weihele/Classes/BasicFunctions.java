@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.Classes;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -15,10 +15,17 @@ import android.widget.TextView;
 
 import androidx.wear.widget.BoxInsetLayout;
 
+import com.example.masterarbeit_weihele.R;
+
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
 public class BasicFunctions {
 
     private Context context;
     private ProgressDialog progressDialog;
+
 
     public BasicFunctions(Context context) {
 
@@ -88,6 +95,19 @@ public class BasicFunctions {
         } else {
             System.out.println("Ladebalken nicht notwendig.");
         }
+    }
+
+    public void getTime(){
+        Calendar calendar = Calendar.getInstance();
+        Activity activity = (Activity) context;
+
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        String currentTime = String.format("%02d:%02d", hour, minute);
+
+        TextView time_View = activity.findViewById(R.id.time_textView);
+        time_View.setText(currentTime);
     }
 
 }

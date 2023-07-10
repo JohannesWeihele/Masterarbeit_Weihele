@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".OptionsActivity"
+    tools:context=".Activities.OptionsActivity"
     tools:deviceIds="wear">
 
     <FrameLayout
@@ -14,9 +14,6 @@
         android:layout_height="wrap_content"
         android:textAlignment="center">
 
-        <TextView
-            style="@style/time"
-            />
     </FrameLayout>
 
     <FrameLayout
@@ -58,13 +55,13 @@
 
                 <TextView
                     style="@style/EditText_headline"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="65dp"
                     android:text="Alter"/>
 
                 <EditText
                     android:id="@+id/options_accountAge"
                     style="@style/EditText"
-                    android:layout_marginTop="62dp"
+                    android:layout_marginTop="77dp"
                     android:imeOptions="actionDone"
                     android:textSize="12dp"
                     android:inputType="number"
@@ -72,21 +69,21 @@
 
                 <TextView
                     style="@style/EditText_headline"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="130dp"
                     android:text="Körpergröße (in cm)"/>
 
                 <EditText
                     android:id="@+id/options_accountBodysize"
                     style="@style/EditText"
                     android:textSize="12dp"
-                    android:layout_marginTop="112dp"
+                    android:layout_marginTop="145dp"
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:hint="Körpergröße in cm"/>
 
                 <TextView
                     style="@style/EditText_headline"
-                    android:layout_marginTop="150dp"
+                    android:layout_marginTop="200dp"
                     android:text="Gewicht (in kg)"/>
 
                 <EditText
@@ -94,7 +91,7 @@
                     style="@style/EditText"
                     android:textSize="12dp"
                     android:imeOptions="actionDone"
-                    android:layout_marginTop="162dp"
+                    android:layout_marginTop="210dp"
                     android:inputType="number"
                     android:hint="Gewicht in kg"/>
 
@@ -104,7 +101,7 @@
                     android:text="Aktualisieren"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="210dp"
+                    android:layout_marginTop="260dp"
                     android:onClick="updateAccountVals"/>
 
             </FrameLayout>

@@ -8,7 +8,7 @@
     android:id="@+id/rotation_wrapper"
     android:padding="@dimen/box_inset_layout_padding"
     android:onClick="startEmergency"
-    tools:context=".EmergencyActivity"
+    tools:context=".Activities.EmergencyActivity"
     tools:deviceIds="wear">
 
     <FrameLayout
@@ -17,6 +17,7 @@
         android:textAlignment="center">
 
         <TextView
+            android:id="@+id/time_textView"
             style="@style/time"
             />
     </FrameLayout>

@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele.CommandRecycler;
+package com.example.masterarbeit_weihele.Recycler.CommandRecycler;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,30 +9,27 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.masterarbeit_weihele.R;
+import com.google.gson.Gson;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommandAdapter extends RecyclerView.Adapter<CommandViewHolder> {
 
-
     Context context;
     List<Command_Item> items;
-    ItemTouchHelper itemTouchHelper;
     RecyclerView recyclerView;
+    SharedPreferences sharedPreferences;
+
     public CommandAdapter(Context context, List<Command_Item> items, RecyclerView recyclerView) {
         this.context = context;
         this.items = items;
         this.recyclerView = recyclerView;
     }
-
-    public void setItemTouchHelper(ItemTouchHelper itemTouchHelper) {
-        this.itemTouchHelper = itemTouchHelper;
-    }
-
 
     @NonNull
     @Override
@@ -43,9 +40,17 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull CommandViewHolder holder, int position) {
         Command_Item command_item = items.get(position);
-        Drawable focused_drawable = context.getDrawable(R.drawable.rounded_button_background);
         Drawable unfocused_drawable = context.getDrawable(R.drawable.rounded_command_button_background);
+
         holder.commandView.setText(command_item.getCommand_name());
+
+        if(command_item.isCompleted){
+            setItemCompleted(command_item, holder.commandView);
+        } else if(command_item.isFocused){
+            setItemFocused(command_item, holder.commandView);
+        } else {
+            setItemIncompleted(command_item, holder.commandView);
+        }
 
         holder.commandView.setOnLongClickListener(view -> {
             if(command_item.getIsFocused()){
@@ -64,9 +69,8 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandViewHolder> {
                             }
                         }
                     }
-                    command_item.setIsFocused(true);
+                    setItemFocused(command_item, holder.commandView);
                     moveItemToFront(holder.getBindingAdapterPosition());
-                    holder.commandView.setBackground(focused_drawable);
                 }
             }
             return true;
@@ -74,18 +78,21 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandViewHolder> {
 
         holder.commandView.setOnClickListener(view -> {
             if(command_item.isFocused){
-                setItemIncompleted(command_item, holder.commandView, holder.getBindingAdapterPosition());
+                setItemIncompleted(command_item, holder.commandView);
                 command_item.setIsFocused(false);
+                moveItemToFront(holder.getBindingAdapterPosition());
             } else {
                 if (!command_item.isCompleted) {
-                    setItemCompleted(command_item, holder.commandView, holder.getBindingAdapterPosition());
+                    setItemCompleted(command_item, holder.commandView);
+                    moveItemToEnd(holder.getBindingAdapterPosition());
                 } else {
-                    setItemIncompleted(command_item, holder.commandView, holder.getBindingAdapterPosition());
+                    setItemIncompleted(command_item, holder.commandView);
+                    moveItemToFront(holder.getBindingAdapterPosition());
                 }
             }
         });
-    }
 
+    }
 
     @Override
     public int getItemCount() {
@@ -107,6 +114,7 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandViewHolder> {
         if (isFirstItemFocused && sourcePosition != 0) {
             items.add(1, item);
             notifyItemMoved(sourcePosition, 1);
+
         } else {
             items.add(0, item);
             notifyItemMoved(sourcePosition, 0);
@@ -119,45 +127,35 @@ public class CommandAdapter extends RecyclerView.Adapter<CommandViewHolder> {
         notifyItemRemoved(position);
     }
 
-    public void setItemCompleted(Command_Item item, Button commandButton, int position){
+    public void setItemCompleted(Command_Item item, Button commandButton){
         Drawable completed_drawable = context.getDrawable(R.drawable.rounded_completed_command_button_background);
-
         item.setCompleted(true);
         commandButton.setBackground(completed_drawable);
         commandButton.setPaintFlags(commandButton.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        moveItemToEnd(position);
     }
 
-    public void setItemIncompleted(Command_Item item, Button commandButton, int position){
+    public void setItemFocused(Command_Item item, Button commandButton){
+        Drawable focused_drawable = context.getDrawable(R.drawable.rounded_button_background);
+        item.setIsFocused(true);
+        commandButton.setBackground(focused_drawable);
+    }
+
+    public void setItemIncompleted(Command_Item item, Button commandButton){
         Drawable incompleted_drawable = context.getDrawable(R.drawable.rounded_command_button_background);
 
         item.setCompleted(false);
         commandButton.setBackground(incompleted_drawable);
         commandButton.setPaintFlags(commandButton.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-        moveItemToFront(position);
     }
 
-    public void saveItemStates() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("ItemStates", Context.MODE_PRIVATE);
+    public void saveItems(){
+        sharedPreferences = context.getSharedPreferences("Commands", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        for (int i = 0; i < items.size(); i++) {
-            Command_Item item = items.get(i);
-            editor.putBoolean("item_" + i, item.getIsFocused());
+        for(int i = 0; i<items.size(); i++){
+            editor.putBoolean("Item_isFocused_" + i, items.get(i).isFocused);
+            editor.putBoolean("Item_isCompleted_" + i, items.get(i).isCompleted);
+            editor.putString("Item_Value_" + i, items.get(i).getCommand_name());
         }
-
         editor.apply();
-    }
-
-    public void restoreItemStates() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("ItemStates", Context.MODE_PRIVATE);
-
-        for (int i = 0; i < items.size(); i++) {
-            Command_Item item = items.get(i);
-            boolean isFocused = sharedPreferences.getBoolean("item_" + i, false);
-            item.setIsFocused(isFocused);
-        }
-
-        notifyDataSetChanged();
     }
 }

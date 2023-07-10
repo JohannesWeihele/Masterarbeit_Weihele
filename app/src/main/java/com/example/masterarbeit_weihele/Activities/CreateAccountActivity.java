@@ -1,6 +1,5 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.Activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,14 +10,16 @@ import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.R;
 import com.example.masterarbeit_weihele.databinding.ActivityCreateaccountBinding;
 
 public class CreateAccountActivity extends WakeLockActivity {
 
     private ActivityCreateaccountBinding binding;
+    private final BasicFunctions basicFunctions = new BasicFunctions(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class CreateAccountActivity extends WakeLockActivity {
 
         binding = ActivityCreateaccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        basicFunctions.getTime();
 
         hideDownIcon();
     }

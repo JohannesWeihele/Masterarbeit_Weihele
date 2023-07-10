@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".CommunicationActivity"
+    tools:context=".Activities.CommunicationActivity"
     tools:deviceIds="wear">
 
     <FrameLayout
@@ -15,6 +15,7 @@
         android:textAlignment="center">
 
         <TextView
+            android:id="@+id/time_textView"
             style="@style/time"
             />
     </FrameLayout>

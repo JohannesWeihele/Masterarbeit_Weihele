@@ -7,7 +7,7 @@
     android:background="@drawable/background"
     android:id="@+id/rotation_wrapper"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".MoreVitalsActivity"
+    tools:context=".Activities.MoreVitalsActivity"
     tools:deviceIds="wear">
 
     <FrameLayout
@@ -16,6 +16,7 @@
         android:textAlignment="center">
 
         <TextView
+            android:id="@+id/time_textView"
             style="@style/time"
             />
     </FrameLayout>
@@ -50,7 +51,7 @@
                     android:id="@+id/function_btn_vitals"
                     style="@style/function_Button"
                     android:tag="function_btn_vitals"
-                    android:onClick="functionClick"
+                    android:onClick="onMoreVitalsClick"
                     android:text="Blutsauerstoff"/>
 
                 <ImageView
@@ -63,7 +64,7 @@
                     style="@style/function_Button"
                     android:layout_marginTop="60dp"
                     android:tag="function_btn_communication"
-                    android:onClick="functionClick"
+                    android:onClick="onMoreVitalsClick"
                     android:text="EKG"/>
 
                 <ImageView
@@ -76,7 +77,7 @@
                     style="@style/function_Button"
                     android:layout_marginTop="120dp"
                     android:tag="function_btn_emergency"
-                    android:onClick="functionClick"
+                    android:onClick="onMoreVitalsClick"
                     android:text="Blutdruck"/>
 
                 <ImageView

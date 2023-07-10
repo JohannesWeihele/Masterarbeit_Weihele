@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/rotation_wrapper"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".NavigationActivity"
+    tools:context=".Activities.NavigationActivity"
     tools:deviceIds="wear">
 
     <com.google.android.gms.maps.MapView

@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/talk_button_background"
     android:background="@drawable/talk_button"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".CommunicationActivity"
+    tools:context=".Activities.CommunicationActivity"
     tools:deviceIds="wear">
 
     <FrameLayout
@@ -14,9 +15,6 @@
         android:layout_height="wrap_content"
         android:textAlignment="center">
 
-        <TextView
-            style="@style/time"
-            />
     </FrameLayout>
 
     <FrameLayout

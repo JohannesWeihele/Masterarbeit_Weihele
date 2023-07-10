@@ -1,8 +1,10 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.Activities;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
+import com.example.masterarbeit_weihele.Classes.BasicFunctions;
 import com.example.masterarbeit_weihele.databinding.ActivityMorevitalsBinding;
 
 public class MoreVitalsActivity extends WakeLockActivity {
@@ -19,6 +21,10 @@ public class MoreVitalsActivity extends WakeLockActivity {
 
         basicFunctions.hideDownIcon();
         basicFunctions.changeActivityOnRotation(EnvironmentActivity.class, OptionsActivity.class);
+        basicFunctions.getTime();
+    }
 
+    public void onMoreVitalsClick(View view){
+        Toast.makeText(getApplicationContext(), "Siehe Dokumentation", Toast.LENGTH_SHORT).show();
     }
 }

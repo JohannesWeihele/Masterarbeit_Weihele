@@ -1,10 +1,15 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.Activities;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.WindowManager;
+import android.widget.TextView;
+
+import com.example.masterarbeit_weihele.R;
+
+import java.util.Calendar;
 
 public abstract class WakeLockActivity extends Activity {
 

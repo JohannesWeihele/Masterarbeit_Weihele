@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".OptionsActivity"
+    tools:context=".Activities.OptionsActivity"
     tools:deviceIds="wear">
 
     <FrameLayout
@@ -14,9 +14,6 @@
         android:layout_height="wrap_content"
         android:textAlignment="center">
 
-        <TextView
-            style="@style/time"
-            />
     </FrameLayout>
 
     <FrameLayout
@@ -56,8 +53,7 @@
                         android:id="@+id/options_vitals_bpm_switch"
                         style="@style/options_switch"/>
 
-                    <FrameLayout
-                        style="@style/options_val_wrapper">
+                    <FrameLayout style="@style/options_val_wrapper">
 
                         <TextView
                             style="@style/options_val_headline"
@@ -67,28 +63,27 @@
                             android:id="@+id/options_vitals_bpm_min"
                             style="@style/options_val_edit"
                             android:layout_marginLeft="10dp"
-                            android:hint="min"/>
+                            android:hint="min" />
 
-                            <TextView
-                                style="@style/options_val_unit"
-                                android:text="bpm"/>
+                        <TextView
+                            style="@style/options_val_unit"
+                            android:text="bpm" />
 
                         <EditText
                             android:id="@+id/options_vitals_bpm_max"
                             style="@style/options_val_edit"
                             android:layout_marginLeft="90dp"
-                            android:hint="max"/>
+                            android:hint="max" />
 
-                            <TextView
-                                style="@style/options_val_additional_text"
-                                android:text="von"
-                                android:layout_marginLeft="20dp"
-                             />
+                        <TextView
+                            style="@style/options_val_additional_text"
+                            android:layout_marginLeft="20dp"
+                            android:text="von" />
 
-                            <TextView
-                                style="@style/options_val_additional_text"
-                                android:text="bis"
-                                android:layout_marginLeft="102dp"/>
+                        <TextView
+                            style="@style/options_val_additional_text"
+                            android:layout_marginLeft="102dp"
+                            android:text="bis" />
                     </FrameLayout>
                 </FrameLayout>
 

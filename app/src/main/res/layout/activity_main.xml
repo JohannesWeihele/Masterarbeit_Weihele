@@ -7,7 +7,7 @@
     android:id="@+id/rotation_wrapper"
     android:background="@drawable/background"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".MainActivity"
+    tools:context=".Activities.MainActivity"
     tools:deviceIds="wear">
 
     <FrameLayout
@@ -16,6 +16,7 @@
         android:textAlignment="center">
 
         <TextView
+            android:id="@+id/time_textView"
             style="@style/time"
             />
     </FrameLayout>
@@ -57,12 +58,12 @@
             <TextView
                 style="@style/EditText_headline"
                 android:text="Neu"
-                android:layout_marginTop="50dp"/>
+                android:layout_marginTop="65dp"/>
 
             <Button
                 style="@style/new_button"
                 android:onClick="openCreateAccountView"
-                android:layout_marginTop="62dp"
+                android:layout_marginTop="77dp"
                 android:layout_marginRight="20dp"
                 android:text="Account anlegen"/>
 

@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele;
+package com.example.masterarbeit_weihele.Activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,6 +14,9 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.R;
+import com.example.masterarbeit_weihele.Classes.SharedPreferencesVals;
 import com.example.masterarbeit_weihele.databinding.ActivityEmergencyBinding;
 
 public class EmergencyActivity extends WakeLockActivity {
@@ -40,13 +43,13 @@ public class EmergencyActivity extends WakeLockActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferencesVals.getEmergencyPreferenceVals();
+        sharedPreferencesVals.fetchEmergencyPreferenceVals();
 
         binding = ActivityEmergencyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         basicFunctions.changeActivityOnRotation(CommandsActivity.class, NavigationActivity.class);
-
-        checkPreferences();
+        basicFunctions.getTime();
+        getPreferences();
 
         Intent intent = getIntent();
         isVitalsEmergency = intent.getBooleanExtra("isVitalsEmergency", false);
@@ -63,7 +66,7 @@ public class EmergencyActivity extends WakeLockActivity {
 
         Intent intent = getIntent();
         isVitalsEmergency = intent.getBooleanExtra("isVitalsEmergency", false);
-        checkPreferences();
+        getPreferences();
 
         IntentFilter intentFilter = new IntentFilter("HEART_RATE_UPDATE");
         registerReceiver(heartRateReceiver, intentFilter);
@@ -147,11 +150,11 @@ public class EmergencyActivity extends WakeLockActivity {
             soundPool.release();
             isInitialized = false;
         }
-        PreferenceCountDown = Integer.valueOf(sharedPreferencesVals.emergencyCancelTime);
+        PreferenceCountDown = Integer.valueOf(sharedPreferencesVals.getEmergencyCancelTime());
     }
 
-    public void checkPreferences(){
-        PreferenceCountDown = Integer.valueOf(sharedPreferencesVals.emergencyCancelTime);
+    public void getPreferences(){
+        PreferenceCountDown = Integer.valueOf(sharedPreferencesVals.getEmergencyCancelTime());
         System.out.println(PreferenceCountDown);
 
         FrameLayout BPMView = findViewById(R.id.emergency_bpm_wrapper);
@@ -159,10 +162,10 @@ public class EmergencyActivity extends WakeLockActivity {
         FrameLayout BodyTempView = findViewById(R.id.emergency_bodytemp_wrapper);
         FrameLayout BreatheFreqView = findViewById(R.id.emergency_breathe_freq_wrapper);
 
-        setViewVisibility(BPMView, sharedPreferencesVals.vitalsBPM);
-        setViewVisibility(StressView, sharedPreferencesVals.vitalsStress);
-        setViewVisibility(BodyTempView, sharedPreferencesVals.vitalsBodytemp);
-        setViewVisibility(BreatheFreqView, sharedPreferencesVals.vitalsBreatheFreq);
+        setViewVisibility(BPMView, sharedPreferencesVals.getVitalsBPM());
+        setViewVisibility(StressView, sharedPreferencesVals.getVitalsStress());
+        setViewVisibility(BodyTempView, sharedPreferencesVals.getVitalsBodytemp());
+        setViewVisibility(BreatheFreqView, sharedPreferencesVals.getVitalsBreatheFreq());
     }
 
     public void setViewVisibility(FrameLayout view, Boolean isVisible){

@@ -6,17 +6,13 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".OptionsActivity"
+    tools:context=".Activities.OptionsActivity"
     tools:deviceIds="wear">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center">
-
-        <TextView
-            style="@style/time"
-            />
     </FrameLayout>
 
     <FrameLayout
@@ -56,6 +52,7 @@
                     <Switch
                         android:id="@+id/options_communication_switch"
                         style="@style/options_switch"/>
+
                 </FrameLayout>
 
                 <Button

@@ -49,7 +49,7 @@
             android:value="AIzaSyDwM9L-am0A96E6dKj84eYr2Y1xCDHQXzs" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -62,15 +62,15 @@
 
 
         <activity
-            android:name=".CreateAccountActivity"
+            android:name=".Activities.CreateAccountActivity"
             android:label="Create Account" />
 
         <activity
-            android:name=".FunctionsActivity"
+            android:name=".Activities.FunctionsActivity"
             android:label="Functions" />
 
         <activity
-            android:name=".VitalsActivity"
+            android:name=".Activities.VitalsActivity"
             android:label="Vitals"
             android:exported="true">
             <intent-filter>
@@ -79,42 +79,43 @@
         </activity>
 
         <activity
-            android:name=".EmergencyActivity"
+            android:name=".Activities.EmergencyActivity"
             android:label="Emergency" />
 
         <activity
-            android:name=".CommandsActivity"
+            android:name=".Activities.CommandsActivity"
+            android:launchMode= "singleInstance"
             android:label="Commands" />
 
-        <activity android:name=".NavigationActivity"
+        <activity android:name=".Activities.NavigationActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
-            android:name=".MoreVitalsActivity"
+            android:name=".Activities.MoreVitalsActivity"
             android:label="More Vitals" />
 
         <activity
-            android:name=".OptionsActivity"
+            android:name=".Activities.OptionsActivity"
             android:label="Options" />
 
         <activity
-            android:name=".EnvironmentActivity"
+            android:name=".Activities.EnvironmentActivity"
             android:label="Environment" />
 
         <activity
-            android:name=".CommunicationActivity"
+            android:name=".Activities.CommunicationActivity"
             android:label="Communication" />
 
-        <activity android:name=".WakeLockActivity"
+        <activity android:name=".Activities.WakeLockActivity"
             android:label="Basics" />
 
         <service
-            android:name=".VitalsService"
+            android:name=".Services.VitalsService"
             android:enabled="true"
             android:exported="false" />
 
         <service
-            android:name=".CommunicationService"
+            android:name=".Services.CommunicationService"
             android:enabled="true"
             android:exported="false" />
 
