@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.Objects;
 
 
-public class NavigationActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener, GoogleMap.OnInfoWindowLongClickListener {
+public class NavigationActivity extends WakeLockActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener, GoogleMap.OnInfoWindowLongClickListener {
 
     //Basics
     private ActivityNavigationBinding binding;

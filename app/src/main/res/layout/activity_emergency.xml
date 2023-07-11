@@ -29,13 +29,8 @@
 
         <TextView
             android:id="@+id/emergency_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_marginTop="30dp"
-            android:textColor="#FFFFFF"
-            android:textSize="24dp"
-            android:padding="10dp"
+            style="@style/PushButtonText"
+            android:layout_marginTop="35dp"
             android:visibility="visible"
             android:text="Notfall melden"/>
 
@@ -51,18 +46,11 @@
             android:text="Notfallsignal beginnt in X Sekunden..."/>
 
         <Button
+            style="@style/cancelPushButton"
             android:id="@+id/emergency_cancel_btn"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="90dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:textAllCaps="false"
             android:text="Abbrechen"
-            android:textColor="#FFFFFF"
             android:onClick="stopEmergency"
-            android:visibility="gone"
-            android:background="@drawable/rounded_emergency_button_background"/>
+            android:visibility="gone"/>
 
         <FrameLayout
             android:id="@+id/emergency_vitals_wrapper"

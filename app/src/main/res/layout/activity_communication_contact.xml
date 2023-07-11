@@ -41,20 +41,10 @@
             android:id="@+id/contact_recyclerview"/>
 
         <TextView
+            style="@style/noInformationView"
             android:id="@+id/no_contacts_textview"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/rounded_completed_command_button_background"
             android:text="Keine Kontakte gefunden"
-            android:textColor="#FFFFFF"
-            android:textAlignment="center"
-            android:layout_marginLeft="20dp"
-            android:visibility="visible"
-            android:layout_marginRight="20dp"
-            android:textSize="12dp"
-            android:gravity="center"
-            android:layout_marginTop="-20dp"
-            android:layout_gravity="center"/>
+            android:visibility="visible"/>
 
     </FrameLayout>
 

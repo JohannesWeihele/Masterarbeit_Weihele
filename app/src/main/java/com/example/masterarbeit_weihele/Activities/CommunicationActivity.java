@@ -47,11 +47,11 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
     private TextView communicationOption;
 
     //Tokens
-    private static final String ALL_CHANNEL_TOKEN = "007eJxTYFCQCvXyEHEtWBDcr+O4JvDF/mnbE1eqv9LM6/1yXCzgwzYFhtRUAwMTSwtTSxNTCxMjY8tEQyMLAxMTi7RUcwNzQ+PkuI5VKQ2BjAynqyeyMjJAIIjPwuCYk5PKwAAAt5sdtw==";
-    private static final String LEADER_CHANNEL_TOKEN = "007eJxTYFh3LsL6/K2bE/xnlR3y3H3BIzjWReyhpu00H5djanazDpcqMKSmGhiYWFqYWpqYWpgYGVsmGhpZGJiYWKSlmhuYGxonl3SsSmkIZGTosjzBysgAgSA+L4NrZl5xYklVTmpmSWoRAwMAbmMicA==";
-    private static final String USER_JONAS_CHANNEL_TOKEN = "007eJxTYPDmvHaNYeZS+QdNn5K/brCfuT+YuZjtgODizpkR6x+uPbZLgSE11cDAxNLC1NLE1MLEyNgy0dDIwsDExCIt1dzA3NA4eW3PqpSGQEYGHi4nVkYGCATxWRm88vMSixkYAHoWHwM=";
-    private static final String USER_SABRINA_CHANNEL_TOKEN = "007eJxTYFjP5/VqQ0F9waq66sd3lVjUXlcpzjvr0seXPfnKjBv/a/IUGFJTDQxMLC1MLU1MLUyMjC0TDY0sDExMLNJSzQ3MDY2T9/esSmkIZGTo/pLNzMgAgSA+O0NwYlJRZl4iAwMA4EkhTQ==";
-    private static final String USER3_ALEX_CHANNEL_TOKEN = "007eJxTYOiU57hSxZfcri61b/HPgz8lHhs6ZVSmqcY2f4pjirz654ICQ2qqgYGJpYWppYmphYmRsWWioZGFgYmJRVqquYG5oXHyxZ5VKQ2BjAwG6pdYGBkgEMRnYXDMSa1gYAAA8LweDA==";
+    private static final String ALL_CHANNEL_TOKEN = "007eJxTYPhYIyLgoCif2PT1a8470zvXxYO6w3NKqx5eCNwk/6Kwb5ECQ2qqgYGJpYWppYmphYmRsWWioZGFgYmJRVqquYG5oXGyCdvalIZARgZJIydmRgYIBPFZGBxzclIZGAAGoh0U";
+    private static final String LEADER_CHANNEL_TOKEN = "007eJxTYNCpb7vEvf/yJNZd/B8WhnL6XFfuWLtE88pz4S4GQY+3U3sVGFJTDQxMLC1MLU1MLUyMjC0TDY0sDExMLNJSzQ3MDY2TPdjWpjQEMjJk7HdjYmSAQBCfl8E1M684saQqJzWzJLWIgQEA7lIgyg==";
+    private static final String USER_JONAS_CHANNEL_TOKEN = "007eJxTYPC2SdugkBM5a8e2rxm5C2fclO69YFHrX6aVc/izu2FDqaYCQ2qqgYGJpYWppYmphYmRsWWioZGFgYmJRVqquYG5oXFyDtvalIZARoaZSwpYGRkgEMRnZfDKz0ssZmAAABBFHgQ=";
+    private static final String USER_SABRINA_CHANNEL_TOKEN = "007eJxTYKhIqLJI3Cd4cKZz+zyGEJ6XXkqvJh7b0J+XFbb23dWPs2cqMKSmGhiYWFqYWpqYWpgYGVsmGhpZGJiYWKSlmhuYGxonR7OtTWkIZGSQKrJhZmSAQBCfnSE4MakoMy+RgQEAfAwfDQ==";
+    private static final String USER3_ALEX_CHANNEL_TOKEN = "007eJxTYGiwsj+3ebbfjb2KRqt6Vdp6dRdcZ3abzLnRI2ChyqW706YoMKSmGhiYWFqYWpqYWpgYGVsmGhpZGJiYWKSlmhuYGxon17CtTWkIZGSIqxZgYIRCEJ+FwTEntYKBAQDU3hzI";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +74,6 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
         public void onServiceConnected(ComponentName name, IBinder service) {
             CommunicationService.CommunicationBinder communicationBinder = (CommunicationService.CommunicationBinder) service;
             communicationService = communicationBinder.getService();
-            boolean isCommunicationServiceBound = true;
             communicationService.updatePreferences();
             pushToTalkPreference = sharedPreferencesVals.getPushToTalkVal();
         }

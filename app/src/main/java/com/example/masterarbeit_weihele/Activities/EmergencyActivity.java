@@ -48,7 +48,6 @@ public class EmergencyActivity extends WakeLockActivity {
         binding = ActivityEmergencyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        sharedPreferencesVals.fetchEmergencyPreferenceVals();
         getPreferences();
 
         basicFunctions.changeActivityOnRotation(CommandsActivity.class, NavigationActivity.class);
@@ -154,7 +153,6 @@ public class EmergencyActivity extends WakeLockActivity {
 
             soundPool.play(soundId, 1.0f, 1.0f, 0, -1, 1.0f);
         });
-
         soundId = soundPool.load(this, R.raw.alarm_noise, 1);
     }
 
@@ -167,6 +165,8 @@ public class EmergencyActivity extends WakeLockActivity {
     }
 
     public void getPreferences(){
+        sharedPreferencesVals.fetchVitalPreferenceVals();
+        sharedPreferencesVals.fetchEmergencyPreferenceVals();
         PreferenceCountDown = Integer.valueOf(sharedPreferencesVals.getEmergencyCancelTime());
         System.out.println(PreferenceCountDown);
 
@@ -184,10 +184,10 @@ public class EmergencyActivity extends WakeLockActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        getPreferences();
 
         Intent intent = getIntent();
         isVitalsEmergency = intent.getBooleanExtra(PREF_VITALS_EMERGENCY, false);
-        getPreferences();
 
         IntentFilter intentFilter = new IntentFilter(PREF_HEART_RATE_UPDATE);
         registerReceiver(heartRateReceiver, intentFilter);

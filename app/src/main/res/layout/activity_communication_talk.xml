@@ -30,32 +30,15 @@
             android:background="@null">
         </Button>
 
-
         <TextView
             android:id="@+id/communcation_option_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="12dp"
-            android:background="@drawable/rounded_communication_button_background"
-            android:alpha="0.7"
-            android:paddingTop="5dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:paddingBottom="2dp"
+            style="@style/channelHeadline"
             android:visibility="visible"
             android:text="Alle kontaktieren"/>
 
         <TextView
             android:id="@+id/communication_btn_Text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_marginTop="50dp"
-            android:textColor="#FFFFFF"
-            android:textSize="24dp"
-            android:padding="10dp"
+            style="@style/PushButtonText"
             android:visibility="visible"
             android:text="Push to Talk"/>
 
