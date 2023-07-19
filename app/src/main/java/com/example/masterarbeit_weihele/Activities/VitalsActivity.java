@@ -10,9 +10,9 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.Classes.Basics.BasicFunctions;
 import com.example.masterarbeit_weihele.R;
-import com.example.masterarbeit_weihele.Classes.SharedPreferencesVals;
+import com.example.masterarbeit_weihele.Classes.Basics.SharedPreferencesVals;
 import com.example.masterarbeit_weihele.databinding.ActivityVitalsBinding;
 
 public class VitalsActivity extends WakeLockActivity {

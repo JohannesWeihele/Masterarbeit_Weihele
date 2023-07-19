@@ -16,7 +16,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.masterarbeit_weihele.Activities.EmergencyActivity;
-import com.example.masterarbeit_weihele.Classes.SharedPreferencesVals;
+import com.example.masterarbeit_weihele.Classes.Basics.SharedPreferencesVals;
 
 public class VitalsService extends Service implements SensorEventListener {
 
@@ -44,7 +44,7 @@ public class VitalsService extends Service implements SensorEventListener {
     private static final String TAG = "HeartRateService";
     private static final String PREF_HEARTRATE_UPDATE = "HEART_RATE_UPDATE";
     private static final String PREF_INTENT_HEARTRATE_EXTRA = "heartRate";
-    private static final String PREF_INTENT_EMERCENCY_EXTRA = "isVitalsEmergency";
+    private static final String PREF_INTENT_EMERGENCY_EXTRA = "isVitalsEmergency";
 
     private static final String PREFS_VITALS = "Vitals";
     private static final String PREFS_VITALS_BPM = "VitalsBPMVal";
@@ -134,7 +134,7 @@ public class VitalsService extends Service implements SensorEventListener {
 
                 isEmergencyActivated = true;
                 Intent intent = new Intent(VitalsService.this, EmergencyActivity.class);
-                intent.putExtra(PREF_INTENT_EMERCENCY_EXTRA, true);
+                intent.putExtra(PREF_INTENT_EMERGENCY_EXTRA, true);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }

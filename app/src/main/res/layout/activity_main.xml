@@ -53,7 +53,7 @@
             <Button
                 android:id="@+id/mission_id_checkButton"
                 style="@style/check_button"
-                android:onClick="openFunctionsView"/>
+                android:onClick="checkMissionID"/>
 
             <TextView
                 style="@style/EditText_headline"

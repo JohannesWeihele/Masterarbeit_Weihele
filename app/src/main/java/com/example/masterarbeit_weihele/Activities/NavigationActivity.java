@@ -11,11 +11,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.Classes.Basics.BasicFunctions;
 import com.example.masterarbeit_weihele.R;
 import com.example.masterarbeit_weihele.databinding.ActivityNavigationBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;

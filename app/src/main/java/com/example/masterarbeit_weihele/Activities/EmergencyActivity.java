@@ -14,9 +14,9 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.Classes.Basics.BasicFunctions;
 import com.example.masterarbeit_weihele.R;
-import com.example.masterarbeit_weihele.Classes.SharedPreferencesVals;
+import com.example.masterarbeit_weihele.Classes.Basics.SharedPreferencesVals;
 import com.example.masterarbeit_weihele.databinding.ActivityEmergencyBinding;
 
 public class EmergencyActivity extends WakeLockActivity {
@@ -37,7 +37,7 @@ public class EmergencyActivity extends WakeLockActivity {
 
     //Prefixes
     private static final String PREF_HEART_RATE_UPDATE = "HEART_RATE_UPDATE";
-    private static final String PREF_VITALS_EMERGENCY = "isVitalsEmergency";
+    private static final String PREF_INTENT_EMERGENCY_EXTRA = "isVitalsEmergency";
     private static final String PREF_HEART_RATE = "heartRate";
 
 
@@ -77,7 +77,7 @@ public class EmergencyActivity extends WakeLockActivity {
 
     public void checkEmergency(){
         Intent intent = getIntent();
-        isVitalsEmergency = intent.getBooleanExtra(PREF_VITALS_EMERGENCY, false);
+        isVitalsEmergency = intent.getBooleanExtra(PREF_INTENT_EMERGENCY_EXTRA, false);
 
         if(isVitalsEmergency){
             startEmergency(null);
@@ -187,7 +187,7 @@ public class EmergencyActivity extends WakeLockActivity {
         getPreferences();
 
         Intent intent = getIntent();
-        isVitalsEmergency = intent.getBooleanExtra(PREF_VITALS_EMERGENCY, false);
+        isVitalsEmergency = intent.getBooleanExtra(PREF_INTENT_EMERGENCY_EXTRA, false);
 
         IntentFilter intentFilter = new IntentFilter(PREF_HEART_RATE_UPDATE);
         registerReceiver(heartRateReceiver, intentFilter);

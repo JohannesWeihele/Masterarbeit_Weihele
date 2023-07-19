@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele.Classes;
+package com.example.masterarbeit_weihele.Classes.Basics;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

@@ -10,12 +10,12 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
-import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.Classes.Basics.BasicFunctions;
 import com.example.masterarbeit_weihele.R;
-import com.example.masterarbeit_weihele.WeatherData.WeatherApiInterface;
-import com.example.masterarbeit_weihele.WeatherData.WeatherConditionData;
-import com.example.masterarbeit_weihele.WeatherData.WeatherData;
-import com.example.masterarbeit_weihele.WeatherData.WeatherResponse;
+import com.example.masterarbeit_weihele.Classes.WeatherData.WeatherApiInterface;
+import com.example.masterarbeit_weihele.Classes.WeatherData.WeatherConditionData;
+import com.example.masterarbeit_weihele.Classes.WeatherData.WeatherData;
+import com.example.masterarbeit_weihele.Classes.WeatherData.WeatherResponse;
 import com.example.masterarbeit_weihele.databinding.ActivityEnvironmentBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;

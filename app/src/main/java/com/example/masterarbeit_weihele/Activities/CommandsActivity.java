@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.Classes.Basics.BasicFunctions;
 import com.example.masterarbeit_weihele.Recycler.CommandRecycler.CommandAdapter;
 import com.example.masterarbeit_weihele.Recycler.CommandRecycler.Command_Item;
 import com.example.masterarbeit_weihele.R;

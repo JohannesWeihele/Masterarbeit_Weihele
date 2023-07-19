@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.Classes.Basics.BasicFunctions;
 import com.example.masterarbeit_weihele.R;
 import com.example.masterarbeit_weihele.databinding.ActivityCreateaccountBinding;
 
@@ -50,7 +50,7 @@ public class CreateAccountActivity extends WakeLockActivity {
         bodysizeView = findViewById(R.id.accountBodysize);
         bodyweightView = findViewById(R.id.accountBodyweight);
 
-        if(!areFieldsFilled(nameView, ageView, bodysizeView, bodyweightView)) {
+        if(!checkFieldsFilled(nameView, ageView, bodysizeView, bodyweightView)) {
             Toast.makeText(getApplicationContext(), "Bitte alle Felder ausfüllen", Toast.LENGTH_SHORT).show();
         } else {
             setPreferences();
@@ -63,7 +63,7 @@ public class CreateAccountActivity extends WakeLockActivity {
         startActivity(intent);
     }
 
-    public boolean areFieldsFilled(EditText... fields) {
+    public boolean checkFieldsFilled(EditText... fields) {
         for (EditText field : fields) {
             if (TextUtils.isEmpty(field.getText())) {
                 return false;

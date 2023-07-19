@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele.Classes;
+package com.example.masterarbeit_weihele.Classes.Basics;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,14 +6,22 @@ import android.content.SharedPreferences;
 
 public class SharedPreferencesVals {
 
-    Context context;
+    private Context context;
+
+    //Variables - Account
     private String accountName = "";
     private String accountAge = "";
     private String accountBodysize = "";
     private String accountBodyweight = "";
+
+    //Variables - Communication
     private Boolean pushToTalkVal = false;
+
+    //Variables - Emergency
     private Boolean emergencyFall = false;
     private String emergencyCancelTime = "";
+
+    //Variables - Vitals
     private Boolean vitalsBPM = false;
     private Boolean vitalsStress = false;
     private Boolean vitalsBodytemp = false;

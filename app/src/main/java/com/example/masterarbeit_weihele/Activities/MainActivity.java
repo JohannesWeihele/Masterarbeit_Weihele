@@ -1,13 +1,12 @@
 package com.example.masterarbeit_weihele.Activities;
 
-import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.Classes.Basics.BasicFunctions;
 import com.example.masterarbeit_weihele.R;
 import com.example.masterarbeit_weihele.databinding.ActivityMainBinding;
 
@@ -38,7 +37,7 @@ public class MainActivity extends WakeLockActivity {
         startActivity(intent);
     }
 
-    public void openFunctionsView(View v){
+    public void checkMissionID(View v){
         EditText mission_ID_View = findViewById(R.id.mission_id);
 
         if(mission_ID_View.getText().toString().isEmpty()){

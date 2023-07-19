@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele.WeatherData;
+package com.example.masterarbeit_weihele.Classes.WeatherData;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

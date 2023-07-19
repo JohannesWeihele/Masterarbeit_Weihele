@@ -12,9 +12,9 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.example.masterarbeit_weihele.Classes.BasicFunctions;
+import com.example.masterarbeit_weihele.Classes.Basics.BasicFunctions;
 import com.example.masterarbeit_weihele.R;
-import com.example.masterarbeit_weihele.Classes.SharedPreferencesVals;
+import com.example.masterarbeit_weihele.Classes.Basics.SharedPreferencesVals;
 import com.example.masterarbeit_weihele.databinding.ActivityOptionsBinding;
 import com.jakewharton.processphoenix.ProcessPhoenix;
 

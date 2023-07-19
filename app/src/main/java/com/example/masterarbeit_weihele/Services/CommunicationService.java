@@ -14,7 +14,7 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.masterarbeit_weihele.Classes.SharedPreferencesVals;
+import com.example.masterarbeit_weihele.Classes.Basics.SharedPreferencesVals;
 import com.example.masterarbeit_weihele.databinding.ActivityCommunicationBinding;
 
 import io.agora.rtc2.ChannelMediaOptions;
@@ -40,8 +40,8 @@ public class CommunicationService extends Service {
 
     //Prefixes
     private static final String PREF_APPID = "ee00498594584239a1280448fe70713c";
-    private static final int PERMISSION_REQ_ID = 22;
-    private static final String[] REQUESTED_PERMISSIONS = {
+    private static final int PREF_PERMISSION_REQ_ID = 22;
+    private static final String[] PREF_REQUESTED_PERMISSIONS = {
             Manifest.permission.RECORD_AUDIO
     };
 
@@ -64,34 +64,6 @@ public class CommunicationService extends Service {
 
         setupAgoraEngine();
         handler = new Handler(Looper.getMainLooper());
-    }
-
-    private void setupAgoraEngine() {
-        try {
-            RtcEngineConfig configSelf = new RtcEngineConfig();
-            configSelf.mContext = getBaseContext();
-            configSelf.mAppId = PREF_APPID;
-            configSelf.mEventHandler = mRtcEventHandler;
-            agoraEngine = RtcEngine.create(configSelf);
-        } catch (Exception e) {
-            throw new RuntimeException("Check the error.");
-        }
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return binder;
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-        if (!checkSelfPermission()) {
-            ActivityCompat.requestPermissions((Activity) getApplicationContext(), REQUESTED_PERMISSIONS, PERMISSION_REQ_ID);
-        }
-        joinChannel(selfChannelName, SELFTOKEN, pushToTalkPreference);
-
-        return START_STICKY;
     }
 
     private final IAgoraEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
@@ -131,8 +103,36 @@ public class CommunicationService extends Service {
         }
     };
 
+    private void setupAgoraEngine() {
+        try {
+            RtcEngineConfig configSelf = new RtcEngineConfig();
+            configSelf.mContext = getBaseContext();
+            configSelf.mAppId = PREF_APPID;
+            configSelf.mEventHandler = mRtcEventHandler;
+            agoraEngine = RtcEngine.create(configSelf);
+        } catch (Exception e) {
+            throw new RuntimeException("Check the error.");
+        }
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return binder;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        if (!checkSelfPermission()) {
+            ActivityCompat.requestPermissions((Activity) getApplicationContext(), PREF_REQUESTED_PERMISSIONS, PREF_PERMISSION_REQ_ID);
+        }
+        joinChannel(selfChannelName, SELFTOKEN, pushToTalkPreference);
+
+        return START_STICKY;
+    }
+
     private boolean checkSelfPermission() {
-        if (ContextCompat.checkSelfPermission(this, REQUESTED_PERMISSIONS[0]) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, PREF_REQUESTED_PERMISSIONS[0]) != PackageManager.PERMISSION_GRANTED) {
             return false;
         }
         return true;
@@ -160,9 +160,7 @@ public class CommunicationService extends Service {
             } else {
                 agoraEngine.muteLocalAudioStream(false);
             }
-
         }
-
     }
 
     public void updatePreferences(){

@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.wear.widget.BoxInsetLayout;
 
-import com.example.masterarbeit_weihele.Classes.BasicFunctions;
-import com.example.masterarbeit_weihele.Classes.SharedPreferencesVals;
+import com.example.masterarbeit_weihele.Classes.Basics.BasicFunctions;
+import com.example.masterarbeit_weihele.Classes.Basics.SharedPreferencesVals;
 import com.example.masterarbeit_weihele.Recycler.CommunicationRecycler.ContactAdapter;
 import com.example.masterarbeit_weihele.Recycler.CommunicationRecycler.Contact_Item;
 import com.example.masterarbeit_weihele.Recycler.CommunicationRecycler.OnContactClickListener;
@@ -51,7 +51,7 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
     private static final String LEADER_CHANNEL_TOKEN = "007eJxTYNCpb7vEvf/yJNZd/B8WhnL6XFfuWLtE88pz4S4GQY+3U3sVGFJTDQxMLC1MLU1MLUyMjC0TDY0sDExMLNJSzQ3MDY2TPdjWpjQEMjJk7HdjYmSAQBCfl8E1M684saQqJzWzJLWIgQEA7lIgyg==";
     private static final String USER_JONAS_CHANNEL_TOKEN = "007eJxTYPC2SdugkBM5a8e2rxm5C2fclO69YFHrX6aVc/izu2FDqaYCQ2qqgYGJpYWppYmphYmRsWWioZGFgYmJRVqquYG5oXFyDtvalIZARoaZSwpYGRkgEMRnZfDKz0ssZmAAABBFHgQ=";
     private static final String USER_SABRINA_CHANNEL_TOKEN = "007eJxTYKhIqLJI3Cd4cKZz+zyGEJ6XXkqvJh7b0J+XFbb23dWPs2cqMKSmGhiYWFqYWpqYWpgYGVsmGhpZGJiYWKSlmhuYGxonR7OtTWkIZGSQKrJhZmSAQBCfnSE4MakoMy+RgQEAfAwfDQ==";
-    private static final String USER3_ALEX_CHANNEL_TOKEN = "007eJxTYGiwsj+3ebbfjb2KRqt6Vdp6dRdcZ3abzLnRI2ChyqW706YoMKSmGhiYWFqYWpqYWpgYGVsmGhpZGJiYWKSlmhuYGxon17CtTWkIZGSIqxZgYIRCEJ+FwTEntYKBAQDU3hzI";
+    private static final String USER_ALEX_CHANNEL_TOKEN = "007eJxTYGiwsj+3ebbfjb2KRqt6Vdp6dRdcZ3abzLnRI2ChyqW706YoMKSmGhiYWFqYWpqYWpgYGVsmGhpZGJiYWKSlmhuYGxon17CtTWkIZGSIqxZgYIRCEJ+FwTEntYKBAQDU3hzI";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +90,7 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
         List<Contact_Item> items = new ArrayList<>();
         items.add(new Contact_Item("Jonas", USER_JONAS_CHANNEL_TOKEN));
         items.add(new Contact_Item("Sabrina", USER_SABRINA_CHANNEL_TOKEN));
-        items.add(new Contact_Item("Alex", USER3_ALEX_CHANNEL_TOKEN));
+        items.add(new Contact_Item("Alex", USER_ALEX_CHANNEL_TOKEN));
 
         if(items.size() != 0){
             noContactsView.setVisibility(View.GONE);

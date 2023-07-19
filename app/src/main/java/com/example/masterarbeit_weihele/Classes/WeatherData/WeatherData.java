@@ -1,4 +1,4 @@
-package com.example.masterarbeit_weihele.WeatherData;
+package com.example.masterarbeit_weihele.Classes.WeatherData;
 
 import com.google.gson.annotations.SerializedName;
 
