@@ -26,6 +26,6 @@ public class MoreVitalsActivity extends WakeLockActivity {
     }
 
     public void onMoreVitalsClick(View view){
-        Toast.makeText(getApplicationContext(), "Siehe Dokumentation", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Zukünftige Funktionalität", Toast.LENGTH_SHORT).show();
     }
 }

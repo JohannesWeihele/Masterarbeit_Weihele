@@ -46,7 +46,7 @@ public class CommunicationService extends Service {
     };
 
     //Tokens
-    private String SELFTOKEN = "007eJxTYNjCqRV3tE2ZxyPPbeGZHq+dKX+49yyftPTjvvX/V8l/t+dXYEhNNTAwsbQwtTQxtTAxMrZMNDSyMDAxsUhLNTcwNzROFmJbm9IQyMiwtqqSmZEBAkF8Dgav/IzEvLzUYgYGAJZWH8Y=";
+    private String SELFTOKEN = "007eJxTYPhmGhDzzOmZsTXfrehJjksUylYtv2mlH9xv5L3z60bBhd0KDKmpBgYmlhamliamFiZGxpaJhkYWBiYmFmmp5gbmhsbJeTt3pTQEMjKI7/RhZmSAQBCfg8ErPyMxLy+1mIEBAHDMH2g=";
 
     public class CommunicationBinder extends Binder {
         public CommunicationService getService() {

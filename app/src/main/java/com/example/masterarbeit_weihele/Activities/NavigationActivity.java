@@ -49,6 +49,7 @@ public class NavigationActivity extends WakeLockActivity implements OnMapReadyCa
     private Marker lastMarker;
     private Polyline lastPolyline;
     private List<Marker> clientMarkers = new ArrayList<>();
+    private LatLng currentPosition = new LatLng(0, 0);
     private HashMap<String, LatLng> clientPositions = new HashMap<>();
     private Vibrator vibrator;
 
@@ -93,21 +94,19 @@ public class NavigationActivity extends WakeLockActivity implements OnMapReadyCa
             googleMap.setMyLocationEnabled(true);
             googleMap.getUiSettings().setZoomControlsEnabled(true);
             googleMap.getUiSettings().setRotateGesturesEnabled(true);
-            getClientPositions();
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PREF_LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
 
-    //Hier zukünftig die Daten alle paar Sekunden vom Server gefetched werden, um die aktueller Position anderer Nutzer darzustellen
     private void getClientPositions(){
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
-        clientPositions.put("Jonas", new LatLng(37.421606238636436, -122.08620999008417));
-        clientPositions.put("Sabrina", new LatLng(37.42012362454773, -122.08417184650897));
-        clientPositions.put("Alex", new LatLng(37.41985042413669, -122.0768279582262));
+        clientPositions.put("Jonas", new LatLng(currentPosition.latitude + 0.005, currentPosition.longitude + 0.005));
+        clientPositions.put("Sabrina", new LatLng(currentPosition.latitude - 0.0015, currentPosition.longitude + 0.0015));
+        clientPositions.put("Alex", new LatLng(currentPosition.latitude + 0.002, currentPosition.longitude - 0.001));
 
         for (Map.Entry<String, LatLng> entry : clientPositions.entrySet()) {
             Marker marker = googleMap.addMarker(markerOptions.position(entry.getValue()).title(entry.getKey()));
@@ -122,8 +121,9 @@ public class NavigationActivity extends WakeLockActivity implements OnMapReadyCa
             FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
             fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
                 if (location != null) {
-                    LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f));
+                    currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 15f));
+                    getClientPositions();
                 }
             });
         } else {
