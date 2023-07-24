@@ -7,7 +7,9 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -24,9 +26,10 @@ public class FunctionsActivity extends WakeLockActivity {
 
     //Prefixes
     private static final int PERMISSION_REQ_ID = 22;
-    private static final int PERMISSION_REQUEST_BODY_SENSORS = 1;
+    private static final int PERMISSION_REQUEST_BODY_SENSORS_ID = 1;
     private static final String[] REQUESTED_PERMISSIONS = {
             Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.BODY_SENSORS
 
     };
 
@@ -46,26 +49,41 @@ public class FunctionsActivity extends WakeLockActivity {
 
     public void initializeServices(){
 
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BODY_SENSORS}, PERMISSION_REQUEST_BODY_SENSORS);
-            return;
-        } else {
-            Intent vitalsServiceIntent = new Intent(this, VitalsService.class);
-            startService(vitalsServiceIntent);
-        }
-
         if (!checkSelfPermission()) {
             ActivityCompat.requestPermissions(this, REQUESTED_PERMISSIONS, PERMISSION_REQ_ID);
-        } else {
-            Intent communicationServiceIntent = new Intent(this, CommunicationService.class);
-            startService(communicationServiceIntent);
         }
+
     }
 
     private boolean checkSelfPermission() {
-        return ContextCompat.checkSelfPermission(this, REQUESTED_PERMISSIONS[0]) == PackageManager.PERMISSION_GRANTED;
+
+        if(ContextCompat.checkSelfPermission(this, REQUESTED_PERMISSIONS[0]) == PackageManager.PERMISSION_GRANTED)
+        {
+            return ContextCompat.checkSelfPermission(this, REQUESTED_PERMISSIONS[1]) == PackageManager.PERMISSION_GRANTED;
+        } else {
+            return false;
+        }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQ_ID) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+                Intent communicationServiceIntent = new Intent(this, CommunicationService.class);
+                startService(communicationServiceIntent);
+
+                Intent vitalsServiceIntent = new Intent(this, VitalsService.class);
+                startService(vitalsServiceIntent);
+            } else {
+                System.out.println("Berechtigungen wurden nicht erteilt.");
+            }
+        }
+    }
+
+
 
     public void onFunctionButtonClick(View v){
         Button clickedButton = (Button) v;

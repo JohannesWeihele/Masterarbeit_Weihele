@@ -3,11 +3,13 @@ package com.example.masterarbeit_weihele.Activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -19,6 +21,7 @@ import com.example.masterarbeit_weihele.Classes.WeatherData.WeatherData;
 import com.example.masterarbeit_weihele.Classes.WeatherData.WeatherResponse;
 import com.example.masterarbeit_weihele.databinding.ActivityEnvironmentBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.squareup.picasso.Picasso;
 
@@ -121,22 +124,26 @@ public class EnvironmentActivity extends WakeLockActivity {
         Toast.makeText(this, "lädt Daten...", Toast.LENGTH_LONG).show();
 
         FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            checkLocationPermission();
         }
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-            if (location != null) {
-                if (location.hasAccuracy() && location.getAccuracy() <= 100) {
-                    position_lat = location.getLatitude();
-                    position_long = location.getLongitude();
-                    getEnvironmentVals();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Position konnte nicht ermittelt werden.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
+        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        Location location = task.getResult();
+                        if (location.hasAccuracy() && location.getAccuracy() <= 100) {
+                            position_lat = location.getLatitude();
+                            position_long = location.getLongitude();
+                            getEnvironmentVals();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Position konnte nicht ermittelt werden.", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Standort nicht verfügbar.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void checkLocationPermission() {
@@ -148,5 +155,19 @@ public class EnvironmentActivity extends WakeLockActivity {
             getCurrentLocation();
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_REQUEST_LOCATION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getCurrentLocation();
+            } else {
+                Toast.makeText(this, "Berechtigung zur Standortabfrage wurde verweigert.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
 }
