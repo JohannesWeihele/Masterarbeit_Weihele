@@ -41,10 +41,10 @@ public class SharedPreferencesVals {
 
     public void fetchAccountPreferenceVals(){
         SharedPreferences sharedPreferencesAccount = context.getSharedPreferences("Account", Context.MODE_PRIVATE);
-        setAccountName(sharedPreferencesAccount.getString("accountName", ""));
-        setAccountAge(sharedPreferencesAccount.getString("accountAge", ""));
-        setAccountBodysize(sharedPreferencesAccount.getString("accountBodysize", ""));
-        setAccountBodyweight(sharedPreferencesAccount.getString("accountBodyweight", ""));
+        setAccountName(sharedPreferencesAccount.getString("accountName", "Johannes"));
+        setAccountAge(sharedPreferencesAccount.getString("accountAge", "28"));
+        setAccountBodysize(sharedPreferencesAccount.getString("accountBodysize", "178"));
+        setAccountBodyweight(sharedPreferencesAccount.getString("accountBodyweight", "87"));
     }
 
     public void fetchCommunicationPreferenceVals(){
