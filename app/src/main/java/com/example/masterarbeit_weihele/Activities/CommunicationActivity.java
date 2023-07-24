@@ -47,11 +47,11 @@ public class CommunicationActivity extends WakeLockActivity implements OnContact
     private TextView communicationOption;
 
     //Tokens
-    private static final String ALL_CHANNEL_TOKEN = "007eJxTYDBMUjpzOsHJy6T7Cl/BmdIwpYMzJz9eKLbT4WHexTKxk1EKDKmpBgYmlhamliamFiZGxpaJhkYWBiYmFmmp5gbmhsbJy3fuSmkIZGTwX6rEysgAgSA+C4NjTk4qAwMA+AEeAQ==";
-    private static final String LEADER_CHANNEL_TOKEN = "007eJxTYDh1/ViEm94/+S37XYUE2qQeeTl9XcL1x9yhWyr508HKJb8UGFJTDQxMLC1MLU1MLUyMjC0TDY0sDExMLNJSzQ3MDY2Td+zcldIQyMjw+90qZkYGCATxeRlcM/OKE0uqclIzS1KLGBgApkokSg==";
-    private static final String USER_JONAS_CHANNEL_TOKEN = "007eJxTYOiKv3BT1bz21Sw+o/ST8/6fuXH3z7EZAvOsQ2PavVmWr1utwJCaamBgYmlhamliamFiZGyZaGhkYWBiYpGWam5gbmicfGrnrpSGQEaGD4f+MDEyQCCIz8rglZ+XWMzAAAD5ICIt";
-    private static final String USER_SABRINA_CHANNEL_TOKEN = "007eJxTYDh+afvUs+kvzHi0Tng8nDDpy/W5i4oOMSw0LBTPFJ8kqR2qwJCaamBgYmlhamliamFiZGyZaGhkYWBiYpGWam5gbmicfGfnrpSGQEYGm8eqrIwMEAjiszMEJyYVZeYlMjAAAL0+IBs=";
-    private static final String USER_ALEX_CHANNEL_TOKEN = "007eJxTYND+7SA5/bzO4mt6tx7s3bj4pYjHbmHuc6m85nH/NY4s8fmjwJCaamBgYmlhamliamFiZGyZaGhkYWBiYpGWam5gbmic/H7nrpSGQEaG9v4sBkYoBPFZGBxzUisYGABpSR+2";
+    private static final String ALL_CHANNEL_TOKEN = "HierTokenEinsetzen";
+    private static final String LEADER_CHANNEL_TOKEN = "HierTokenEinsetzen";
+    private static final String USER_JONAS_CHANNEL_TOKEN = "HierTokenEinsetzen";
+    private static final String USER_SABRINA_CHANNEL_TOKEN = "HierTokenEinsetzen";
+    private static final String USER_ALEX_CHANNEL_TOKEN = "HierTokenEinsetzen";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

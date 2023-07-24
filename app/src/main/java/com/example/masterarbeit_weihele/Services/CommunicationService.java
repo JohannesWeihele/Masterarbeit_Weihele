@@ -42,11 +42,12 @@ public class CommunicationService extends Service {
     private static final String PREF_APPID = "ee00498594584239a1280448fe70713c";
     private static final int PREF_PERMISSION_REQ_ID = 22;
     private static final String[] PREF_REQUESTED_PERMISSIONS = {
-            Manifest.permission.RECORD_AUDIO
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.MODIFY_AUDIO_SETTINGS
     };
 
     //Tokens
-    private String SELFTOKEN = "007eJxTYPhmGhDzzOmZsTXfrehJjksUylYtv2mlH9xv5L3z60bBhd0KDKmpBgYmlhamliamFiZGxpaJhkYWBiYmFmmp5gbmhsbJeTt3pTQEMjKI7/RhZmSAQBCfg8ErPyMxLy+1mIEBAHDMH2g=";
+    private String SELFTOKEN = "HierTokenEinsetzen";
 
     public class CommunicationBinder extends Binder {
         public CommunicationService getService() {
@@ -132,8 +133,10 @@ public class CommunicationService extends Service {
     }
 
     private boolean checkSelfPermission() {
-        if (ContextCompat.checkSelfPermission(this, PREF_REQUESTED_PERMISSIONS[0]) != PackageManager.PERMISSION_GRANTED) {
-            return false;
+        for (String permission : PREF_REQUESTED_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
         }
         return true;
     }

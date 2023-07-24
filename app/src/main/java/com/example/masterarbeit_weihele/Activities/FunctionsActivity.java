@@ -24,8 +24,10 @@ public class FunctionsActivity extends WakeLockActivity {
 
     //Prefixes
     private static final int PERMISSION_REQ_ID = 22;
+    private static final int PERMISSION_REQUEST_BODY_SENSORS = 1;
     private static final String[] REQUESTED_PERMISSIONS = {
-            Manifest.permission.RECORD_AUDIO
+            Manifest.permission.RECORD_AUDIO,
+
     };
 
     @Override
@@ -43,8 +45,15 @@ public class FunctionsActivity extends WakeLockActivity {
     }
 
     public void initializeServices(){
-        Intent vitalsServiceIntent = new Intent(this, VitalsService.class);
-        startService(vitalsServiceIntent);
+
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BODY_SENSORS}, PERMISSION_REQUEST_BODY_SENSORS);
+            return;
+        } else {
+            Intent vitalsServiceIntent = new Intent(this, VitalsService.class);
+            startService(vitalsServiceIntent);
+        }
 
         if (!checkSelfPermission()) {
             ActivityCompat.requestPermissions(this, REQUESTED_PERMISSIONS, PERMISSION_REQ_ID);

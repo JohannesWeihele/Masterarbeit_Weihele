@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.masterarbeit_weihele.Classes.Basics.BasicFunctions;
 import com.example.masterarbeit_weihele.R;
@@ -45,6 +46,7 @@ public class EnvironmentActivity extends WakeLockActivity {
     private static final String PREF_API_KEY = "0e9ad80a98bb47d3df5444d62e712be3";
     private static final String PREF_ICON_LINK = "https://openweathermap.org/img/w/";
     private static final String PREF_DATA_LINK = "https://api.openweathermap.org/data/2.5/";
+    private static final int PERMISSION_REQUEST_LOCATION = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class EnvironmentActivity extends WakeLockActivity {
         basicFunctions.changeActivityOnRotation(CommunicationActivity.class, MoreVitalsActivity.class);
         basicFunctions.getTime();
 
-        getCurrentLocation();
+        checkLocationPermission();
     }
 
 
@@ -135,6 +137,16 @@ public class EnvironmentActivity extends WakeLockActivity {
                 }
             }
         });
+    }
+
+    private void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSION_REQUEST_LOCATION);
+        } else {
+            getCurrentLocation();
+        }
     }
 
 }
