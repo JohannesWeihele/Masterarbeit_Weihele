@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -51,6 +50,12 @@ public class FunctionsActivity extends WakeLockActivity {
 
         if (!checkSelfPermission()) {
             ActivityCompat.requestPermissions(this, REQUESTED_PERMISSIONS, PERMISSION_REQ_ID);
+        } else {
+            Intent communicationServiceIntent = new Intent(this, CommunicationService.class);
+            startService(communicationServiceIntent);
+
+            Intent vitalsServiceIntent = new Intent(this, VitalsService.class);
+            startService(vitalsServiceIntent);
         }
 
     }
@@ -63,6 +68,8 @@ public class FunctionsActivity extends WakeLockActivity {
         } else {
             return false;
         }
+
+
     }
 
     @Override
